@@ -8,7 +8,7 @@ Unit Tester : Tucker Groves-Benedict
 
 Integration Tester : Annabel Mehari
 
-I, Sadie Lewis, will commit to being the Beta Test Organizer for our development team's Conway Public Art app. 
+I, Sadie Lewis, have committed to being the Beta Test Organizer for our development team's Conway Public Art app. 
 I will do my best in identifying suitable beta testers and organizing beta tests to ensure our app and developers can have the responsive feedback needed to improve upon it. 
 I will do my best to contribute to a positive team experience by additionally helping out my teammates, if needed, with their tasks. 
 Additionally I will ensure I communicate thoroughly with my teammates to resolve any conflicts that may occur.
