@@ -3,6 +3,7 @@
 I, Elliot Allen, have taken on the role of Task Manager for our Conway Public Art app. I will be responsible for scheduling and organizing team meetings. In these meetings, I will make sure that each member of our team is making progress and on the right track to complete the app. To end the meetings, I am responsible for ensuring that every member of the team has something to be working on to make ample progress. 
 
 Client Interfacer : Mason Murphy
+I, Mason Murphy, have the responsibilty of keeping a constant and clear line of communication between our client and team to ensure cohesion of ideas and agreement on whats what. I will be responsiable with the corispondense to our client weather that be to set up times for meetings, answer questions, ask questions about a certain idea discussed in a meeting that needs more clarification, etc. Then I must make sure to communicate all this information to the rest of the group so everyone is up to date and has a clear understanding of the goals ahead, and making sure everyone is adhearing to our clients needs.
 
 Unit Tester : Tucker Groves-Benedict
 
