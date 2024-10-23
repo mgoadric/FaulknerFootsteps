@@ -8,8 +8,10 @@ Unit Tester : Tucker Groves-Benedict
 
 Integration Tester : Annabel Mehari
 
-Beta Test Organizer : Sadie Lewis
-
+I, Sadie Lewis, will commit to being the Beta Test Organizer for our development team's Conway Public Art app. 
+I will do my best in identifying suitable beta testers and organizing beta tests to ensure our app and developers can have the responsive feedback needed to improve upon it. 
+I will do my best to contribute to a positive team experience by additionally helping out my teammates, if needed, with their tasks. 
+Additionally I will ensure I communicate thoroughly with my teammates to resolve any conflicts that may occur.
 
 Tucker Groves-Benedict : I will be working as a unit tester. My roll will be to look over our code and write unit tests so that we always know what parts of the 
 code are functional and what parts of the code are not. I will focus on writing functional readable code so that our collaboration is easy. My job is also to make sure the rest of the team is keeping up with unit tests. I do not have to write all of them, but if no unit tests are written I have failed at my job.
