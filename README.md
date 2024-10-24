@@ -6,7 +6,7 @@ I, Mason Murphy, have the responsibilty of keeping a constant and clear line of 
 
 Unit Tester : Tucker Groves-Benedict
 
-Integration Tester : Annabel Mehari
+I, Annabel Mehari, agree to serve as the Integration Tester for the Conway Public Art app. I will be responsible for ensuring the seamless interaction of all components. I will find and report integration issues, work with the Unit Tester and developers to fix difficulties, and provide an effective testing environment. By conducting ongoing testing and providing timely feedback, I will contribute to the app's overall functionality. In addition, I will assist my teammates in resolving any testing difficulties that may emerge, with the goal of completing the project successfully.
 
 I, Sadie Lewis, have committed to being the Beta Test Organizer for our development team's Conway Public Art app. 
 I will do my best in identifying suitable beta testers and organizing beta tests to ensure our app and developers can have the responsive feedback needed to improve upon it. 
