@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "188926477134",
+    "project_id": "conway-public-art",
+    "storage_bucket": "conway-public-art.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188926477134:android:e6982bf3d743600a41541f",
+        "android_client_info": {
+          "package_name": "com.art.faulkner_footsteps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXn79lcs0r2jRMZl2pfnieSkKs-Q5da4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

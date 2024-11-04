@@ -10,8 +10,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:faulkner_footsteps/main.dart';
 
+import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/info_text.dart';
+
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+
+    HistSite testSite = HistSite(name: "TestName", blurbs: [InfoText(title: "Test1", value: "A value test")], images: []);
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
