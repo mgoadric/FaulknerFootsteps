@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/hist_site_page.dart';
 import 'package:faulkner_footsteps/info_text.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Sample HistSite object
+    HistSite sampleSite = HistSite(
+      name: "Sample Site",
+      blurbs: [
+        InfoText(title: "Introduction", value: "This is a sample historical site.", date: "01/01/2024"),
+        InfoText(title: "Significance", value: "It played a major role in local history."),
+      ],
+      images: [
+          AssetImage('assets/images/AutobotLogo.png'),
+          AssetImage('assets/images/AutobotLogo2.png'),
+          AssetImage('assets/images/AutobotLogo.png'),
+          ], // Add images if available
+    );
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -118,6 +132,18 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+            onPressed: () {
+              // Navigate to HistSitePage with sampleSite
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistSitePage(histSite: sampleSite),
+                ),
+              );
+            },
+            child: const Text("View Sample Site"),
+          ),
           ],
         ),
       ),
