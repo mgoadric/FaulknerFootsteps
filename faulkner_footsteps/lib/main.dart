@@ -1,3 +1,4 @@
+import 'package:faulkner_footsteps/rating.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -68,6 +69,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> _showRatingDialog() async {
+    await showDialog<double>(
+      context: context,
+      builder: (BuildContext context) => const RatingDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -111,6 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _showRatingDialog,
+              child: const Text("Rate this spot"),
             ),
           ],
         ),
