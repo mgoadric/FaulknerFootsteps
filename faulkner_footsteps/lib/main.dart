@@ -1,4 +1,7 @@
+import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/info_text.dart';
 import 'package:faulkner_footsteps/rating.dart';
+import 'package:faulkner_footsteps/ratingLeaderBoard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,7 +11,52 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  /*
+  //Test for ratingLeaderBoard
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Historical Sites Leaderboard',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 119, 52, 16)),
+        useMaterial3: true,
+      ),
+      home: RatingLeaderBoard(topHistSites: _createTempData()),
+    );
+  }
+
+  //temp testing historical sites data
+  List<HistSite> _createTempData() {
+    return [
+      HistSite(
+        name: 'Historical Museum',
+        blurbs: [InfoText(title: 'Location', value: 'Museum, Conway')],
+        images: [AssetImage('museum image')],
+      ),
+      HistSite(
+        name: 'Memorial',
+        blurbs: [InfoText(title: 'Location', value: 'Memorial, Conway')],
+        images: [AssetImage('memorial image')],
+      ),
+      HistSite(
+        name: 'Historical Marker',
+        blurbs: [InfoText(title: 'Location', value: 'Marker, Conway')],
+        images: [AssetImage('marker image')],
+      ),
+      HistSite(
+        name: 'Cemetary',
+        blurbs: [InfoText(title: 'Location', value: 'Cemetary, Conway')],
+        images: [AssetImage('cemetary image')],
+      ),
+      HistSite(
+        name: 'Church',
+        blurbs: [InfoText(title: 'Location', value: 'Church, Conway')],
+        images: [AssetImage('church image')],
+      ),
+    ];
+  }
+*/
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _showRatingDialog() async {
+  //launches Rating Dialog
+  Future<void> showRatingDialog() async {
     await showDialog<double>(
       context: context,
       builder: (BuildContext context) => const RatingDialog(),
@@ -121,8 +170,9 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 20),
+            // Button for launching rating dialog
             ElevatedButton(
-              onPressed: _showRatingDialog,
+              onPressed: showRatingDialog,
               child: const Text("Rate this spot"),
             ),
           ],
