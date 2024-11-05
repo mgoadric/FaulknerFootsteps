@@ -1,19 +1,15 @@
-<<<<<<< HEAD
-import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/info_text.dart';
-import 'package:faulkner_footsteps/rating.dart';
-import 'package:faulkner_footsteps/ratingLeaderBoard.dart';
-=======
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
->>>>>>> origin/main
+import 'package:faulkner_footsteps/ratingDialog.dart';
+import 'package:faulkner_footsteps/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'firebase_options.dart';
+import 'info_text.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,7 +77,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       title: 'Faulkner Footsteps',
       theme: ThemeData(
         primarySwatch: Colors.blue,
