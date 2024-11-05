@@ -10,8 +10,14 @@ class TextBlurb extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title),
-        Text(date),
+        Row
+        (
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Text(title),
+          Text(date),
+        ],
+        ),
         const SizedBox(height: 10),
         Text(value)
       ],
