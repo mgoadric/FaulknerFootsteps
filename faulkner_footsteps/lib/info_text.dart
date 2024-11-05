@@ -1,9 +1,15 @@
 
 
 class InfoText {
-  InfoText({required this.title, required this.value, this.date});
-  
-  String title;
+
+  String title;  
   String value;
-  DateTime? date;
+  String? date;
+  InfoText({required this.title, required this.value, this.date});
+
+
+  @override
+  toString() {
+    return "$title.$value.$date";
+  }
 }
