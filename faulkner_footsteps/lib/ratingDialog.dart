@@ -50,7 +50,7 @@ class _RatingDialogState extends State<RatingDialog> {
           },
           child: const Text("Cancel"),
         ),
-        //submit button, sends rating data to database (eventually)
+        //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(userRating);
