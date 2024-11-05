@@ -9,4 +9,12 @@ class HistSite {
   String name;
   List<InfoText> blurbs;
   List<AssetImage> images;
+
+  String listifyBlurbs() {
+    String fin = "";
+    for (var blurb in blurbs) {
+      fin = '$fin$blurb,';
+    }
+    return fin.substring(0, fin.length-1);
+  }
 }

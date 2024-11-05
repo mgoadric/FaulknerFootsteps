@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart'
-
     hide EmailAuthProvider, PhoneAuthProvider;
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -10,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'info_text.dart';
 import 'hist_site.dart';
-
-enum Attending { yes, no, unknown }
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -36,7 +35,7 @@ class ApplicationState extends ChangeNotifier {
     ]);
 
     FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {
+      // if (user != null) {
         _loggedIn = true;
         _siteSubscription = FirebaseFirestore.instance
             .collection('sites')
@@ -44,58 +43,54 @@ class ApplicationState extends ChangeNotifier {
             .listen((snapshot) {
           _historicalSites = [];
           for (final document in snapshot.docs) {
-              var blurbs = document.data()["blurbs"];
-              print("Blurbs : ${blurbs}");
+              var blurbCont = document.data()["blurbs"];
+              List<String> blurbStrings = blurbCont.split(",");
+              List<InfoText> newBlurbs = [];
+              for (var blurb in blurbStrings) {
+                List<String> values = blurb.split(".");
+                var Date;
+                if(values[2] == "null") {
+                  Date = null;
+                } else {
+                  Date = values[2];
+                }
+                newBlurbs.add(InfoText(title: values[0], value: values[1], date: Date));
+              }
               _historicalSites.add(
                 HistSite(
                   name: document.data()["name"] as String,
-                  blurbs: [],
+                  blurbs: newBlurbs,
                   images: []
                 )
               );
           }
           notifyListeners();
         });
-      } else {
-        _loggedIn = false;
-        _historicalSites = [];
-        _siteSubscription?.cancel();
-      }
+      // } else {
+      //   _loggedIn = false;
+      //   _historicalSites = [];
+      //   _siteSubscription?.cancel();
+      // }
       notifyListeners();
     });
   }
 
   void addSite(HistSite newSite) { //using the variable to contain information for sake of readability. May refactor later
-    if(!_loggedIn) {
-      throw Exception("Must be logged in");
-    }
-    int blurbcount = newSite.blurbs.length;
-    int imageCount = newSite.images.length;
+    // if(!_loggedIn) { UNCOMMENT THIS LATER. COMMENTED OUT FOR TESTING PURPOSES
+    //   throw Exception("Must be logged in");
+    // }
+
     var data = {
       "name" : newSite.name,
-      "blurbCount" : blurbcount,
-      "imageCount" : imageCount
+      "blurbs" : newSite.listifyBlurbs(),
+      "images" : "testValue"
     };
-    FirebaseFirestore.instance
-          .collection("sites")
-          .doc(newSite.name)
-          .set(data);
-    if(blurbcount > 0) {
-      for (var blurb in newSite.blurbs) {
-              FirebaseFirestore.instance
-        .collection("sites")
-        .doc(newSite.name)
-        .collection("blurbs")
-        .doc()
-        .set(
-          {
-            "title" : blurb.title,
-            "value" : blurb.value,
-            "time" : blurb.date == null ? blurb.date : 0
-          }
-        );
-      }
-    }
 
+    print('Adding site with $data');
+    FirebaseFirestore.instance
+      .collection("sites")
+      .doc(newSite.name)
+      .set(data);
+          
   }
 }

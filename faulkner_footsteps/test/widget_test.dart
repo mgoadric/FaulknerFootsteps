@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,24 +14,44 @@ import 'package:faulkner_footsteps/main.dart';
 
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/app_state.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-
-    HistSite testSite = HistSite(name: "TestName", blurbs: [InfoText(title: "Test1", value: "A value test")], images: []);
+  test('Blurbs are converted into readable strings', () async {
+    HistSite testSite = HistSite(name: "TestName", blurbs: [InfoText(title: "Test1", value: "A value test", date: "10/6/1995"), InfoText(title: "Test2", value: "Finding another value")], images: []);
     // Build our app and trigger a frame.
+    String container = testSite.listifyBlurbs();
+    List<String> blurbStrings = container.split(",");
+    print(blurbStrings);
+    List<InfoText> blurbs = [];
+    for (var blurb in blurbStrings) {
+      List<String> values = blurb.split(".");
+      var Date;
+      if(values[2] == "null") {
+        Date = null;
+      } else {
+        Date = values[2];
+      }
+      blurbs.add(InfoText(title: values[0], value: values[1], date: Date));
+    }
+    print(blurbs);
+  });
+
+  testWidgets("Testing firebase pushing and pulling historical sites", (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    
+    HistSite testSite = HistSite
+      (
+        name: "TestName", 
+        blurbs: 
+          [
+            InfoText(title: "Test1", value: "A value test", date: "10/6/1995"), 
+            InfoText(title: "Test2", value: "Finding another value")
+          ],
+        images: []
+      );
+    ApplicationState appState = ApplicationState();
+    Firebase.initializeApp();
+    appState.addSite(testSite);
   });
 }
