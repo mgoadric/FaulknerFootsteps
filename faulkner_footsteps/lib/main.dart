@@ -10,8 +10,22 @@ import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
 >>>>>>> origin/main
 import 'package:flutter/material.dart';
+import 'package:faulkner_footsteps/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseUIAuth.configureProviders([
+    EmailAuthProvider(),
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -68,26 +82,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      title: 'Faulkner Footsteps',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: AppRouter.loginPage,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
@@ -112,6 +112,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ApplicationState app_state = ApplicationState();
+  List<HistSite> historical_sites = [];
   int _counter = 0;
 
   void _incrementCounter() {
@@ -121,8 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('rooms')
         .doc('mainroom')
         .collection('players');
-      HistSite newSite = HistSite(name: "Test$_counter", blurbs: [InfoText(title: "hello", value: "goodbye", date: "10/2/34"), InfoText(title: "goodbye", value: "hello")], images: []);
+      HistSite newSite = HistSite(name: "The Big Church", blurbs: [InfoText(title: "Historical Significance", value: "The big church is a large church with a long history of doing stuff and things beyond the current eternity of existence.", date: "10/2/34"), InfoText(title: "Secondary Elist", value: "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")], images: []);
       app_state.addSite(newSite);
+      print(historical_sites);
     });
   }
 
@@ -133,6 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) => const RatingDialog(),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +188,21 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: showRatingDialog,
               child: const Text("Rate this spot"),
             ),
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: app_state.historicalSites.length,
+                itemBuilder: (BuildContext context, int index) {
+                  print("${app_state.historicalSites.length} eldritch");
+                  HistSite site = app_state.historicalSites[index];
+                  return TextBlurb(
+                    site.name, 
+                    site.blurbs.toString(), 
+                    "",
+                  );
+                }
+              )
+            )
           ],
         ),
       ),

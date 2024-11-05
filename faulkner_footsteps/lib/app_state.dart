@@ -35,7 +35,7 @@ class ApplicationState extends ChangeNotifier {
     ]);
 
     FirebaseAuth.instance.userChanges().listen((user) {
-      // if (user != null) {
+      if (true) { //user == null, changed for debugging
         _loggedIn = true;
         _siteSubscription = FirebaseFirestore.instance
             .collection('sites')
@@ -48,13 +48,7 @@ class ApplicationState extends ChangeNotifier {
               List<InfoText> newBlurbs = [];
               for (var blurb in blurbStrings) {
                 List<String> values = blurb.split(".");
-                var Date;
-                if(values[2] == "null") {
-                  Date = null;
-                } else {
-                  Date = values[2];
-                }
-                newBlurbs.add(InfoText(title: values[0], value: values[1], date: Date));
+                newBlurbs.add(InfoText(title: values[0], value: values[1], date: values[2]));
               }
               _historicalSites.add(
                 HistSite(
@@ -66,11 +60,11 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
-      // } else {
-      //   _loggedIn = false;
-      //   _historicalSites = [];
-      //   _siteSubscription?.cancel();
-      // }
+      } else {
+        _loggedIn = false;
+        _historicalSites = [];
+        _siteSubscription?.cancel();
+      }
       notifyListeners();
     });
   }
