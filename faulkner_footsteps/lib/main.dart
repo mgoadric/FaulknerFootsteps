@@ -3,6 +3,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
 import 'package:flutter/material.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,6 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ApplicationState app_state = ApplicationState();
+  List<HistSite> historical_sites = [];
   int _counter = 0;
 
   void _incrementCounter() {
@@ -71,8 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('players');
       HistSite newSite = HistSite(name: "Test$_counter", blurbs: [InfoText(title: "hello", value: "goodbye", date: "10/2/34"), InfoText(title: "goodbye", value: "hello")], images: []);
       app_state.addSite(newSite);
+      print(historical_sites);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +123,21 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: app_state.historicalSites.length,
+                itemBuilder: (BuildContext context, int index) {
+                  print("${app_state.historicalSites.length} eldritch");
+                  HistSite site = app_state.historicalSites[index];
+                  return TextBlurb(
+                    site.name, 
+                    site.blurbs.toString(), 
+                    "",
+                  );
+                }
+              )
+            )
           ],
         ),
       ),
