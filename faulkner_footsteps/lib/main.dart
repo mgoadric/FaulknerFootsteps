@@ -58,6 +58,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ApplicationState app_state = ApplicationState();
+  List<HistSite> historical_sites = [];
   int _counter = 0;
 
   void _incrementCounter() {
@@ -67,10 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('rooms')
         .doc('mainroom')
         .collection('players');
-      HistSite newSite = HistSite(name: "Test$_counter", blurbs: [InfoText(title: "hello", value: "goodbye", date: "10/2/34"), InfoText(title: "goodbye", value: "hello")], images: []);
+      HistSite newSite = HistSite(name: "The Big Church", blurbs: [InfoText(title: "Historical Significance", value: "The big church is a large church with a long history of doing stuff and things beyond the current eternity of existence.", date: "10/2/34"), InfoText(title: "Secondary Elist", value: "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")], images: []);
       app_state.addSite(newSite);
+      print(historical_sites);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +120,21 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: app_state.historicalSites.length,
+                itemBuilder: (BuildContext context, int index) {
+                  print("${app_state.historicalSites.length} eldritch");
+                  HistSite site = app_state.historicalSites[index];
+                  return TextBlurb(
+                    site.name, 
+                    site.blurbs.toString(), 
+                    "",
+                  );
+                }
+              )
+            )
           ],
         ),
       ),
