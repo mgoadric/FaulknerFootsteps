@@ -45,7 +45,7 @@ class HistSitePage extends StatelessWidget {
                       children: [
                         Text(infoText.title),
                         Text(infoText.value),
-                        if (infoText.date != null)
+                        if (infoText.date != "")
                           Text("Date: ${infoText.date}"),
                       ],
                     ),

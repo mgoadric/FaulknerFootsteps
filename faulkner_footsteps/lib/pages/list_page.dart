@@ -17,7 +17,7 @@ class _ListPageState extends State<ListPage> {
 
   void _incrementCounter() {
     setState(() {
-      HistSite newSite = HistSite(name: "The Big Church", description: "This is a large church",blurbs: [InfoText(title: "Historical Significance", value: "The big church is a large church with a long history of doing stuff and things beyond the current eternity of existence.", date: "10/2/34"), InfoText(title: "Secondary Elist", value: "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")], images: []);
+      HistSite newSite = HistSite(name: "A smaller church", description: "This is a slightly smaller church",blurbs: [InfoText(title: "Historical Significance", value: "This smaller church informs us about the flimsy state of our humanity. Our existence as beings seems so large to ourselves, however we are ultimately worthless within the multiverse.", date: "10/2/34"), InfoText(title: "This is a second blurb because I need one", value: "GibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirish")], images: []);
       widget.app_state.addSite(newSite);
     });
   }

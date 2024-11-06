@@ -13,18 +13,24 @@ class AppRouter {
   static const String list = '/list';
   static const String hsitePage = '/hist';
 
-  static HistSite newSite = HistSite(name: "TEST", blurbs: [InfoText(title: "INTRO", value: "HELLO WORLD")], images: [AssetImage('assets/images/AutobotLogo.png')]);
+  //static HistSite newSite = HistSite(name: "TEST", blurbs: [InfoText(title: "INTRO", value: "HELLO WORLD")], images: [AssetImage('assets/images/AutobotLogo.png')]);
 
   // cases for the router, what should happen when moving to this page
   // removed static from infront of Route for HistSitePage
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    Map<String, dynamic> info;
+    if(settings.arguments != null)
+      info = settings.arguments as Map<String, dynamic>;
+    else {
+      info = {"info" : HistSite(name: "Argument Error", description: "Please restart the app",blurbs: [InfoText(title: "there was an error", value: "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")], images: [])};    }
     switch (settings.name) {
       case loginPage:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case list:
-        return MaterialPageRoute(builder: (_) => const ListPage());
+        return MaterialPageRoute(builder: (_) => ListPage());
       case hsitePage:
-        return MaterialPageRoute(builder: (_) => HistSitePage(histSite: newSite));
+      print('$info this is information on the evils of homosexuality');
+        return MaterialPageRoute(builder: (_) => HistSitePage(histSite: info["info"]));
       default:
         return _errorRoute();
     }

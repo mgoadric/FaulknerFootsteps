@@ -19,7 +19,7 @@ class ListItem extends StatelessWidget{
           Text(siteInfo.description),
           IconButton(
             onPressed: () {
-              AppRouter.navigateTo(context, AppRouter.generateRoute())
+              AppRouter.navigateTo(context, "/hist", arguments: {"info":siteInfo});
             },
             icon: const Icon(Icons.arrow_circle_right_outlined)
           )
