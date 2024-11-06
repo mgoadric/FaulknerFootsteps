@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'hist_site.dart';
-import 'info_text.dart';
+import '../hist_site.dart';
+import '../info_text.dart';
 
 class HistSitePage extends StatelessWidget {
   final HistSite histSite;

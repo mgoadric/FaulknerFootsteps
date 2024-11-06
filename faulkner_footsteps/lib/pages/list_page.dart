@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:faulkner_footsteps/app_router.dart';
 
 class ListPage extends StatefulWidget{
   const ListPage({super.key});
@@ -12,8 +13,10 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text("Hello World"),
+    return Scaffold(
+      body: Align(child: ElevatedButton(onPressed: () => AppRouter.navigateTo(context, AppRouter.hsitePage), child: Text("Historical Site Page")),
+      alignment: Alignment.center,),
+      
     );
   }
 
