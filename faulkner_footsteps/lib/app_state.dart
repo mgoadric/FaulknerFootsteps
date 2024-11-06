@@ -53,6 +53,7 @@ class ApplicationState extends ChangeNotifier {
               _historicalSites.add(
                 HistSite(
                   name: document.data()["name"] as String,
+                  description: document.data()["description"] as String,
                   blurbs: newBlurbs,
                   images: []
                 )
@@ -76,6 +77,7 @@ class ApplicationState extends ChangeNotifier {
 
     var data = {
       "name" : newSite.name,
+      "description" : newSite.description,
       "blurbs" : newSite.listifyBlurbs(),
       "images" : "testValue"
     };

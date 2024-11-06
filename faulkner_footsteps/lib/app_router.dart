@@ -15,7 +15,7 @@ class AppRouter {
       case loginPage:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case list:
-        return MaterialPageRoute(builder: (_) => const ListPage());
+        return MaterialPageRoute(builder: (_) => ListPage());
       default:
         return _errorRoute();
     }
