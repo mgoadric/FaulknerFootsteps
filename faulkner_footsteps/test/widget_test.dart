@@ -18,7 +18,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 
 void main() {
   test('Blurbs are converted into readable strings', () async {
-    HistSite testSite = HistSite(name: "TestName", blurbs: [InfoText(title: "Test1", value: "A value test", date: "10/6/1995"), InfoText(title: "Test2", value: "Finding another value")], images: []);
+    HistSite testSite = HistSite(name: "TestName", description: "test description", blurbs: [InfoText(title: "Test1", value: "A value test", date: "10/6/1995"), InfoText(title: "Test2", value: "Finding another value")], images: []);
     // Build our app and trigger a frame.
     String container = testSite.listifyBlurbs();
     List<String> blurbStrings = container.split(",");
@@ -39,10 +39,11 @@ void main() {
 
   testWidgets("Testing firebase pushing and pulling historical sites", (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-    
+
     HistSite testSite = HistSite
       (
         name: "TestName", 
+        description: "Test description",
         blurbs: 
           [
             InfoText(title: "Test1", value: "A value test", date: "10/6/1995"), 

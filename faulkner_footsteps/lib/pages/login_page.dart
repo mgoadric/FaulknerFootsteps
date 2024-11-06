@@ -31,8 +31,7 @@ class LoginPage extends StatelessWidget {
               },
             );
           }
-
-          return const ListPage();
+          return ListPage();
         },
       ),
     );
