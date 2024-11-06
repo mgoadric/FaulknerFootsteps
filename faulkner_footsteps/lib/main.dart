@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('rooms')
         .doc('mainroom')
         .collection('players');
-      HistSite newSite = HistSite(name: "The Big Church", blurbs: [InfoText(title: "Historical Significance", value: "The big church is a large church with a long history of doing stuff and things beyond the current eternity of existence.", date: "10/2/34"), InfoText(title: "Secondary Elist", value: "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")], images: []);
+      HistSite newSite = HistSite(name: "The Big Church", description: "This is a large church",blurbs: [InfoText(title: "Historical Significance", value: "The big church is a large church with a long history of doing stuff and things beyond the current eternity of existence.", date: "10/2/34"), InfoText(title: "Secondary Elist", value: "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")], images: []);
       app_state.addSite(newSite);
       print(historical_sites);
     });
@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Sample HistSite object
     HistSite sampleSite = HistSite(
       name: "Sample Site",
+      description: "A simple same site for debugging.",
       blurbs: [
         InfoText(title: "Introduction", value: "This is a sample historical site.", date: "01/01/2024"),
         InfoText(title: "Significance", value: "It played a major role in local history."),

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'info_text.dart';
 
 class HistSite {
-  HistSite({required this.name, required this.blurbs, required this.images});
+  HistSite({required this.name, required this.blurbs, required this.description, required this.images});
 
   String name;
+  String description;
   List<InfoText> blurbs;
   List<AssetImage> images;
 
