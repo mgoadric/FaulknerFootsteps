@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
@@ -17,10 +19,32 @@ class _ListPageState extends State<ListPage> {
 
   void _incrementCounter() {
     setState(() {
-      HistSite newSite = HistSite(name: "A smaller church", description: "This is a slightly smaller church",blurbs: [InfoText(title: "Historical Significance", value: "This smaller church informs us about the flimsy state of our humanity. Our existence as beings seems so large to ourselves, however we are ultimately worthless within the multiverse.", date: "10/2/34"), InfoText(title: "This is a second blurb because I need one", value: "GibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirish")], images: []);
-      widget.app_state.addSite(newSite);
+      //HistSite newSite = HistSite(name: "Example piece 3", description: "This is an example piece for this presentation we are making. This is a description of the universe within our feeble mortal minds.",blurbs: [InfoText(title: "This is a tittle for this section of the thing", value: "This is a short description blurb.", date: "The dates can be any string for the sake of flexibility."), InfoText(title: "This is a very long section to show possibilities", value: "GibbirishGibbirishGibbirishGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirish")], images: []);
+      //widget.app_state.addSite(newSite);
     });
   }
+
+  void _update(Timer timer) {
+    setState(() {
+      
+    });
+  }
+  late Timer updateTimer;
+  @override
+  void initState() {
+    super.initState();
+    updateTimer = Timer.periodic(Duration(milliseconds: 500), _update);
+    setState(() {
+      
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    updateTimer.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
