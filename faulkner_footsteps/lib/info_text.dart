@@ -10,6 +10,6 @@ class InfoText {
 
   @override
   toString() {
-    return "$title.$value.$date";
+    return "$title{IFDIV}$value{IFDIV}$date";
   }
 }
