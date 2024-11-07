@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'widgets.dart';
 
 class ListItem extends StatelessWidget {
-  ListItem({required this.siteInfo});
+  ListItem({super.key, required this.siteInfo});
   HistSite siteInfo;
 
   @override

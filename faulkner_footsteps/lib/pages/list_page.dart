@@ -4,6 +4,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
+import 'package:faulkner_footsteps/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/list_item.dart';
@@ -40,7 +41,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
-    updateTimer = Timer.periodic(Duration(milliseconds: 500), _update);
+    updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
     setState(() {});
   }
 
@@ -74,6 +75,20 @@ class _ListPageState extends State<ListPage> {
                     return ListItem(siteInfo: site);
                   })),
         ],
+      ),
+            floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context, 
+            MaterialPageRoute(
+              builder: (context) => const MapDisplay(
+                image: AssetImage('assets/images/FaulknerCounty.png'),
+              ),
+            ),
+          );
+        },
+        tooltip: 'MapDisplay',
+        child: const Icon(Icons.map),
       ),
     );
   }

@@ -1,13 +1,11 @@
-import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../hist_site.dart';
-import '../info_text.dart';
 
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;
 
-  HistSitePage({Key? key, required this.histSite}) : super(key: key);
+  const HistSitePage({super.key, required this.histSite});
 
   @override
   State<StatefulWidget> createState() => _HistSitePage();
@@ -50,7 +48,7 @@ class _HistSitePage extends State<HistSitePage> {
                 },
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             // Display blurbs (title, value, and date)
             Padding(
               padding: const EdgeInsets.all(16.0),

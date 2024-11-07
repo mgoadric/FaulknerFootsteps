@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 //List of top 5 rated sites
 class RatingLeaderBoard extends StatelessWidget {
-  RatingLeaderBoard({super.key, required this.topHistSites});
+  const RatingLeaderBoard({super.key, required this.topHistSites});
 
   final List<HistSite> topHistSites;
 
@@ -32,7 +32,7 @@ class RatingLeaderBoard extends StatelessWidget {
             ),
             title: Text(site.name),
             //insert rating here (eventually)
-            subtitle: Text('Rating: '),
+            subtitle: const Text('Rating: '),
           );
         },
       ),

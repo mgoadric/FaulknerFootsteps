@@ -49,7 +49,7 @@ class ApplicationState extends ChangeNotifier {
               for (var blurb in blurbStrings) {
                 List<String> values = blurb.split("{IFDIV}");
                 newBlurbs.add(InfoText(title: values[0], value: values[1], date: values[2]));
-              }
+                }
               _historicalSites.add(
                 HistSite(
                   name: document.data()["name"] as String,

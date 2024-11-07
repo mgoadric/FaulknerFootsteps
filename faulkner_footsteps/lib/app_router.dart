@@ -19,9 +19,9 @@ class AppRouter {
   // removed static from infront of Route for HistSitePage
   static Route<dynamic> generateRoute(RouteSettings settings) {
     Map<String, dynamic> info;
-    if(settings.arguments != null)
+    if(settings.arguments != null) {
       info = settings.arguments as Map<String, dynamic>;
-    else {
+    } else {
       info = {"info" : HistSite(name: "Argument Error", description: "Please restart the app",blurbs: [InfoText(title: "there was an error", value: "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")], images: [])};    }
     switch (settings.name) {
       case loginPage:

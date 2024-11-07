@@ -3,6 +3,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/map_display.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:faulkner_footsteps/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,9 @@ import 'package:faulkner_footsteps/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'firebase_options.dart';
-import 'info_text.dart';
+// IMPORT RELATED TO MAP
+// import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+// import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +25,16 @@ void main() async {
   FirebaseUIAuth.configureProviders([
     EmailAuthProvider(),
   ]);
+  
+  // RELATED WITH MAP
+  // // Require Hybrid Composition mode on Android.
+  // final GoogleMapsFlutterPlatform mapsImplementation =
+  //     GoogleMapsFlutterPlatform.instance;
+  // if (mapsImplementation is GoogleMapsFlutterAndroid) {
+  //   // Force Hybrid Composition mode.
+  //   mapsImplementation.useAndroidViewSurface = true;
+  // }
+  // // ···
 
   runApp(const MyApp());
 }
@@ -145,9 +158,9 @@ class _MyHomePageState extends State<MyHomePage> {
         InfoText(title: "Significance", value: "It played a major role in local history."),
       ],
       images: [
-          AssetImage('assets/images/AutobotLogo.png'),
-          AssetImage('assets/images/AutobotLogo2.png'),
-          AssetImage('assets/images/AutobotLogo.png'),
+          // const AssetImage('assets/images/AutobotLogo.png'),
+          // const AssetImage('assets/images/AutobotLogo2.png'),
+          // const AssetImage('assets/images/AutobotLogo.png'),
           ], // Add images if available
     );
     // This method is rerun every time setState is called, for instance as done
@@ -210,6 +223,19 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: showRatingDialog,
               child: const Text("Rate this spot"),
             ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => const MapDisplay(
+            //           image: AssetImage('assets/images/FaulknerCounty.png'),
+            //         ),
+            //       ),
+            //     );
+            //   },
+            //   child: const Text("View Map"),
+            // ),
             SizedBox(
               height: 500,
               child: ListView.builder(
@@ -229,10 +255,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MapDisplay(
+                image: AssetImage('assets/images/FaulknerCounty.png'),
+              ),
+            ),
+          );
+        },
+        tooltip: 'Map Display',
+        child: const Icon(Icons.map),
+            ),
+          );
+        }
+      }
