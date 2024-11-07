@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/list_item.dart';
@@ -26,6 +27,13 @@ class _ListPageState extends State<ListPage> {
 
   void _update(Timer timer) {
     setState(() {});
+  }
+
+  Future<void> showRatingDialog() async {
+    await showDialog<double>(
+      context: context,
+      builder: (BuildContext context) => const RatingDialog(),
+    );
   }
 
   late Timer updateTimer;
@@ -66,11 +74,6 @@ class _ListPageState extends State<ListPage> {
                     return ListItem(siteInfo: site);
                   })),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
