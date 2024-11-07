@@ -4,17 +4,29 @@ import 'package:google_fonts/google_fonts.dart';
 import '../hist_site.dart';
 import '../info_text.dart';
 
-class HistSitePage extends StatelessWidget {
+class HistSitePage extends StatefulWidget {
   final HistSite histSite;
 
   HistSitePage({Key? key, required this.histSite}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _HistSitePage();
+}
+
+class _HistSitePage extends State<HistSitePage> {
+  Future<void> showRatingDialog() async {
+    await showDialog<double>(
+      context: context,
+      builder: (BuildContext context) => const RatingDialog(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          histSite.name,
+          widget.histSite.name,
           style: GoogleFonts.ultra(
               textStyle:
                   const TextStyle(color: Color.fromARGB(255, 124, 54, 16))),
@@ -29,11 +41,11 @@ class HistSitePage extends StatelessWidget {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: histSite.images.length,
+                itemCount: widget.histSite.images.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image(image: histSite.images[index]),
+                    child: Image(image: widget.histSite.images[index]),
                   );
                 },
               ),
@@ -44,7 +56,7 @@ class HistSitePage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: histSite.blurbs.map((infoText) {
+                children: widget.histSite.blurbs.map((infoText) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Column(
@@ -75,6 +87,13 @@ class HistSitePage extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromARGB(255, 124, 54, 16),
+          onPressed: showRatingDialog,
+          child: const Icon(
+            Icons.star,
+            color: Color.fromARGB(198, 246, 174, 5),
+          )),
     );
   }
 }
