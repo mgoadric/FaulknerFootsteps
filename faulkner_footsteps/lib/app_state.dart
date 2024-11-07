@@ -44,10 +44,10 @@ class ApplicationState extends ChangeNotifier {
           _historicalSites = [];
           for (final document in snapshot.docs) {
               var blurbCont = document.data()["blurbs"];
-              List<String> blurbStrings = blurbCont.split(",");
+              List<String> blurbStrings = blurbCont.split("{ListDiv}");
               List<InfoText> newBlurbs = [];
               for (var blurb in blurbStrings) {
-                List<String> values = blurb.split(".");
+                List<String> values = blurb.split("{IFDIV}");
                 newBlurbs.add(InfoText(title: values[0], value: values[1], date: values[2]));
               }
               _historicalSites.add(
