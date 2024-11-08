@@ -35,8 +35,8 @@ class _RatingDialogState extends State<RatingDialog> {
                   userRating = rating;
                 });
               },
-              borderColor: Color.fromARGB(220, 190, 114, 74),
-              color: Color.fromARGB(255, 124, 54, 16),
+              borderColor: const Color.fromARGB(220, 190, 114, 74),
+              color: const Color.fromARGB(255, 124, 54, 16),
               size: 50.0,
             ),
           )

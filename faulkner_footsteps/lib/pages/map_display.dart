@@ -13,7 +13,7 @@ class MapDisplay extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(14.0),
           child: Image(image: image),
         ),
       ),

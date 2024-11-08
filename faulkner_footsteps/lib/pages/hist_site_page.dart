@@ -1,3 +1,4 @@
+import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../hist_site.dart';
@@ -86,7 +87,7 @@ class _HistSitePage extends State<HistSitePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 124, 54, 16),
+          backgroundColor: const Color.fromARGB(255, 124, 54, 16),
           onPressed: showRatingDialog,
           child: const Icon(
             Icons.star,

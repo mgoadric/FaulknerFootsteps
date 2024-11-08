@@ -1,9 +1,7 @@
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/info_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'widgets.dart';
 
 class ListItem extends StatelessWidget {
   ListItem({super.key, required this.siteInfo});

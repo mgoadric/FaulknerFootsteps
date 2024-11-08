@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/info_text.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
-import 'package:faulkner_footsteps/map_display.dart';
+import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/list_item.dart';
@@ -45,10 +44,46 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
   }
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 1) { // Index 1 for the "Map" tab so Index 2 -> for another...
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MapDisplay(
+            image: AssetImage('assets/images/FaulknerCounty.png'),
+          ),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
     updateTimer.cancel();
+  }
+
+  Widget _buildHomeContent() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 500,
+          child: ListView.builder(
+            itemCount: widget.app_state.historicalSites.length,
+            itemBuilder: (BuildContext context, int index) {
+              HistSite site = widget.app_state.historicalSites[index];
+              return ListItem(siteInfo: site);
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -56,39 +91,30 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Display page for hist sites",
+          _selectedIndex == 0 ? "Display page for hist sites" : "Map Display",
           style: GoogleFonts.ultra(
-              textStyle:
-                  const TextStyle(color: Color.fromARGB(255, 124, 54, 16))),
+            textStyle: const TextStyle(color: Color.fromARGB(255, 124, 54, 16)),
+          ),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-              height: 500,
-              child: ListView.builder(
-                  itemCount: widget.app_state.historicalSites.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    print(
-                        "${widget.app_state.historicalSites.length} eldritch");
-                    HistSite site = widget.app_state.historicalSites[index];
-                    return ListItem(siteInfo: site);
-                  })),
-        ],
-      ),
-            floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context, 
-            MaterialPageRoute(
-              builder: (context) => const MapDisplay(
-                image: AssetImage('assets/images/FaulknerCounty.png'),
-              ),
+      body: _selectedIndex == 0 
+          ? _buildHomeContent() 
+          : const MapDisplay(
+              image: AssetImage('assets/images/FaulknerCounty.png'),
             ),
-          );
-        },
-        tooltip: 'MapDisplay',
-        child: const Icon(Icons.map),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
