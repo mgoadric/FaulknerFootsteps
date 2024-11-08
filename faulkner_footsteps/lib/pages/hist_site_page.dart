@@ -40,14 +40,24 @@ class _HistSitePage extends State<HistSitePage> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.histSite.images.length,
+                itemCount: 3,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image(image: widget.histSite.images[index]),
+                    child: Image(image: AssetImage('assets/images/placeholder.png')),  //PLACEHOLDER IMAGE
                   );
                 },
               ),
+              // child: ListView.builder(
+              //   scrollDirection: Axis.horizontal,
+              //   itemCount: histSite.images.length,
+              //   itemBuilder: (context, index) {
+              //     return Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Image(image: histSite.images[index]),
+              //     );
+              //   },
+              // ),
             ),
             const SizedBox(height: 16.0),
             // Display blurbs (title, value, and date)
