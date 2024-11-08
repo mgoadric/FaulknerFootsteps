@@ -3,7 +3,6 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:faulkner_footsteps/info_text.dart';
-import 'package:faulkner_footsteps/map_display.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:faulkner_footsteps/widgets.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // Sample HistSite object
@@ -223,19 +220,6 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: showRatingDialog,
               child: const Text("Rate this spot"),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const MapDisplay(
-            //           image: AssetImage('assets/images/FaulknerCounty.png'),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            //   child: const Text("View Map"),
-            // ),
             SizedBox(
               height: 500,
               child: ListView.builder(
@@ -254,20 +238,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MapDisplay(
-                image: AssetImage('assets/images/FaulknerCounty.png'),
-              ),
-            ),
-          );
-        },
-        tooltip: 'Map Display',
-        child: const Icon(Icons.map),
-            ),
-          );
-        }
-      }
+    );
+  }
+}
