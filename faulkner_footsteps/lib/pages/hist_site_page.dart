@@ -23,7 +23,9 @@ class _HistSitePage extends State<HistSitePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         title: Text(
           widget.histSite.name,
           style: GoogleFonts.ultra(
@@ -86,13 +88,27 @@ class _HistSitePage extends State<HistSitePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color.fromARGB(255, 124, 54, 16),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3), 
+              blurRadius: 10.0,                     
+              offset: const Offset(3, 3),                  
+            ),
+          ],
+          borderRadius: BorderRadius.circular(30),   
+        ),
+        child: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 218, 180, 130),
           onPressed: showRatingDialog,
           child: const Icon(
             Icons.star,
-            color: Color.fromARGB(198, 246, 174, 5),
-          )),
+            color: Color.fromARGB(255, 124, 54, 16),
+            size: 30,
+          ),
+        ),
+      ),
     );
   }
 }

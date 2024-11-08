@@ -89,20 +89,28 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 218, 186, 130),
+        elevation: 12.0, // Adds shadow effect
+        shadowColor: const Color.fromARGB(135, 255, 255, 255), // Optional: customize shadow color
         title: Text(
           _selectedIndex == 0 ? "Display page for hist sites" : "Map Display",
           style: GoogleFonts.ultra(
-            textStyle: const TextStyle(color: Color.fromARGB(255, 124, 54, 16)),
+            textStyle: const TextStyle(color: Color.fromARGB(255, 76, 32, 8)),
           ),
         ),
       ),
+
       body: _selectedIndex == 0 
           ? _buildHomeContent() 
           : const MapDisplay(
               image: AssetImage('assets/images/FaulknerCounty.png'),
             ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
+        selectedItemColor: const Color.fromARGB(255, 124, 54, 16),
+        unselectedItemColor: const Color.fromARGB(255, 124, 54, 16),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

@@ -12,7 +12,9 @@ class RatingLeaderBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     //sort out which are top sites here later, will eventually be in descending order
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         title: Text(
           "Top Rated Historical Sites",
           style: GoogleFonts.sancreek(
