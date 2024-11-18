@@ -15,11 +15,12 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext build) {
     return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 92, 54, 40),
       title: Text(
         'Please rate your experience at this location:',
         style: GoogleFonts.sancreek(
             textStyle:
-                const TextStyle(color: Color.fromARGB(255, 124, 54, 16))),
+                const TextStyle(color: Color.fromARGB(255, 184, 162, 135))),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -35,8 +36,8 @@ class _RatingDialogState extends State<RatingDialog> {
                   userRating = rating;
                 });
               },
-              borderColor: const Color.fromARGB(220, 190, 114, 74),
-              color: const Color.fromARGB(255, 124, 54, 16),
+              borderColor: const Color.fromARGB(255, 184, 162, 135),
+              color: const Color.fromARGB(255, 184, 162, 135),
               size: 50.0,
             ),
           )
@@ -48,14 +49,25 @@ class _RatingDialogState extends State<RatingDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("Cancel"),
+          child: Text(
+            "Cancel",
+            style: GoogleFonts.rakkas(
+                textStyle: TextStyle(
+                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+          ),
         ),
         //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
+            //updateRating(userRating)
             Navigator.of(context).pop(userRating);
           },
-          child: const Text("Submit"),
+          child: Text(
+            "Submit",
+            style: GoogleFonts.rakkas(
+                textStyle: TextStyle(
+                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+          ),
         ),
       ],
     );
