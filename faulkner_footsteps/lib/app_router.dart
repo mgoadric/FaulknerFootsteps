@@ -28,6 +28,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case list:
         return MaterialPageRoute(builder: (_) => ListPage());
+        return MaterialPageRoute(builder: (_) => ListPage());
       case hsitePage:
       print('$info this is information on the evils of homosexuality');
         return MaterialPageRoute(builder: (_) => HistSitePage(histSite: info["info"]));
