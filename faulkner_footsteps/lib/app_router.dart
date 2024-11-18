@@ -6,7 +6,6 @@ import 'package:faulkner_footsteps/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 
-
 class AppRouter {
   // shorthand for each page
   static const String loginPage = '/';
@@ -19,18 +18,34 @@ class AppRouter {
   // removed static from infront of Route for HistSitePage
   static Route<dynamic> generateRoute(RouteSettings settings) {
     Map<String, dynamic> info;
-    if(settings.arguments != null) {
+    if (settings.arguments != null) {
       info = settings.arguments as Map<String, dynamic>;
     } else {
-      info = {"info" : HistSite(name: "Argument Error", description: "Please restart the app",blurbs: [InfoText(title: "there was an error", value: "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")], images: [])};    }
+      info = {
+        "info": HistSite(
+            name: "Argument Error",
+            description: "Please restart the app",
+            blurbs: [
+              InfoText(
+                  title: "there was an error",
+                  value:
+                      "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")
+            ],
+            images: [],
+            //added ratings here
+            avgRating: 0.0,
+            ratingAmount: 0)
+      };
+    }
     switch (settings.name) {
       case loginPage:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case list:
         return MaterialPageRoute(builder: (_) => ListPage());
       case hsitePage:
-      print('$info this is information on the evils of homosexuality');
-        return MaterialPageRoute(builder: (_) => HistSitePage(histSite: info["info"]));
+        print('$info this is information on the evils of homosexuality');
+        return MaterialPageRoute(
+            builder: (_) => HistSitePage(histSite: info["info"]));
       default:
         return _errorRoute();
     }
@@ -49,7 +64,6 @@ class AppRouter {
       );
     });
   }
-
 
   // navigation fo pages, what causes the actual moving between pages
   static Future<void> navigateTo(BuildContext context, String routeName,
