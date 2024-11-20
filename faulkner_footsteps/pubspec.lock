@@ -349,12 +349,20 @@ packages:
   google_fonts:
     dependency: "direct main"
     description:
-      name: google_fonts
-      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      name: google_maps_flutter
+      sha256: "209856c8e5571626afba7182cf634b2910069dc567954e76ec3e3fb37f5e9db3"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
-  http:
+    version: "2.10.0"
+  google_maps_flutter_android:
+    dependency: "direct main"
+    description:
+      name: google_maps_flutter_android
+      sha256: bccf64ccbb2ea672dc62a61177b315a340af86b0228564484b023657544a3fd5
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.14.11"
+  google_maps_flutter_ios:
     dependency: transitive
     description:
       name: http
