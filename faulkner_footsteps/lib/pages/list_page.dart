@@ -51,9 +51,7 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MapDisplay(
-            image: AssetImage('assets/images/FaulknerCounty.png'),
-          ),
+          builder: (context) => const MapDisplay(),
         ),
       );
     } else {
@@ -104,9 +102,7 @@ class _ListPageState extends State<ListPage> {
 
       body: _selectedIndex == 0 
           ? _buildHomeContent() 
-          : const MapDisplay(
-              image: AssetImage('assets/images/FaulknerCounty.png'),
-            ),
+          : const MapDisplay(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         selectedItemColor: const Color.fromARGB(255, 124, 54, 16),

@@ -52,7 +52,7 @@ class _RatingDialogState extends State<RatingDialog> {
           child: Text(
             "Cancel",
             style: GoogleFonts.rakkas(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
           ),
         ),
@@ -65,7 +65,7 @@ class _RatingDialogState extends State<RatingDialog> {
           child: Text(
             "Submit",
             style: GoogleFonts.rakkas(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
           ),
         ),
