@@ -30,7 +30,7 @@ void main() {
       } else {
         Date = values[2];
       }
-      blurbs.add(InfoText(title: values[0], value: values[1], date: Date));
+      blurbs.add(InfoText(title: values[0], value: values[1], date: "something"));
     }
     print(blurbs);
   });

@@ -1,3 +1,4 @@
+import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,8 +7,9 @@ import '../hist_site.dart';
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;
 
-  const HistSitePage({super.key, required this.histSite});
+  const HistSitePage({super.key, required this.histSite, required this.app_state});
 
+  final ApplicationState app_state;
   @override
   State<StatefulWidget> createState() => _HistSitePage();
 }
@@ -16,11 +18,10 @@ class _HistSitePage extends State<HistSitePage> {
   Future<void> showRatingDialog() async {
     final double? userRating = await showDialog<double>(
       context: context,
-      builder: (BuildContext context) => const RatingDialog(),
+      builder: (BuildContext context) => RatingDialog(app_state: widget.app_state, site_name: widget.histSite.name,),
     );
     if (userRating != null) {
       setState(() {
-        widget.histSite.updateRating(userRating);
       });
     }
   }

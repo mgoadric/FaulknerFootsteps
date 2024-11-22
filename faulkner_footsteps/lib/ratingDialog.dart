@@ -1,10 +1,13 @@
+import 'package:faulkner_footsteps/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RatingDialog extends StatefulWidget {
-  const RatingDialog({super.key});
+  const RatingDialog({super.key, required this.app_state, required this.site_name});
 
+  final ApplicationState app_state;
+  final String site_name;
   @override
   _RatingDialogState createState() => _RatingDialogState();
 }
@@ -59,8 +62,8 @@ class _RatingDialogState extends State<RatingDialog> {
         //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
-            //updateRating(userRating)
-            Navigator.of(context).pop(userRating);
+              widget.app_state.updateSiteRating(widget.site_name, userRating);
+              Navigator.of(context).pop(userRating);
           },
           child: Text(
             "Submit",

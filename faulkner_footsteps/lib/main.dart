@@ -145,10 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //launches Rating Dialog
-  Future<void> showRatingDialog() async {
+  Future<void> showRatingDialog(ApplicationState app_state, String newSiteName) async {
     await showDialog<double>(
       context: context,
-      builder: (BuildContext context) => const RatingDialog(),
+      builder: (BuildContext context) => RatingDialog(app_state: app_state, site_name: newSiteName),
     );
   }
 
@@ -199,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HistSitePage(histSite: sampleSite),
+                    builder: (context) => HistSitePage(app_state: app_state, histSite: sampleSite),
                   ),
                 );
               },
@@ -208,7 +208,8 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20),
             // Button for launching rating dialog
             ElevatedButton(
-              onPressed: showRatingDialog,
+              onPressed: () {
+              },
               child: const Text("Rate this spot"),
             ),
             SizedBox(

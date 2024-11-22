@@ -7,6 +7,7 @@ import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/list_item.dart';
+import 'package:faulkner_footsteps/create_site_dialogue.dart';
 
 class ListPage extends StatefulWidget {
   ListPage({super.key});
@@ -29,12 +30,12 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
   }
 
-  Future<void> showRatingDialog() async {
-    await showDialog<double>(
-      context: context,
-      builder: (BuildContext context) => const RatingDialog(),
-    );
-  }
+  // Future<void> showRatingDialog() async {
+  //   await showDialog<double>(
+  //     context: context,
+  //     builder: (BuildContext context) => RatingDialog(widget.app_state, ),
+  //   );
+  // }
 
   late Timer updateTimer;
   @override
@@ -78,7 +79,7 @@ class _ListPageState extends State<ListPage> {
             itemCount: widget.app_state.historicalSites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = widget.app_state.historicalSites[index];
-              return ListItem(siteInfo: site);
+              return ListItem(app_state: widget.app_state, siteInfo: site);
             },
           ),
         ),
@@ -124,6 +125,13 @@ class _ListPageState extends State<ListPage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        showDialog(context: context, 
+        builder: (_) {
+          return SiteDialogue(siteAdded: widget.app_state.addSite);
+        }
+        );
+      }),
     );
   }
 }
