@@ -98,17 +98,15 @@ class ApplicationState extends ChangeNotifier {
   //update/store rating in firebase
   void updateSiteRating(String siteName, double newRating) {
     final site = _historicalSites.firstWhere((s) => s.name == siteName);
-    if (site != null) {
-      site.avgRating = ((site.avgRating * site.ratingAmount) + newRating) /
-          (site.ratingAmount + 1);
-      site.ratingAmount += 1;
+    site.avgRating = ((site.avgRating * site.ratingAmount) + newRating) /
+        (site.ratingAmount + 1);
+    site.ratingAmount += 1;
 
-      FirebaseFirestore.instance.collection("sites").doc(siteName).update({
-        "avgRating": site.avgRating,
-        "ratingAmount": site.ratingAmount,
-      });
+    FirebaseFirestore.instance.collection("sites").doc(siteName).update({
+      "avgRating": site.avgRating,
+      "ratingAmount": site.ratingAmount,
+    });
 
-      notifyListeners();
+    notifyListeners();
     }
-  }
 }
