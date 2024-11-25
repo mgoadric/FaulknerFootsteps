@@ -25,23 +25,53 @@ class _HistSitePage extends State<HistSitePage> {
     }
   }
 
+  Widget buildRatingStars(double rating) {
+    int fullStars = rating.floor(); // Full stars
+    bool halfStar = (rating - fullStars) >= 0.5; // Check if it's a half star
+
+    return Row(
+      children: List.generate(5, (index) {
+        if (index < fullStars) {
+          return const Icon(Icons.star, color: Colors.amber, size: 24);
+        } else if (index == fullStars && halfStar) {
+          return const Icon(Icons.star_half, color: Colors.amber, size: 24);
+        } else {
+          return const Icon(Icons.star_border, color: Colors.amber, size: 24);
+        }
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 219, 192, 158),
+      backgroundColor: const Color.fromARGB(255, 238, 214, 196), 
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 184, 162, 135),
+        backgroundColor: const Color.fromARGB(255, 107, 79, 79), 
         title: Text(
-          widget.histSite.name,
+          "Back to list",
           style: GoogleFonts.ultra(
-              textStyle:
-                  const TextStyle(color: Color.fromARGB(255, 49, 29, 21))),
+              textStyle: const TextStyle(color: Color.fromARGB(255, 255, 243, 228))),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Display the site name as the main header at the top
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0), 
+              child: Text(
+                widget.histSite.name,
+                style: GoogleFonts.ultra(
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 72, 52, 52), 
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+
             // Display images in a horizontal list
             SizedBox(
               height: 200,
@@ -53,38 +83,54 @@ class _HistSitePage extends State<HistSitePage> {
                       padding: EdgeInsets.all(8.0),
                       child: Image(
                           image: AssetImage(
-                              'assets/images/placeholder.png')) //PLACEHOLDER IMAGE
+                              'assets/images/placeholder.png')) // PLACEHOLDER IMAGE
                       );
                 },
               ),
-              // child: ListView.builder(
-              //   scrollDirection: Axis.horizontal,
-              //   itemCount: histSite.images.length,
-              //   itemBuilder: (context, index) {
-              //     return Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Image(image: histSite.images[index]),
-              //     );
-              //   },
-              // ),
             ),
 
-            const SizedBox(height: 8.0),
-            // Display average rating
+            const SizedBox(height: 16.0), 
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Center(
-                child: Text(
-                  "Average Rating: ${widget.histSite.avgRating.toStringAsFixed(1)} (${widget.histSite.ratingAmount} ratings)",
-                  style: GoogleFonts.ultra(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  
+                  ElevatedButton.icon(
+                    onPressed: showRatingDialog,
+                    icon: const Icon(Icons.star, color: Color.fromARGB(255, 255, 243, 228), size: 24),
+                    label: const Text("Rate This Site"),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(width: 16.0),
+
+                  buildRatingStars(widget.histSite.avgRating),
+
+                  const SizedBox(width: 16.0),
+                  // Display the average rating
+                  Text(
+                    "${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
+                    style: GoogleFonts.rakkas(
                       textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 49, 29, 21),
-                          fontSize: 12.0)),
-                ),
+                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
+                    ),
+                  ),
+
+              
+                ],
               ),
             ),
 
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16.0), 
+
             // Display blurbs (title, value, and date)
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -92,26 +138,29 @@ class _HistSitePage extends State<HistSitePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.histSite.blurbs.map((infoText) {
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(infoText.title,
                             style: GoogleFonts.ultra(
                                 textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 49, 29, 21)))),
+                                    color: Color.fromARGB(255, 72, 52, 52), fontSize: 16, fontWeight: FontWeight.bold))),
+                        const SizedBox(height: 6),
                         Text(infoText.value,
                             style: GoogleFonts.rakkas(
                                 textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 92, 54, 40)))),
+                                    color: Color.fromARGB(255, 107, 79, 79), fontSize: 14))),
                         if (infoText.date != "")
-                          Text(
-                            "Date: ${infoText.date}",
-                            style: GoogleFonts.acme(
-                                textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 49, 29, 21))),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              "Date: ${infoText.date}",
+                              style: GoogleFonts.acme(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 72, 52, 52), fontSize: 12)),
+                            ),
                           ),
-                        const Padding(padding: EdgeInsets.only(bottom: 25.0)),
                       ],
                     ),
                   );
@@ -119,27 +168,6 @@ class _HistSitePage extends State<HistSitePage> {
               ),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 10.0,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: FloatingActionButton(
-          backgroundColor: const Color.fromARGB(255, 49, 29, 21),
-          onPressed: showRatingDialog,
-          child: const Icon(
-            Icons.star,
-            color: Color.fromARGB(255, 218, 180, 130),
-            size: 30,
-          ),
         ),
       ),
     );

@@ -1,7 +1,3 @@
-// https://api.flutter.dev/flutter/rendering/SliverGridDelegateWithFixedCrossAxisCount/SliverGridDelegateWithFixedCrossAxisCount.html
-// -> For appearance
-// https://github.com/afgprogrammer/Flutter-GridView-Example-UI/blob/master/lib/main.dart
-// -> base for the code
 import 'package:flutter/material.dart';
 
 class AchievementsPage extends StatefulWidget {
@@ -35,12 +31,28 @@ class _AchievementsPageState extends State<AchievementsPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Achievement Unlocked!"),
-          content: Text("You have visited $place."),
+          backgroundColor: const Color.fromARGB(255, 238, 214, 196), 
+          title: const Text(
+            "Achievement Unlocked!",
+            style: TextStyle(
+              color: Color.fromARGB(255, 72, 52, 52), 
+            ),
+          ),
+          content: Text(
+            "You have visited $place.",
+            style: const TextStyle(
+              color: Color.fromARGB(255, 72, 52, 52), 
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
+              child: const Text(
+                "OK",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 72, 52, 52),
+                ),
+              ),
             ),
           ],
         ),
@@ -51,7 +63,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
+      backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
@@ -71,10 +83,12 @@ class _AchievementsPageState extends State<AchievementsPage> {
                 decoration: BoxDecoration(
                   color: isVisited
                       ? Colors.green[100]
-                      : const Color.fromARGB(255, 218, 180, 130),
+                      : const Color.fromARGB(255, 255, 243, 228), 
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: isVisited ? Colors.green : Color.fromARGB(255, 200, 164, 117),
+                    color: isVisited
+                        ? Colors.green
+                        : const Color.fromARGB(255, 107, 79, 79), 
                     width: 2,
                   ),
                 ),
@@ -85,7 +99,9 @@ class _AchievementsPageState extends State<AchievementsPage> {
                       Icon(
                         isVisited ? Icons.emoji_events : Icons.place,
                         size: 40,
-                        color: isVisited ? Colors.green : const Color.fromARGB(255, 143, 6, 6),
+                        color: isVisited
+                            ? Colors.green
+                            : const Color.fromARGB(255, 143, 6, 6), 
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -94,6 +110,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                          color: Color.fromARGB(255, 72, 52, 52),
                         ),
                       ),
                       if (isVisited)
@@ -115,4 +132,3 @@ class _AchievementsPageState extends State<AchievementsPage> {
     );
   }
 }
-

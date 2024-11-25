@@ -15,19 +15,17 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext build) {
     return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 92, 54, 40),
+      backgroundColor: const Color.fromARGB(255, 72, 52, 52), // Darker background
       title: Text(
         'Please rate your experience at this location:',
         style: GoogleFonts.sancreek(
-            textStyle:
-                const TextStyle(color: Color.fromARGB(255, 184, 162, 135))),
+            textStyle: const TextStyle(color: Color.fromARGB(255, 238, 214, 196))), // Lighter text color
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
-            //Stars
             child: StarRating(
               rating: userRating,
               starCount: 5,
@@ -36,15 +34,14 @@ class _RatingDialogState extends State<RatingDialog> {
                   userRating = rating;
                 });
               },
-              borderColor: const Color.fromARGB(255, 184, 162, 135),
-              color: const Color.fromARGB(255, 184, 162, 135),
+              borderColor: const Color.fromARGB(255, 238, 214, 196), // Lighter border color
+              color: const Color.fromARGB(255, 255, 243, 228), // Lighter star color
               size: 50.0,
             ),
-          )
+          ),
         ],
       ),
       actions: [
-        //cancel button
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -53,20 +50,18 @@ class _RatingDialogState extends State<RatingDialog> {
             "Cancel",
             style: GoogleFonts.rakkas(
                 textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+                    color: Color.fromARGB(255, 238, 214, 196), fontSize: 20.0)), // Button text color
           ),
         ),
-        //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
-            //updateRating(userRating)
             Navigator.of(context).pop(userRating);
           },
           child: Text(
             "Submit",
             style: GoogleFonts.rakkas(
                 textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+                    color: Color.fromARGB(255, 238, 214, 196), fontSize: 20.0)), // Button text color
           ),
         ),
       ],

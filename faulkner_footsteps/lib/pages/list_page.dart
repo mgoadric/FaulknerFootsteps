@@ -19,13 +19,6 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  void _incrementCounter() {
-    setState(() {
-      //HistSite newSite = HistSite(name: "Example piece 3", description: "This is an example piece for this presentation we are making. This is a description of the universe within our feeble mortal minds.",blurbs: [InfoText(title: "This is a tittle for this section of the thing", value: "This is a short description blurb.", date: "The dates can be any string for the sake of flexibility."), InfoText(title: "This is a very long section to show possibilities", value: "GibbirishGibbirishGibbirishGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbiririshGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirishGibbirish")], images: []);
-      //widget.app_state.addSite(newSite);
-    });
-  }
-
   void _update(Timer timer) {
     setState(() {});
   }
@@ -38,17 +31,17 @@ class _ListPageState extends State<ListPage> {
   }
 
   late Timer updateTimer;
+
   @override
   void initState() {
     super.initState();
     updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
-    setState(() {});
   }
 
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 1) { // Index 1 for the "Map" tab so Index 2 -> for another...
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -88,19 +81,18 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
+      backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 218, 186, 130),
-        elevation: 12.0, // Adds shadow effect
-        shadowColor: const Color.fromARGB(135, 255, 255, 255), // Optional: customize shadow color
+        backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+        elevation: 5.0,
         title: Text(
           _selectedIndex == 0
-              ? "Display Page for Historical Sites"
+              ? "Historical Sites"
               : _selectedIndex == 1
-                  ? "Map Display"
+                  ? "Map"
                   : "Achievements",
           style: GoogleFonts.ultra(
-            textStyle: const TextStyle(color: Color.fromARGB(255, 76, 32, 8)),
+            textStyle: const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
           ),
         ),
       ),
@@ -110,9 +102,9 @@ class _ListPageState extends State<ListPage> {
               ? const MapDisplay()
               : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
-        selectedItemColor: const Color.fromARGB(255, 124, 54, 16),
-        unselectedItemColor: const Color.fromARGB(255, 124, 54, 16),
+        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
+        selectedItemColor: const Color.fromARGB(255, 238, 214, 196),
+        unselectedItemColor: const Color.fromARGB(200, 238, 214, 196),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
