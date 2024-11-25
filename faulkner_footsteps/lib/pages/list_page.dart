@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/pages/achievement.dart';
 import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
@@ -93,16 +94,21 @@ class _ListPageState extends State<ListPage> {
         elevation: 12.0, // Adds shadow effect
         shadowColor: const Color.fromARGB(135, 255, 255, 255), // Optional: customize shadow color
         title: Text(
-          _selectedIndex == 0 ? "Display page for hist sites" : "Map Display",
+          _selectedIndex == 0
+              ? "Display Page for Historical Sites"
+              : _selectedIndex == 1
+                  ? "Map Display"
+                  : "Achievements",
           style: GoogleFonts.ultra(
             textStyle: const TextStyle(color: Color.fromARGB(255, 76, 32, 8)),
           ),
         ),
       ),
-
-      body: _selectedIndex == 0 
-          ? _buildHomeContent() 
-          : const MapDisplay(),
+      body: _selectedIndex == 0
+          ? _buildHomeContent()
+          : _selectedIndex == 1
+              ? const MapDisplay()
+              : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         selectedItemColor: const Color.fromARGB(255, 124, 54, 16),
@@ -115,6 +121,10 @@ class _ListPageState extends State<ListPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emoji_events),
+            label: 'Achievements',
           ),
         ],
         currentIndex: _selectedIndex,
