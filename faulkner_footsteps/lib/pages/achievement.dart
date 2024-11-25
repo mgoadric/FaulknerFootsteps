@@ -71,10 +71,10 @@ class _AchievementsPageState extends State<AchievementsPage> {
                 decoration: BoxDecoration(
                   color: isVisited
                       ? Colors.green[100]
-                      : const Color.fromARGB(255, 219, 196, 166),
+                      : const Color.fromARGB(255, 218, 180, 130),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: isVisited ? Colors.green : Colors.grey,
+                    color: isVisited ? Colors.green : Color.fromARGB(255, 200, 164, 117),
                     width: 2,
                   ),
                 ),
@@ -85,7 +85,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
                       Icon(
                         isVisited ? Icons.emoji_events : Icons.place,
                         size: 40,
-                        color: isVisited ? Colors.green : Colors.grey,
+                        color: isVisited ? Colors.green : const Color.fromARGB(255, 143, 6, 6),
                       ),
                       const SizedBox(height: 10),
                       Text(
