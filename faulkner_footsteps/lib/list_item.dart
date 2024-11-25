@@ -1,5 +1,5 @@
- // https://stackoverflow.com/questions/63869555/shadows-in-a-rounded-rectangle-in-flutter
- // -> To add a shadow effect for the listItem, mapDisplay, rating... etc
+// https://stackoverflow.com/questions/63869555/shadows-in-a-rounded-rectangle-in-flutter
+// -> To add a shadow effect for the listItem, mapDisplay, rating... etc
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class ListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white, 
+          color: Colors.white,
           border: Border.all(
             color: const Color.fromARGB(255, 153, 125, 98),
             width: 3.0,
@@ -59,6 +59,15 @@ class ListItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 15),
+                // add star rating icons here
+                Text("Rating: ${siteInfo.avgRating.toStringAsFixed(1)}",
+                    style: GoogleFonts.ultra(
+                      textStyle: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 124, 54, 16),
+                      ),
+                    )),
                 Align(
                   alignment: Alignment.centerRight,
                   child: IconButton(
@@ -80,4 +89,3 @@ class ListItem extends StatelessWidget {
     );
   }
 }
-
