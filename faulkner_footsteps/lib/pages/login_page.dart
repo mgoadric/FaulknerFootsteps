@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
               }
 
               // this is what directs the user to a specific page depending if they are an admin or not
-              return adminSnapshot.data == true ? AdminPage() : ListPage();
+              return adminSnapshot.data == true ? AdminListPage() : ListPage();
             },
           );
         },

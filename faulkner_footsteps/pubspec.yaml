@@ -4,6 +4,9 @@ description: "A new Flutter project."
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+repository: https://github.com/fleaflet/flutter_map
+issue_tracker: https://github.com/fleaflet/flutter_map/issues
+documentation: https://docs.fleaflet.dev
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
@@ -16,10 +19,12 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 7.0.2
+
 
 environment:
-  sdk: ^3.5.2
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -42,12 +47,9 @@ dependencies:
   firebase_ui_auth: ^1.16.0
   google_fonts: ^6.2.1
   flutter_rating: ^2.0.2
-  flutter_bloc: ^8.1.6
-  google_maps_flutter: ^2.9.0
-  location: ^7.0.1
-  google_maps_flutter_android: ^2.14.11
-  dio: ^5.7.0
-  bloc: ^8.1.4
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1    
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +60,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ">=4.0.0 <6.0.0"
+  mocktail: ^1.0.3
+  test: ^1.24.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -50,8 +50,8 @@ class _HistSitePage extends State<HistSitePage> {
                 scrollDirection: Axis.horizontal,
                 itemCount: 3,
                 itemBuilder: (context, index) {
-                  return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                  return const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Image(
                           image: AssetImage(
                               'assets/images/placeholder.png')) //PLACEHOLDER IMAGE
@@ -72,19 +72,37 @@ class _HistSitePage extends State<HistSitePage> {
 
             const SizedBox(height: 8.0),
             // Display average rating
+            // updates when app is running, doesn't stay consistent with maintaining past ratings
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Center(
-                child: Text(
-                  "Average Rating: ${widget.histSite.avgRating.toStringAsFixed(1)} (${widget.histSite.ratingAmount} ratings)",
-                  style: GoogleFonts.ultra(
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 49, 29, 21),
-                          fontSize: 12.0)),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: showRatingDialog,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 204, 161, 118),
+                      ),
+                      child: Text("Rate this site",
+                          style: GoogleFonts.rakkas(
+                              textStyle: TextStyle(
+                                  color: Color.fromARGB(255, 49, 29, 21),
+                                  fontSize: 17.5))),
+                    ),
+                    SizedBox(width: 20.0),
+                    Text(
+                      "Average Rating: ${widget.histSite.avgRating.toStringAsFixed(1)} (${widget.histSite.ratingAmount} ratings)",
+                      style: GoogleFonts.rakkas(
+                          textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 49, 29, 21),
+                              fontSize: 17.5)),
+                    ),
+                  ],
                 ),
+                //add updating stars
+                //move button here
               ),
             ),
-
             const SizedBox(height: 16.0),
             // Display blurbs (title, value, and date)
             Padding(
@@ -120,27 +138,6 @@ class _HistSitePage extends State<HistSitePage> {
               ),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 10.0,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: FloatingActionButton(
-          backgroundColor: const Color.fromARGB(255, 49, 29, 21),
-          onPressed: showRatingDialog,
-          child: const Icon(
-            Icons.star,
-            color: Color.fromARGB(255, 218, 180, 130),
-            size: 30,
-          ),
         ),
       ),
     );

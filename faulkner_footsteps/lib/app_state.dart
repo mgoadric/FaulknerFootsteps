@@ -122,5 +122,4 @@ class ApplicationState extends ChangeNotifier {
       FirebaseFirestore.instance.collection("sites").doc(siteName).update({"avgRating" : finalRating, "ratingCount" : ratingcount});
       notifyListeners();
     }
-  }
 }
