@@ -21,9 +21,9 @@ class _RatingDialogState extends State<RatingDialog> {
       backgroundColor: const Color.fromARGB(255, 92, 54, 40),
       title: Text(
         'Please rate your experience at this location:',
-        style: GoogleFonts.sancreek(
+        style: GoogleFonts.rakkas(
             textStyle:
-                const TextStyle(color: Color.fromARGB(255, 184, 162, 135))),
+                color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
