@@ -4,7 +4,8 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RatingDialog extends StatefulWidget {
-  const RatingDialog({super.key, required this.app_state, required this.site_name});
+  const RatingDialog(
+      {super.key, required this.app_state, required this.site_name});
 
   final ApplicationState app_state;
   final String site_name;
@@ -18,11 +19,11 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext build) {
     return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 92, 54, 40),
+      backgroundColor: const Color.fromARGB(255, 168, 124, 124),
       title: Text(
         'Please rate your experience at this location:',
         style: GoogleFonts.rakkas(
-            textStyle:
+            textStyle: const TextStyle(
                 color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
       ),
       content: Column(
@@ -30,7 +31,6 @@ class _RatingDialogState extends State<RatingDialog> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
-            //Stars
             child: StarRating(
               rating: userRating,
               starCount: 5,
@@ -39,15 +39,14 @@ class _RatingDialogState extends State<RatingDialog> {
                   userRating = rating;
                 });
               },
-              borderColor: const Color.fromARGB(255, 184, 162, 135),
-              color: const Color.fromARGB(255, 184, 162, 135),
+              borderColor: const Color.fromARGB(255, 62, 50, 50),
+              color: const Color.fromARGB(255, 62, 50, 50),
               size: 50.0,
             ),
           )
         ],
       ),
       actions: [
-        //cancel button
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -56,20 +55,20 @@ class _RatingDialogState extends State<RatingDialog> {
             "Cancel",
             style: GoogleFonts.rakkas(
                 textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+                    color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
           ),
         ),
         //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
-              widget.app_state.updateSiteRating(widget.site_name, userRating);
-              Navigator.of(context).pop(userRating);
+            widget.app_state.updateSiteRating(widget.site_name, userRating);
+            Navigator.of(context).pop(userRating);
           },
           child: Text(
             "Submit",
             style: GoogleFonts.rakkas(
                 textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 184, 162, 135), fontSize: 20.0)),
+                    color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
           ),
         ),
       ],
