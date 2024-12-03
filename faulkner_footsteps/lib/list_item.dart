@@ -1,19 +1,32 @@
-import 'package:flutter/material.dart';
+// https://stackoverflow.com/questions/63869555/shadows-in-a-rounded-rectangle-in-flutter
+// -> To add a shadow effect for the listItem, mapDisplay, rating... etc
 import 'package:faulkner_footsteps/app_router.dart';
+import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 
 class ListItem extends StatelessWidget {
-  const ListItem({super.key, required this.siteInfo});
+  ListItem({super.key, required this.siteInfo, required this.app_state});
   final HistSite siteInfo;
-
+  final ApplicationState app_state;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-      child: Card(
-        color: const Color.fromARGB(255, 255, 243, 228), // Card background color
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: const Color.fromARGB(255, 153, 125, 98),
+            width: 3.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8.0,
+              offset: Offset(3, 4), // Shadow offset
+            ),
+          ],
         ),
         elevation: 5,
         shadowColor: const Color.fromRGBO(107, 79, 79, 0.5), // Soft shadow color
@@ -49,10 +62,27 @@ class ListItem extends StatelessWidget {
                         color: Color.fromARGB(255, 72, 52, 52), // Text color
                       ),
                     ),
-                    // Clickable indicator
-                    const Icon(
-                      Icons.arrow_forward,
-                      color: Color.fromARGB(255, 107, 79, 79), // Icon color
+                  ),
+                ),
+                const SizedBox(height: 15),
+                // add star rating icons here
+                Text("Rating: ${siteInfo.avgRating.toStringAsFixed(1)}",
+                    style: GoogleFonts.ultra(
+                      textStyle: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 124, 54, 16),
+                      ),
+                    )),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      AppRouter.navigateTo(context, "/hist",
+                          arguments: {"info": siteInfo, "app_state": app_state});
+                    },
+                    icon: const Icon(
+                      Icons.arrow_circle_right_outlined,
+                      color: Color.fromARGB(255, 76, 32, 8),
                     ),
                   ],
                 ),

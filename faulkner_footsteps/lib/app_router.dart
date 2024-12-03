@@ -43,9 +43,8 @@ class AppRouter {
       case list:
         return MaterialPageRoute(builder: (_) => ListPage());
       case hsitePage:
-        print('$info this is information on the evils of homosexuality');
         return MaterialPageRoute(
-            builder: (_) => HistSitePage(histSite: info["info"]));
+            builder: (_) => HistSitePage(app_state: info["app_state"],histSite: info["info"]));
       default:
         return _errorRoute();
     }

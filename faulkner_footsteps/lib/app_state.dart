@@ -93,20 +93,33 @@ class ApplicationState extends ChangeNotifier {
 
     print('Adding site with $data');
     FirebaseFirestore.instance.collection("sites").doc(newSite.name).set(data);
+    FirebaseFirestore.instance.collection("sites").doc(newSite.name).collection("ratings");
   }
 
   //update/store rating in firebase
-  void updateSiteRating(String siteName, double newRating) {
+  void updateSiteRating(String siteName, double newRating) async {
     final site = _historicalSites.firstWhere((s) => s.name == siteName);
-    site.avgRating = ((site.avgRating * site.ratingAmount) + newRating) /
-        (site.ratingAmount + 1);
-    site.ratingAmount += 1;
-
-    FirebaseFirestore.instance.collection("sites").doc(siteName).update({
-      "avgRating": site.avgRating,
-      "ratingAmount": site.ratingAmount,
-    });
-
-    notifyListeners();
+    if (site != null) {
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      double totalRating = 0;
+      int ratingcount = 0;
+      FirebaseFirestore.instance.collection("sites").doc(siteName).collection("ratings").doc(FirebaseAuth.instance.currentUser!.uid).set({"rating" : newRating});
+      await FirebaseFirestore.instance.collection("sites").doc(siteName).collection("ratings").get().then(
+        (snapshot) {
+          print("wrqwherkjqwhrjqwr");
+          for(final doc in snapshot.docs) {
+            totalRating += doc.data()["rating"];
+            ratingcount += 1;
+            print("wrqwherkjqwhrjqwr");
+            print(totalRating);
+            print(ratingcount);
+          }
+      });
+      double finalRating = totalRating/ratingcount;
+      print("This is a final rating $finalRating");
+      site.avgRating = finalRating;
+      site.ratingAmount = ratingcount;
+      FirebaseFirestore.instance.collection("sites").doc(siteName).update({"avgRating" : finalRating, "ratingCount" : ratingcount});
+      notifyListeners();
     }
 }
