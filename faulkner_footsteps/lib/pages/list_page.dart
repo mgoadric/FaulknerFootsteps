@@ -64,8 +64,7 @@ class _ListPageState extends State<ListPage> {
   Widget _buildHomeContent() {
     return Column(
       children: [
-        SizedBox(
-          height: 500,
+        Expanded(
           child: ListView.builder(
             itemCount: widget.app_state.historicalSites.length,
             itemBuilder: (BuildContext context, int index) {
@@ -77,6 +76,7 @@ class _ListPageState extends State<ListPage> {
       ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
