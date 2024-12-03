@@ -3,8 +3,6 @@
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ListItem extends StatelessWidget {
   ListItem({super.key, required this.siteInfo, required this.app_state});
@@ -30,33 +28,39 @@ class ListItem extends StatelessWidget {
             ),
           ],
         ),
-        child: Card(
-          color: const Color.fromARGB(96, 235, 180, 127),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  siteInfo.name,
-                  style: GoogleFonts.ultra(
-                    textStyle: const TextStyle(
-                      fontSize: 20,
-                      color: Color.fromARGB(255, 124, 54, 16),
-                    ),
-                  ),
+        elevation: 5,
+        shadowColor: const Color.fromRGBO(107, 79, 79, 0.5), // Soft shadow color
+        child: InkWell(
+          onTap: () {
+            AppRouter.navigateTo(context, "/hist", arguments: {"info": siteInfo});
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            children: [
+              // Full-width thumbnail image at the top
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.asset(
+                  'assets/images/placeholder.png', // Replace with your actual image path
+                  height: 150, // Adjust height as needed
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  siteInfo.description,
-                  style: GoogleFonts.rakkas(
-                    textStyle: const TextStyle(
-                      color: Color.fromARGB(255, 175, 92, 48),
-                      fontSize: 17,
+              ),
+              // Row with text and icon inline
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Site name
+                    Text(
+                      siteInfo.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 72, 52, 52), // Text color
+                      ),
                     ),
                   ),
                 ),
@@ -80,10 +84,10 @@ class ListItem extends StatelessWidget {
                       Icons.arrow_circle_right_outlined,
                       color: Color.fromARGB(255, 76, 32, 8),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

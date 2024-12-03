@@ -43,7 +43,7 @@ class _RatingDialogState extends State<RatingDialog> {
               color: const Color.fromARGB(255, 62, 50, 50),
               size: 50.0,
             ),
-          )
+          ),
         ],
       ),
       actions: [
@@ -58,7 +58,6 @@ class _RatingDialogState extends State<RatingDialog> {
                     color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
           ),
         ),
-        //submit button, will send rating data to database (eventually)
         TextButton(
           onPressed: () {
             widget.app_state.updateSiteRating(widget.site_name, userRating);

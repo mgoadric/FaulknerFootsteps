@@ -10,13 +10,13 @@ class MapDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
+      backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
+        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         title: const Text(
           "Conway Map",
           style: TextStyle(
-            color: Color.fromARGB(255, 76, 32, 8),
+            color: Color.fromARGB(255, 255, 243, 228),
             fontWeight: FontWeight.bold,
           ),
         ),
