@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/ratingDialog.dart';
+import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,12 +29,12 @@ class _AdminListPageState extends State<AdminListPage> {
     setState(() {});
   }
 
-  Future<void> showRatingDialog() async {
-    await showDialog<double>(
-      context: context,
-      builder: (BuildContext context) => const RatingDialog(),
-    );
-  }
+  // Future<void> showRatingDialog() async {
+  //   await showDialog<double>(
+  //     context: context,
+  //     builder: (BuildContext context) => const RatingDialog(),
+  //   );
+  // }
 
   late Timer updateTimer;
   @override
@@ -47,7 +47,8 @@ class _AdminListPageState extends State<AdminListPage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 1) { // Index 1 for the "Map" tab so Index 2 -> for another...
+    if (index == 1) {
+      // Index 1 for the "Map" tab so Index 2 -> for another...
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -76,7 +77,7 @@ class _AdminListPageState extends State<AdminListPage> {
             itemCount: widget.app_state.historicalSites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = widget.app_state.historicalSites[index];
-              return ListItem(siteInfo: site);
+              //return ListItem(siteInfo: site);
             },
           ),
         ),
@@ -91,7 +92,8 @@ class _AdminListPageState extends State<AdminListPage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 218, 186, 130),
         elevation: 12.0, // Adds shadow effect
-        shadowColor: const Color.fromARGB(135, 255, 255, 255), // Optional: customize shadow color
+        shadowColor: const Color.fromARGB(
+            135, 255, 255, 255), // Optional: customize shadow color
         title: Text(
           _selectedIndex == 0 ? "Display page for hist sites" : "Map Display",
           style: GoogleFonts.ultra(
@@ -99,10 +101,7 @@ class _AdminListPageState extends State<AdminListPage> {
           ),
         ),
       ),
-
-      body: _selectedIndex == 0 
-          ? _buildHomeContent() 
-          : const MapDisplay(),
+      body: _selectedIndex == 0 ? _buildHomeContent() : const MapDisplay(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         selectedItemColor: const Color.fromARGB(255, 124, 54, 16),

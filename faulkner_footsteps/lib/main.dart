@@ -4,6 +4,7 @@ import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/app_router.dart';
@@ -46,51 +47,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  //Test for ratingLeaderBoard
-  /*@override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Historical Sites Leaderboard',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 119, 52, 16)),
-        useMaterial3: true,
-      ),
-      home: RatingLeaderBoard(topHistSites: _createTempData()),
-    );
-  }
-
-  //temp testing historical sites data
-  List<HistSite> _createTempData() {
-    return [
-      HistSite(
-        name: 'Historical Museum',
-        blurbs: [InfoText(title: 'Location', value: 'Museum, Conway')],
-        images: [AssetImage('museum image')],
-      ),
-      HistSite(
-        name: 'Memorial',
-        blurbs: [InfoText(title: 'Location', value: 'Memorial, Conway')],
-        images: [AssetImage('memorial image')],
-      ),
-      HistSite(
-        name: 'Historical Marker',
-        blurbs: [InfoText(title: 'Location', value: 'Marker, Conway')],
-        images: [AssetImage('marker image')],
-      ),
-      HistSite(
-        name: 'Cemetary',
-        blurbs: [InfoText(title: 'Location', value: 'Cemetary, Conway')],
-        images: [AssetImage('cemetary image')],
-      ),
-      HistSite(
-        name: 'Church',
-        blurbs: [InfoText(title: 'Location', value: 'Church, Conway')],
-        images: [AssetImage('church image')],
-      ),
-    ];
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //launches Rating Dialog
-  Future<void> showRatingDialog(ApplicationState appState, String newSiteName) async {
+  Future<void> showRatingDialog(
+      ApplicationState app_state, String newSiteName) async {
     await showDialog<double>(
       context: context,
-      builder: (BuildContext context) => RatingDialog(app_state: appState, site_name: newSiteName),
+      builder: (BuildContext context) =>
+          RatingDialog(app_state: app_state, site_name: newSiteName),
     );
   }
 
@@ -205,7 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HistSitePage(app_state: app_state, histSite: sampleSite),
+                    builder: (context) => HistSitePage(
+                        app_state: app_state, histSite: sampleSite),
                   ),
                 );
               },
@@ -214,8 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20),
             // Button for launching rating dialog
             ElevatedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               child: const Text("Rate this spot"),
             ),
             SizedBox(

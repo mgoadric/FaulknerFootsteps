@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/pages/achievement.dart';
-import 'package:faulkner_footsteps/ratingDialog.dart';
+import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/list_item.dart';
-import 'package:faulkner_footsteps/create_site_dialogue.dart';
+import 'package:faulkner_footsteps/dialogs/create_site_dialogue.dart';
 
 class ListPage extends StatefulWidget {
   ListPage({super.key});
@@ -78,7 +78,6 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +92,8 @@ class _ListPageState extends State<ListPage> {
                   ? "Map"
                   : "Achievements",
           style: GoogleFonts.ultra(
-            textStyle: const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
+            textStyle:
+                const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
           ),
         ),
       ),
@@ -124,11 +124,11 @@ class _ListPageState extends State<ListPage> {
         onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
-        showDialog(context: context, 
-        builder: (_) {
-          return SiteDialogue(siteAdded: widget.app_state.addSite);
-        }
-        );
+        showDialog(
+            context: context,
+            builder: (_) {
+              return SiteDialogue(siteAdded: widget.app_state.addSite);
+            });
       }),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:faulkner_footsteps/app_state.dart';
-import 'package:faulkner_footsteps/ratingDialog.dart';
+import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swipe_image_gallery/swipe_image_gallery.dart';
@@ -8,7 +8,8 @@ import '../hist_site.dart';
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;
 
-  const HistSitePage({super.key, required this.histSite, required this.app_state});
+  const HistSitePage(
+      {super.key, required this.histSite, required this.app_state});
 
   final ApplicationState app_state;
   @override
@@ -19,11 +20,13 @@ class _HistSitePage extends State<HistSitePage> {
   Future<void> showRatingDialog() async {
     final double? userRating = await showDialog<double>(
       context: context,
-      builder: (BuildContext context) => RatingDialog(app_state: widget.app_state, site_name: widget.histSite.name,),
+      builder: (BuildContext context) => RatingDialog(
+        app_state: widget.app_state,
+        site_name: widget.histSite.name,
+      ),
     );
     if (userRating != null) {
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -60,8 +63,8 @@ class _HistSitePage extends State<HistSitePage> {
         title: Text(
           "Back to list",
           style: GoogleFonts.ultra(
-            textStyle: const TextStyle(
-                color: Color.fromARGB(255, 255, 243, 228)),
+            textStyle:
+                const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
           ),
         ),
       ),
@@ -70,7 +73,8 @@ class _HistSitePage extends State<HistSitePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: Text(
                 widget.histSite.name,
                 style: GoogleFonts.ultra(
@@ -84,8 +88,10 @@ class _HistSitePage extends State<HistSitePage> {
             Container(
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 250, 235, 215),
-                borderRadius: BorderRadius.circular(12.0),),
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 height: 200,
@@ -94,23 +100,23 @@ class _HistSitePage extends State<HistSitePage> {
                   itemCount: urls.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                    onTap: () {
-                      SwipeImageGallery(
-                        context: context,
-                        itemBuilder: (context, galleryIndex) {
-                          return Image.network(urls[galleryIndex]);
-                        },
-                        itemCount: urls.length,
-                      ).show();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(urls[index], fit: BoxFit.cover),
-                    ),
-                  );
-                },
+                      onTap: () {
+                        SwipeImageGallery(
+                          context: context,
+                          itemBuilder: (context, galleryIndex) {
+                            return Image.network(urls[galleryIndex]);
+                          },
+                          itemCount: urls.length,
+                        ).show();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.network(urls[index], fit: BoxFit.cover),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
             ),
             const SizedBox(height: 16.0),
             Padding(
@@ -120,18 +126,20 @@ class _HistSitePage extends State<HistSitePage> {
                 children: [
                   ElevatedButton.icon(
                     onPressed: showRatingDialog,
-                    icon: const Icon(Icons.star, color: Color.fromARGB(255, 255, 243, 228), size: 24),
+                    icon: const Icon(Icons.star,
+                        color: Color.fromARGB(255, 255, 243, 228), size: 24),
                     label: const Text("Rate This Site"),
                     style: ElevatedButton.styleFrom(
-  foregroundColor: const Color.fromARGB(255, 250, 235, 215),
-  backgroundColor: const Color.fromARGB(255, 72, 52, 52),
-  elevation: 6,
-  shadowColor: Colors.black45,
-  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30.0),
-  ),
-),
+                      foregroundColor: const Color.fromARGB(255, 250, 235, 215),
+                      backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+                      elevation: 6,
+                      shadowColor: Colors.black45,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16.0),
                   buildRatingStars(widget.histSite.avgRating),
@@ -152,42 +160,45 @@ class _HistSitePage extends State<HistSitePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.histSite.blurbs.map((infoText) {
-                return Card(
-                  elevation: 4,
-                  margin: const EdgeInsets.only(bottom: 16.0),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                  color: const Color.fromARGB(255, 250, 235, 215),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(infoText.title,
-                            style: GoogleFonts.ultra(
-                                textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 72, 52, 52),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold))),
-                        const SizedBox(height: 6),
-                        Text(infoText.value,
-                            style: GoogleFonts.rakkas(
-                                textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 107, 79, 79), fontSize: 14))),
-                        if (infoText.date != "")
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              "Date: ${infoText.date}",
-                              style: GoogleFonts.acme(
+                  return Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.only(bottom: 16.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    color: const Color.fromARGB(255, 250, 235, 215),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(infoText.title,
+                              style: GoogleFonts.ultra(
                                   textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 72, 52, 52), fontSize: 12)),
+                                      color: Color.fromARGB(255, 72, 52, 52),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold))),
+                          const SizedBox(height: 6),
+                          Text(infoText.value,
+                              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 14))),
+                          if (infoText.date != "")
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                "Date: ${infoText.date}",
+                                style: GoogleFonts.acme(
+                                    textStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 72, 52, 52),
+                                        fontSize: 12)),
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
               ),
             ),
           ],
