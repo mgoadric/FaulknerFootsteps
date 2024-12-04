@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faulkner_footsteps/app_state.dart';
+import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:faulkner_footsteps/info_text.dart';
-import 'package:faulkner_footsteps/ratingDialog.dart';
 import 'package:faulkner_footsteps/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 // IMPORT RELATED TO MAP
 // import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
@@ -35,7 +36,12 @@ void main() async {
   // }
   // // ···
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ApplicationState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -145,10 +151,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //launches Rating Dialog
-  Future<void> showRatingDialog(ApplicationState app_state, String newSiteName) async {
+  Future<void> showRatingDialog(ApplicationState appState, String newSiteName) async {
     await showDialog<double>(
       context: context,
-      builder: (BuildContext context) => RatingDialog(app_state: app_state, site_name: newSiteName),
+      builder: (BuildContext context) => RatingDialog(app_state: appState, site_name: newSiteName),
     );
   }
 

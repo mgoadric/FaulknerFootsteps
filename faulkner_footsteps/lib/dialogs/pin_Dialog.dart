@@ -1,33 +1,61 @@
+import 'package:faulkner_footsteps/app_state.dart';
+import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:flutter/material.dart';
+import 'package:faulkner_footsteps/hist_site.dart';
 
-class PinDialog extends StatefulWidget {
+class PinDialog extends StatelessWidget {
+  final String siteName;
+  final ApplicationState appState;
+
   const PinDialog({
     super.key,
+    required this.siteName,
+    required this.appState,
   });
 
   @override
-  _PinDialogState createState() => _PinDialogState();
-}
+  Widget build(BuildContext context) {
+    // Search and find the historical site by name
+    HistSite? selectedSite = appState.historicalSites.firstWhere(
+      (site) => site.name == siteName,
+      // if not found, it will say the following
+      orElse: () => HistSite(
+        name: siteName,
+        description: "No description available",
+        blurbs: [],
+        images: [],
+        avgRating: 0.0,
+        ratingAmount: 0,
+      ),
+    );
 
-class _PinDialogState extends State<PinDialog> {
-  @override
-  Widget build(BuildContext build) {
     return AlertDialog(
-      backgroundColor: Color.fromARGB(255, 247, 222, 231),
-      // name of site from pin
-      title: Text("Site Name"),
+      backgroundColor: const Color.fromARGB(255, 247, 222, 231),
+      title: Text(selectedSite.name),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text(selectedSite.description),
           TextButton(
-            //direct to hist site page
             onPressed: () {
               Navigator.of(context).pop();
+              // Navigate User to the HistSitePage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistSitePage(
+                    histSite: selectedSite,
+                    app_state: appState,
+                  ),
+                ),
+              );
             },
-            child: Text(
+            child: const Text(
               "More Info",
               style: TextStyle(
-                  fontSize: 20.0, color: Color.fromARGB(255, 2, 26, 77)),
+                fontSize: 20.0,
+                color: Color.fromARGB(255, 2, 26, 77),
+              ),
             ),
           ),
         ],
