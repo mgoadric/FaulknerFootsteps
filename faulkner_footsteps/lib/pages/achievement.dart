@@ -10,11 +10,13 @@ class AchievementsPage extends StatefulWidget {
 class _AchievementsPageState extends State<AchievementsPage> {
   // List of all places
   final List<String> places = [
-    "Conway Historical Site",
-    "Big Church",
-    "Historical Building",
-    "Downtown",
-    "Park",
+    "Buhler Hall",
+    "Cadron Blockhouse",
+    "Church of Christ",
+    "Confederate Monument",
+    "Museum",
+    "Hendrix Bell",
+    "Simon Park",
   ];
 
   // To track visited places
@@ -31,17 +33,17 @@ class _AchievementsPageState extends State<AchievementsPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: const Color.fromARGB(255, 238, 214, 196), 
+          backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           title: const Text(
             "Achievement Unlocked!",
             style: TextStyle(
-              color: Color.fromARGB(255, 72, 52, 52), 
+              color: Color.fromARGB(255, 72, 52, 52),
             ),
           ),
           content: Text(
             "You have visited $place.",
             style: const TextStyle(
-              color: Color.fromARGB(255, 72, 52, 52), 
+              color: Color.fromARGB(255, 72, 52, 52),
             ),
           ),
           actions: [
@@ -83,12 +85,12 @@ class _AchievementsPageState extends State<AchievementsPage> {
                 decoration: BoxDecoration(
                   color: isVisited
                       ? Colors.green[100]
-                      : const Color.fromARGB(255, 255, 243, 228), 
+                      : const Color.fromARGB(255, 255, 243, 228),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
                     color: isVisited
                         ? Colors.green
-                        : const Color.fromARGB(255, 107, 79, 79), 
+                        : const Color.fromARGB(255, 107, 79, 79),
                     width: 2,
                   ),
                 ),
@@ -101,7 +103,7 @@ class _AchievementsPageState extends State<AchievementsPage> {
                         size: 40,
                         color: isVisited
                             ? Colors.green
-                            : const Color.fromARGB(255, 143, 6, 6), 
+                            : const Color.fromARGB(255, 143, 6, 6),
                       ),
                       const SizedBox(height: 10),
                       Text(
