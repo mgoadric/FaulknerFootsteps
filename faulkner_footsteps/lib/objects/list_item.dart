@@ -2,7 +2,7 @@
 // -> To add a shadow effect for the listItem, mapDisplay, rating... etc
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/app_state.dart';
-import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,8 +32,10 @@ class ListItem extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            AppRouter.navigateTo(context, "/hist",
-                arguments: {"info": siteInfo});
+            AppRouter.navigateTo(context, "/hist", arguments: {
+                            "info": siteInfo,
+                            "app_state": app_state
+                          });
           },
           borderRadius: BorderRadius.circular(12),
           child: Column(

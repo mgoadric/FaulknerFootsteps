@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
+import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 
@@ -8,8 +10,6 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
-import 'info_text.dart';
-import 'hist_site.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {

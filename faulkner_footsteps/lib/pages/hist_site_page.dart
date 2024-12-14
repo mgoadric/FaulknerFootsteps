@@ -1,9 +1,9 @@
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swipe_image_gallery/swipe_image_gallery.dart';
-import '../hist_site.dart';
 
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;

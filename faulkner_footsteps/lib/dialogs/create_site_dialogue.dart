@@ -1,6 +1,6 @@
 
-import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
+import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:flutter/material.dart';
 
 typedef siteAddedCallback = Function(HistSite newSite);

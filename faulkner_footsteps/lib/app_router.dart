@@ -1,5 +1,5 @@
-import 'package:faulkner_footsteps/hist_site.dart';
-import 'package:faulkner_footsteps/info_text.dart';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
+import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/pages/list_page.dart';
 import 'package:faulkner_footsteps/pages/login_page.dart';
