@@ -8,15 +8,21 @@ import '../hist_site.dart';
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;
 
-  const HistSitePage(
-      {super.key, required this.histSite, required this.app_state});
+  const HistSitePage({
+    super.key,
+    required this.histSite,
+    required this.app_state,
+  });
 
   final ApplicationState app_state;
+
   @override
   State<StatefulWidget> createState() => _HistSitePage();
 }
 
 class _HistSitePage extends State<HistSitePage> {
+  double? personalRating;
+
   Future<void> showRatingDialog() async {
     final double? userRating = await showDialog<double>(
       context: context,
@@ -26,7 +32,10 @@ class _HistSitePage extends State<HistSitePage> {
       ),
     );
     if (userRating != null) {
-      setState(() {});
+      setState(() {
+        personalRating = userRating;
+      });
+      widget.histSite.updateRating(userRating);
     }
   }
 
@@ -61,7 +70,7 @@ class _HistSitePage extends State<HistSitePage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         title: Text(
-          "Back to list",
+          "Faulkner Footsteps",
           style: GoogleFonts.ultra(
             textStyle:
                 const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
@@ -143,9 +152,39 @@ class _HistSitePage extends State<HistSitePage> {
                   ),
                   const SizedBox(width: 16.0),
                   buildRatingStars(widget.histSite.avgRating),
-                  const SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0)
+                  /*
                   Text(
                     "${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
+                    style: GoogleFonts.rakkas(
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
+                    ),
+                  ),
+                  */
+                ],
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Personal Rating
+                  Text(
+                    personalRating != null
+                        ? "You Rated: ${personalRating?.toStringAsFixed(1)} / 5"
+                        : "You Rated: N/A",
+                    style: GoogleFonts.rakkas(
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(width: 21.0),
+                  // Average Ratings
+                  Text(
+                    "Average Rating: ${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
                     style: GoogleFonts.rakkas(
                       textStyle: const TextStyle(
                           color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),

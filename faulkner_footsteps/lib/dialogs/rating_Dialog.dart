@@ -41,7 +41,7 @@ class _RatingDialogState extends State<RatingDialog> {
               },
               borderColor: const Color.fromARGB(255, 62, 50, 50),
               color: const Color.fromARGB(255, 62, 50, 50),
-              size: 50.0,
+              size: 40.0,
             ),
           ),
         ],

@@ -87,7 +87,7 @@ class _ListPageState extends State<ListPage> {
         elevation: 5.0,
         title: Text(
           _selectedIndex == 0
-              ? "Historical Sites"
+              ? "Faulkner Footsteps"
               : _selectedIndex == 1
                   ? "Map"
                   : "Achievements",
@@ -123,6 +123,9 @@ class _ListPageState extends State<ListPage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+
+      // Uncomment to add sites
+      /*
       floatingActionButton: FloatingActionButton(onPressed: () {
         showDialog(
             context: context,
@@ -130,6 +133,7 @@ class _ListPageState extends State<ListPage> {
               return SiteDialogue(siteAdded: widget.app_state.addSite);
             });
       }),
+      */
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/pin_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +51,11 @@ class _MapDisplayState extends State<MapDisplay> {
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 107, 79, 79),
-            title: const Text(
-              "Historical Site Map",
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 243, 228),
-                fontWeight: FontWeight.bold,
+            title: Text(
+              "Faulkner County Map",
+              style: GoogleFonts.ultra(
+                textStyle:
+                    const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
               ),
             ),
           ),
@@ -65,7 +66,8 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
             children: [
               TileLayer(
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                urlTemplate:
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 subdomains: ['a', 'b', 'c'],
               ),
               MarkerLayer(
