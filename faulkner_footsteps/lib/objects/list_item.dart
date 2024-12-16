@@ -53,22 +53,25 @@ class ListItem extends StatelessWidget {
               ),
               // Row with text and icon inline
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Site name
-                    Text(
-                      siteInfo.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 72, 52, 52), // Text color
+                    // Site name with fading overflow
+                    Flexible(
+                      child: Text(
+                        siteInfo.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 72, 52, 52), // Text color
+                        ),
+                        overflow: TextOverflow.fade, // Fades text when it overflows
+                        softWrap: false, // Prevents text from wrapping to a new line
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    // add star rating icons here
+                    const SizedBox(width: 15),
+                    // Add star rating icons here
                     Align(
                       alignment: Alignment.centerRight,
                       child: IconButton(
@@ -86,7 +89,7 @@ class ListItem extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ),
