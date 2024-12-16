@@ -32,10 +32,8 @@ class ListItem extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            AppRouter.navigateTo(context, "/hist", arguments: {
-                            "info": siteInfo,
-                            "app_state": app_state
-                          });
+            AppRouter.navigateTo(context, "/hist",
+                arguments: {"info": siteInfo, "app_state": app_state});
           },
           borderRadius: BorderRadius.circular(12),
           child: Column(
@@ -45,7 +43,8 @@ class ListItem extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.asset(
-                  'assets/images/placeholder.png', // Replace with your actual image path
+                  //added thumbnail image
+                  'assets/images/faulkner_thumbnail.png', // Replace with your actual image path
                   height: 150, // Adjust height as needed
                   width: double.infinity,
                   fit: BoxFit.cover,
