@@ -95,27 +95,29 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                   borderRadius: BorderRadius.circular(175.0),
                   child: Image.asset(
                     'assets/images/FFSplash2.png',
-                    width: 350, // Adjust the size as needed
-                    height: 350,
+                    width: 400, // Adjust the size as needed
+                    height: 400,
                 ),
               ),
               const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: _handleContinue,
-                child: const Text(textScaler: TextScaler.linear(2),'Continue',),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 238, 214, 196),
                   minimumSize: const Size(400, 100),
-                  // Adjust button size as needed
                 ),
+                child: const Text(textScaler: TextScaler.linear(1.5),
+                'Get To Steppin', 
+                style: TextStyle(color: Colors.black),)
               ),
-              const SizedBox(height: 20),
+              /*const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _handleContinue,
                 child: const Text('Login'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 50),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
