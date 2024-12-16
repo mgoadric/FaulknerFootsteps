@@ -1,11 +1,14 @@
 # Faulkner Footsteps
 ## Mason, Annabel, Tucker, Elliot, and Sadie
 
+
 ## Summary
+
 
 **Application Summary**
 
 Faulkner Footsteps is an app that will allow users to explore Faulkner County and learn about / visit historic locations.
+
 
 **What it does**
 
@@ -17,7 +20,7 @@ then the user can see what site they have selected and be redirected to more inf
 which can be obtained once a user has visited a site and selected the corresponding acheivement.
 
 
-**Target Audience**
+## Target Audience
 
 Visitors who want to explore historic Faulkner County
 Locals who want to learn more about the history of their County
@@ -25,6 +28,7 @@ Locals who want to learn more about the history of their County
 
 
 # Screenshots
+
 ![image000000 (4)](https://github.com/user-attachments/assets/eb774e16-958f-4874-9c29-d242abb23f38)
 
 ![image000001 (5)](https://github.com/user-attachments/assets/85bb7bbf-3add-4d01-948b-f534c44f4939)
