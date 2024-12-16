@@ -4,8 +4,6 @@ I, Elliot Allen, have taken on the role of Task Manager for our Conway Public Ar
 
 I, Mason Murphy, have the responsibilty of keeping a constant and clear line of communication between our client and team to ensure cohesion of ideas and agreement on whats what. I will be responsiable with the corispondense to our client weather that be to set up times for meetings, answer questions, ask questions about a certain idea discussed in a meeting that needs more clarification, etc. Then I must make sure to communicate all this information to the rest of the group so everyone is up to date and has a clear understanding of the goals ahead, and making sure everyone is adhearing to our clients needs.
 
-Unit Tester : Tucker Groves-Benedict
-
 I, Annabel Mehari, agree to serve as the Integration Tester for the Conway Public Art app. I will be responsible for ensuring the seamless interaction of all components. I will find and report integration issues, work with the Unit Tester and developers to fix difficulties, and provide an effective testing environment. By conducting ongoing testing and providing timely feedback, I will contribute to the app's overall functionality. In addition, I will assist my teammates in resolving any testing difficulties that may emerge, with the goal of completing the project successfully.
 
 I, Sadie Lewis, have committed to being the Beta Test Organizer for our development team's Conway Public Art app. 
