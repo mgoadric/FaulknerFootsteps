@@ -82,6 +82,7 @@ flutter:
     - assets/images/placeholder.png
     - assets/images/TestSplash.png
     - assets/images/FFSplash.png
+    - assets/images/FFSplash2.png
 
     - assets/audio/GuitarStrumFF.mp3
 

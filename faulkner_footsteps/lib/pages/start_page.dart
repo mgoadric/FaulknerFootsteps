@@ -32,7 +32,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
       await player.setSourceAsset('audio/GuitarStrumFF.mp3');
       await player.resume();
 
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(Duration(seconds: 2), () {
         fadeOutAudio();
       });
     });
@@ -94,7 +94,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
                 ClipRRect(
                   borderRadius: BorderRadius.circular(175.0),
                   child: Image.asset(
-                    'assets/images/FFSplash.png',
+                    'assets/images/FFSplash2.png',
                     width: 350, // Adjust the size as needed
                     height: 350,
                 ),
@@ -102,9 +102,9 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
               const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: _handleContinue,
-                child: const Text('Continue'),
+                child: const Text(textScaler: TextScaler.linear(2),'Continue',),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(200, 50),
+                  minimumSize: const Size(400, 100),
                   // Adjust button size as needed
                 ),
               ),
