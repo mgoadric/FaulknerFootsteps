@@ -14,11 +14,14 @@ class MapDisplay extends StatefulWidget {
 }
 
 class _MapDisplayState extends State<MapDisplay> {
-  // Example locations with names but random coordinates -> I will fix this later
   final Map<String, LatLng> siteLocations = {
-    "Buhler Hall": LatLng(35.0853, -92.4421),
-    "Church of Christ": LatLng(35.0843, -92.4401),
-    "Simon Park": LatLng(35.0823, -92.4431),
+    "Buhler Hall": LatLng(35.0991, -92.4422), //done
+    "Cardon Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
+    "Church of Christ": LatLng(35.0925, -92.4378), //done
+    "Conway Confederate Monument": LatLng(35.088571, -92.442956), //done
+    "Faulkner County Museum": LatLng(35.0892, -92.4436), //done
+    "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
+    "Simon Park": LatLng(35.089967, -92.44085), //done
   };
 
   @override
@@ -30,7 +33,7 @@ class _MapDisplayState extends State<MapDisplay> {
           return Marker(
             point: entry.value,
             child: IconButton(
-              icon: const Icon(Icons.location_pin, color: Colors.red, size: 30),
+              icon: const Icon(Icons.location_pin, color: Color.fromARGB(255, 255, 70, 57), size: 30),
               onPressed: () {
                 // Show PinDialog when a pin is clicked
                 showDialog(
