@@ -51,6 +51,7 @@ dependencies:
   latlong2: ^0.9.1    
   url_launcher: ^6.3.1
   swipe_image_gallery: ^0.9.0
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/placeholder.png
+    - assets/images/TestSplash.png
+    - assets/images/FFSplash.png
+
+    - assets/audio/GuitarStrumFF.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:faulkner_footsteps/main.dart';
 
-import 'package:faulkner_footsteps/hist_site.dart';
+import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/info_text.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 

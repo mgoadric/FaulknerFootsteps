@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'info_text.dart';
+import 'package:faulkner_footsteps/objects/info_text.dart';
 
 class HistSite {
   HistSite({
