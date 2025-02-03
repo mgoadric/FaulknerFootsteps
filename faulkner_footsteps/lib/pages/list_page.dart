@@ -18,9 +18,9 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  void _update(Timer timer) {
-    setState(() {});
-  }
+  // void _update(Timer timer) {
+  //   setState(() {});
+  // }
 
   // Future<void> showRatingDialog() async {
   //   await showDialog<double>(
@@ -29,12 +29,14 @@ class _ListPageState extends State<ListPage> {
   //   );
   // }
 
-  late Timer updateTimer;
-
+  // late Timer updateTimer;
+  late List<HistSite> displaySites;
   @override
   void initState() {
+    // updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
+    displaySites = widget.app_state.historicalSites;
+    print("Display Sites: $displaySites");
     super.initState();
-    updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
   }
 
   int _selectedIndex = 0;
@@ -57,7 +59,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void dispose() {
     super.dispose();
-    updateTimer.cancel();
+    // updateTimer.cancel();
   }
 
   Widget _buildHomeContent() {
@@ -65,9 +67,9 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: widget.app_state.historicalSites.length,
+            itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = widget.app_state.historicalSites[index];
+              HistSite site = displaySites[index];
               return ListItem(app_state: widget.app_state, siteInfo: site);
             },
           ),
@@ -76,8 +78,42 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
+  void setDisplayItems() {
+    if (displaySites.isEmpty) {
+      displaySites = widget.app_state.historicalSites;
+    }
+  }
+
+  void openSearchDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.topCenter,
+            title: Text("Search"),
+            content: SearchBar(
+              leading: Icon(Icons.search),
+              hintText: "Search",
+              onSubmitted: (query) {
+                List<HistSite> lst = [];
+                for (HistSite site in widget.app_state.historicalSites) {
+                  if (site.name.toLowerCase().contains(query.toLowerCase())) {
+                    lst.add(site);
+                  }
+                }
+                print(query);
+                displaySites = lst;
+                setState(() {});
+                ;
+              },
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    setDisplayItems(); //this is here so that it loads initially
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
@@ -86,7 +122,8 @@ class _ListPageState extends State<ListPage> {
         actions: [
           IconButton(
               onPressed: () {
-                print("howdy");
+                //open search dialog
+                openSearchDialog();
               },
               icon: const Icon(Icons.search,
                   color: Color.fromARGB(255, 255, 243, 228)))
