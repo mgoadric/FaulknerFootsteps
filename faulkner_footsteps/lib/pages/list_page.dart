@@ -83,6 +83,14 @@ class _ListPageState extends State<ListPage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 72, 52, 52),
         elevation: 5.0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                print("howdy");
+              },
+              icon: const Icon(Icons.search,
+                  color: Color.fromARGB(255, 255, 243, 228)))
+        ],
         title: Text(
           _selectedIndex == 0
               ? "Faulkner Footsteps"
