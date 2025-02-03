@@ -31,10 +31,12 @@ class _ListPageState extends State<ListPage> {
 
   // late Timer updateTimer;
   late List<HistSite> displaySites;
+  late SearchController _searchController;
   @override
   void initState() {
     // updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
     displaySites = widget.app_state.historicalSites;
+    _searchController = SearchController();
     print("Display Sites: $displaySites");
     super.initState();
   }
@@ -93,6 +95,7 @@ class _ListPageState extends State<ListPage> {
             title: Text("Search"),
             content: SearchBar(
               leading: Icon(Icons.search),
+              controller: _searchController,
               hintText: "Search",
               onSubmitted: (query) {
                 List<HistSite> lst = [];
@@ -101,10 +104,11 @@ class _ListPageState extends State<ListPage> {
                     lst.add(site);
                   }
                 }
-                print(query);
-                displaySites = lst;
-                setState(() {});
-                ;
+                setState(() {
+                  displaySites = lst;
+                });
+                print("reached");
+                Navigator.pop(context);
               },
             ),
           );
