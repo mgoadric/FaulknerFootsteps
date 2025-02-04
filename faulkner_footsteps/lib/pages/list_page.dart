@@ -18,9 +18,14 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  // void _update(Timer timer) {
-  //   setState(() {});
-  // }
+  void _update(Timer timer) {
+    setState(() {});
+    // print("UPDATE");
+    if (displaySites.isNotEmpty) {
+      updateTimer.cancel();
+      // print("CANCELLED");
+    }
+  }
 
   // Future<void> showRatingDialog() async {
   //   await showDialog<double>(
@@ -29,17 +34,16 @@ class _ListPageState extends State<ListPage> {
   //   );
   // }
 
-  // late Timer updateTimer;
+  late Timer updateTimer;
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
   late SearchController _searchController;
   @override
   void initState() {
-    // updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
+    updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
     _searchController = SearchController();
-    print("Display Sites: $displaySites");
     super.initState();
   }
 
@@ -63,7 +67,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void dispose() {
     super.dispose();
-    // updateTimer.cancel();
+    updateTimer.cancel();
   }
 
   Widget _buildHomeContent() {
