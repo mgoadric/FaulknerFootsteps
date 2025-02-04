@@ -30,12 +30,14 @@ class _ListPageState extends State<ListPage> {
   // }
 
   // late Timer updateTimer;
+  late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
   late SearchController _searchController;
   @override
   void initState() {
     // updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
     displaySites = widget.app_state.historicalSites;
+    fullSiteList = widget.app_state.historicalSites;
     _searchController = SearchController();
     print("Display Sites: $displaySites");
     super.initState();
@@ -81,8 +83,9 @@ class _ListPageState extends State<ListPage> {
   }
 
   void setDisplayItems() {
-    if (displaySites.isEmpty) {
-      displaySites = widget.app_state.historicalSites;
+    if (fullSiteList.isEmpty) {
+      fullSiteList = widget.app_state.historicalSites;
+      displaySites = fullSiteList;
     }
   }
 
@@ -99,15 +102,16 @@ class _ListPageState extends State<ListPage> {
               hintText: "Search",
               onSubmitted: (query) {
                 List<HistSite> lst = [];
-                for (HistSite site in widget.app_state.historicalSites) {
-                  if (site.name.toLowerCase().contains(query.toLowerCase())) {
-                    lst.add(site);
-                  }
-                }
+                lst.addAll(fullSiteList.where((HistSite site) =>
+                    site.name.toLowerCase().contains(query.toLowerCase())));
+                // for (HistSite site in widget.app_state.historicalSites) {
+                //   if (site.name.toLowerCase().contains(query.toLowerCase())) {
+                //     lst.add(site);
+                //   }
+                // }
                 setState(() {
                   displaySites = lst;
                 });
-                print("reached");
                 Navigator.pop(context);
               },
             ),
