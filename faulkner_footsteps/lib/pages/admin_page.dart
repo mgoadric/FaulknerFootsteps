@@ -78,6 +78,7 @@ class _AdminListPageState extends State<AdminListPage> {
             itemCount: widget.app_state.historicalSites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = widget.app_state.historicalSites[index];
+              return null;
               //return ListItem(siteInfo: site);
             },
           ),

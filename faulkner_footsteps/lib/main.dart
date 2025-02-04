@@ -108,11 +108,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //launches Rating Dialog
   Future<void> showRatingDialog(
-      ApplicationState app_state, String newSiteName) async {
+      ApplicationState appState, String newSiteName) async {
     await showDialog<double>(
       context: context,
       builder: (BuildContext context) =>
-          RatingDialog(app_state: app_state, site_name: newSiteName),
+          RatingDialog(app_state: appState, site_name: newSiteName),
     );
   }
 
