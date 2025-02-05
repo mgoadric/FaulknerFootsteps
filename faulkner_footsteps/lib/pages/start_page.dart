@@ -57,6 +57,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
 
 
 
+
   void _handleContinue() async {
   player.stop(); // Stop the audio
   User? user = FirebaseAuth.instance.currentUser;

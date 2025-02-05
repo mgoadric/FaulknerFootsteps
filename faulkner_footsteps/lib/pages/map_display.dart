@@ -7,13 +7,27 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
 
+
 class MapDisplay extends StatefulWidget {
   const MapDisplay({super.key});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
 }
-Future<Position> _getlocation() async {
+
+
+class _MapDisplayState extends State<MapDisplay> {
+  LatLng? _currentPosition;
+  final Map<String, LatLng> siteLocations = {
+    "Buhler Hall": LatLng(35.0991, -92.4422), //done
+    "Cardon Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
+    "Church of Christ": LatLng(35.0925, -92.4378), //done
+    "Conway Confederate Monument": LatLng(35.088571, -92.442956), //done
+    "Faulkner County Museum": LatLng(35.0892, -92.4436), //done
+    "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
+    "Simon Park": LatLng(35.089967, -92.44085), //done
+  };
+  void getlocation() async {
   bool serviceEnabled;
   LocationPermission permission;
    serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -31,23 +45,30 @@ Future<Position> _getlocation() async {
     return Future.error(
       'Location permissions are permanently denied, we cannot request permissions.');
   }
-  return await Geolocator.getCurrentPosition();
+  final LocationSettings locationSettings = LocationSettings(
+  accuracy: LocationAccuracy.high,
+);
+   Position position = await Geolocator.getCurrentPosition (locationSettings: locationSettings);
+   double lat = position.latitude;
+   double long = position.longitude;
+   setState(() {
+      _currentPosition = LatLng(lat, long);
+   });
 
 }
 
-class _MapDisplayState extends State<MapDisplay> {
-  final Map<String, LatLng> siteLocations = {
-    "Buhler Hall": LatLng(35.0991, -92.4422), //done
-    "Cardon Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
-    "Church of Christ": LatLng(35.0925, -92.4378), //done
-    "Conway Confederate Monument": LatLng(35.088571, -92.442956), //done
-    "Faulkner County Museum": LatLng(35.0892, -92.4436), //done
-    "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
-    "Simon Park": LatLng(35.089967, -92.44085), //done
-  };
-
+ @override
+    void initState() {
+    super.initState();
+      getlocation();
+  }
   @override
   Widget build(BuildContext context) {
+    while(_currentPosition == null){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Consumer<ApplicationState>(
       builder: (context, appState, _) {
         // Red colored pins for each historical site
@@ -71,8 +92,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
-
-        return Scaffold(
+          return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 107, 79, 79),
@@ -86,7 +106,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           body: FlutterMap(
             options: MapOptions(
-              initialCenter: LatLng(35.0843, -92.4421),
+              initialCenter: _currentPosition!,
               initialZoom: 14.0,
             ),
             children: [
@@ -100,8 +120,7 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-        );
-      },
-    );
+      );});
   }
 }
+
