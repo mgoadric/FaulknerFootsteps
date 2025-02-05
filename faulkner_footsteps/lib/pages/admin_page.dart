@@ -8,6 +8,7 @@ import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/objects/list_item.dart';
+import 'package:latlong2/latlong.dart';
 
 class AdminListPage extends StatefulWidget {
   AdminListPage({super.key});
@@ -53,7 +54,7 @@ class _AdminListPageState extends State<AdminListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MapDisplay(),
+          builder: (context) => const MapDisplay(currentPosition: LatLng(1, 1),),
         ),
       );
     } else {
@@ -103,7 +104,7 @@ class _AdminListPageState extends State<AdminListPage> {
           ),
         ),
       ),
-      body: _selectedIndex == 0 ? _buildHomeContent() : const MapDisplay(),
+      body: _selectedIndex == 0 ? _buildHomeContent() : const MapDisplay(currentPosition: LatLng(2, 2),),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 218, 180, 130),
         selectedItemColor: const Color.fromARGB(255, 124, 54, 16),

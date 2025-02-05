@@ -7,7 +7,6 @@ import 'package:audioplayers/audioplayers.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
-
   @override
   _StartPageState createState() => _StartPageState();
 }
@@ -15,7 +14,7 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  final player = AudioPlayer();
+  final player = AudioPlayer();  
 
   @override
   void initState() {

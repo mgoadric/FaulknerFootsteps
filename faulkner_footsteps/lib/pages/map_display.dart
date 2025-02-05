@@ -5,11 +5,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:geolocator/geolocator.dart';
 
 
 class MapDisplay extends StatefulWidget {
-  const MapDisplay({super.key});
+  final LatLng currentPosition;
+  const MapDisplay({super.key, required this.currentPosition});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
@@ -17,7 +17,6 @@ class MapDisplay extends StatefulWidget {
 
 
 class _MapDisplayState extends State<MapDisplay> {
-  LatLng? _currentPosition;
   final Map<String, LatLng> siteLocations = {
     "Buhler Hall": LatLng(35.0991, -92.4422), //done
     "Cardon Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
@@ -27,48 +26,13 @@ class _MapDisplayState extends State<MapDisplay> {
     "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
     "Simon Park": LatLng(35.089967, -92.44085), //done
   };
-  void getlocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-       return Future.error('Location permissions are denied');
-    }
-  }
-   if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-      'Location permissions are permanently denied, we cannot request permissions.');
-  }
-  final LocationSettings locationSettings = LocationSettings(
-  accuracy: LocationAccuracy.high,
-);
-   Position position = await Geolocator.getCurrentPosition (locationSettings: locationSettings);
-   double lat = position.latitude;
-   double long = position.longitude;
-   setState(() {
-      _currentPosition = LatLng(lat, long);
-   });
-
-}
 
  @override
     void initState() {
     super.initState();
-      getlocation();
   }
   @override
   Widget build(BuildContext context) {
-    while(_currentPosition == null){
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
     return Consumer<ApplicationState>(
       builder: (context, appState, _) {
         // Red colored pins for each historical site
@@ -106,7 +70,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           body: FlutterMap(
             options: MapOptions(
-              initialCenter: _currentPosition!,
+              initialCenter: widget.currentPosition!,
               initialZoom: 14.0,
             ),
             children: [

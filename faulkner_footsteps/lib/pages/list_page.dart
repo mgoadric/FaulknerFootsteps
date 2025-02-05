@@ -7,6 +7,10 @@ import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/objects/list_item.dart';
+import 'package:faulkner_footsteps/pages/start_page.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
+
 
 class ListPage extends StatefulWidget {
   ListPage({super.key});
@@ -18,6 +22,36 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  static LatLng? _currentPosition;
+   void getlocation() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+       return Future.error('Location permissions are denied');
+    }
+  }
+   if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+      'Location permissions are permanently denied, we cannot request permissions.');
+  }
+  final LocationSettings locationSettings = LocationSettings(
+  accuracy: LocationAccuracy.high,
+);
+   Position position = await Geolocator.getCurrentPosition (locationSettings: locationSettings);
+   double lat = position.latitude;
+   double long = position.longitude;
+   setState(() {
+      _currentPosition = LatLng(lat, long);
+   });
+
+}
   void _update(Timer timer) {
     setState(() {});
   }
@@ -33,6 +67,7 @@ class _ListPageState extends State<ListPage> {
 
   @override
   void initState() {
+      getlocation();
     super.initState();
     updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
   }
@@ -44,7 +79,7 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MapDisplay(),
+          builder: (context) => MapDisplay(currentPosition: _currentPosition!,),
         ),
       );
     } else {
@@ -78,6 +113,11 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
+    while(_currentPosition == null){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
@@ -98,7 +138,7 @@ class _ListPageState extends State<ListPage> {
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
-              ? const MapDisplay()
+              ? MapDisplay(currentPosition: _currentPosition!,)
               : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
