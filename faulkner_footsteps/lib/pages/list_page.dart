@@ -20,6 +20,11 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   void _update(Timer timer) {
     setState(() {});
+    // print("UPDATE");
+    if (displaySites.isNotEmpty) {
+      updateTimer.cancel();
+      // print("CANCELLED");
+    }
   }
 
   // Future<void> showRatingDialog() async {
@@ -30,11 +35,16 @@ class _ListPageState extends State<ListPage> {
   // }
 
   late Timer updateTimer;
-
+  late List<HistSite> fullSiteList;
+  late List<HistSite> displaySites;
+  late SearchController _searchController;
   @override
   void initState() {
-    super.initState();
     updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
+    displaySites = widget.app_state.historicalSites;
+    fullSiteList = widget.app_state.historicalSites;
+    _searchController = SearchController();
+    super.initState();
   }
 
   int _selectedIndex = 0;
@@ -65,9 +75,9 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: widget.app_state.historicalSites.length,
+            itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = widget.app_state.historicalSites[index];
+              HistSite site = displaySites[index];
               return ListItem(app_state: widget.app_state, siteInfo: site);
             },
           ),
@@ -76,13 +86,60 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
+  void setDisplayItems() {
+    if (fullSiteList.isEmpty) {
+      fullSiteList = widget.app_state.historicalSites;
+      displaySites = fullSiteList;
+    }
+  }
+
+  void openSearchDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.topCenter,
+            title: Text("Search"),
+            content: SearchBar(
+              leading: Icon(Icons.search),
+              controller: _searchController,
+              hintText: "Search",
+              onSubmitted: (query) {
+                List<HistSite> lst = [];
+                lst.addAll(fullSiteList.where((HistSite site) =>
+                    site.name.toLowerCase().contains(query.toLowerCase())));
+                // for (HistSite site in widget.app_state.historicalSites) {
+                //   if (site.name.toLowerCase().contains(query.toLowerCase())) {
+                //     lst.add(site);
+                //   }
+                // }
+                setState(() {
+                  displaySites = lst;
+                });
+                Navigator.pop(context);
+              },
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    setDisplayItems(); //this is here so that it loads initially
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 72, 52, 52),
         elevation: 5.0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                //open search dialog
+                openSearchDialog();
+              },
+              icon: const Icon(Icons.search,
+                  color: Color.fromARGB(255, 255, 243, 228)))
+        ],
         title: Text(
           _selectedIndex == 0
               ? "Faulkner Footsteps"
