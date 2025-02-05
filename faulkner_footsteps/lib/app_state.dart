@@ -20,6 +20,8 @@ class ApplicationState extends ChangeNotifier {
   bool get loggedIn => _loggedIn;
 
   StreamSubscription<QuerySnapshot>? _siteSubscription;
+  Set<String> _visitedPlaces = {};
+  Set<String> get visitedPlaces => _visitedPlaces;
 
   List<HistSite> _historicalSites = [];
   List<HistSite> get historicalSites => _historicalSites;
@@ -32,10 +34,14 @@ class ApplicationState extends ChangeNotifier {
       EmailAuthProvider(),
     ]);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (true) {
         //user == null, changed for debugging
         _loggedIn = true;
+
+        // Load achievements when user logs in
+        await loadAchievements();
+
         _siteSubscription = FirebaseFirestore.instance
             .collection('sites')
             .snapshots()
@@ -70,6 +76,7 @@ class ApplicationState extends ChangeNotifier {
       } else {
         _loggedIn = false;
         _historicalSites = [];
+        _visitedPlaces = {};
         _siteSubscription?.cancel();
       }
       notifyListeners();
@@ -138,5 +145,60 @@ class ApplicationState extends ChangeNotifier {
           .update({"avgRating": finalRating, "ratingCount": ratingcount});
       notifyListeners();
     }
+  }
+
+  // Achievement Management Methods
+  Future<void> loadAchievements() async {
+    if (!_loggedIn) return;
+
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    try {
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('achievements')
+          .doc('places')
+          .get();
+
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data();
+        if (data != null && data['visited'] != null) {
+          _visitedPlaces = Set<String>.from(data['visited'] as List);
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      print('Error loading achievements: $e');
+    }
+  }
+
+  Future<void> saveAchievement(String place) async {
+    if (!_loggedIn) return;
+
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    try {
+      _visitedPlaces.add(place);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('achievements')
+          .doc('places')
+          .set({
+        'visited': _visitedPlaces.toList(),
+      });
+
+      notifyListeners();
+    } catch (e) {
+      print('Error saving achievement: $e');
+    }
+  }
+
+  bool hasVisited(String place) {
+    return _visitedPlaces.contains(place);
   }
 }
