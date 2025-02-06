@@ -6,8 +6,7 @@ import 'package:faulkner_footsteps/app_router.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
-
+  const StartPage({super.key});
   @override
   _StartPageState createState() => _StartPageState();
 }
@@ -15,7 +14,7 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  final player = AudioPlayer();
+  final player = AudioPlayer();  
 
   @override
   void initState() {
@@ -54,6 +53,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
     }
   });
 }
+
 
 
 

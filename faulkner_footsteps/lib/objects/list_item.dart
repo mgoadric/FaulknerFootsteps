@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ListItem extends StatelessWidget {
-  ListItem({super.key, required this.siteInfo, required this.app_state});
+  const ListItem({super.key, required this.siteInfo, required this.app_state});
   final HistSite siteInfo;
   final ApplicationState app_state;
   @override

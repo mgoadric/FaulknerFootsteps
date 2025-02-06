@@ -6,12 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
+
 class MapDisplay extends StatefulWidget {
-  const MapDisplay({super.key});
+  final LatLng currentPosition;
+  const MapDisplay({super.key, required this.currentPosition});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
 }
+
 
 class _MapDisplayState extends State<MapDisplay> {
   final Map<String, LatLng> siteLocations = {
@@ -24,6 +27,10 @@ class _MapDisplayState extends State<MapDisplay> {
     "Simon Park": LatLng(35.089967, -92.44085), //done
   };
 
+ @override
+    void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
@@ -49,8 +56,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
-
-        return Scaffold(
+          return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 107, 79, 79),
@@ -64,7 +70,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           body: FlutterMap(
             options: MapOptions(
-              initialCenter: LatLng(35.0843, -92.4421),
+              initialCenter: widget.currentPosition!,
               initialZoom: 14.0,
             ),
             children: [
@@ -78,8 +84,7 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-        );
-      },
-    );
+      );});
   }
 }
+
