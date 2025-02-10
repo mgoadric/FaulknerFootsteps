@@ -61,7 +61,6 @@ class _HistSitePage extends State<HistSitePage> {
     'https://live.staticflickr.com/3861/14459662112_505397428a_z.jpg',
     'https://live.staticflickr.com/5479/14464952611_f462b97d7e_z.jpg',
     'https://live.staticflickr.com/5158/14461036375_1892f0c69b.jpg',
-    "https://drive.google.com/uc?export=view&id=1l-01yQ-HaNALVQHa-iU_-VdoWe1Wh9Yb"
   ];
   /*
   How to add a link to a google drive file
