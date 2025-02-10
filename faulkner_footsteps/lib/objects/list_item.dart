@@ -46,7 +46,8 @@ class ListItem extends StatelessWidget {
                   //added thumbnail image
                   // 'assets/images/faulkner_thumbnail.png', // Replace with your actual image path
                   siteInfo.imageUrls.first,
-                  height: 150, // Adjust height as needed
+                  height:
+                      400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
