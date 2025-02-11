@@ -144,9 +144,6 @@ class ApplicationState extends ChangeNotifier {
         .update({"avgRating": finalRating, "ratingCount": ratingcount});
     notifyListeners();
     }
-<<<<<<< map
-=======
-  }
 
   // Achievement Management Methods
   Future<void> loadAchievements() async {
@@ -202,5 +199,4 @@ class ApplicationState extends ChangeNotifier {
   bool hasVisited(String place) {
     return _visitedPlaces.contains(place);
   }
->>>>>>> main
 }
