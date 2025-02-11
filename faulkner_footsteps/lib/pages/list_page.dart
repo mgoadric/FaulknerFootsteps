@@ -11,7 +11,6 @@ import 'package:faulkner_footsteps/pages/start_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-
 class ListPage extends StatefulWidget {
   ListPage({super.key});
 
@@ -23,44 +22,43 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   static LatLng? _currentPosition;
-   void getlocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-       return Future.error('Location permissions are denied');
+  void getlocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
     }
-  }
-   if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-      'Location permissions are permanently denied, we cannot request permissions.');
-  }
-  final LocationSettings locationSettings = LocationSettings(
-  accuracy: LocationAccuracy.high,
-);
-   Position position = await Geolocator.getCurrentPosition (locationSettings: locationSettings);
-   double lat = position.latitude;
-   double long = position.longitude;
-   setState(() {
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+    );
+    Position position =
+        await Geolocator.getCurrentPosition(locationSettings: locationSettings);
+    double lat = position.latitude;
+    double long = position.longitude;
+    setState(() {
       _currentPosition = LatLng(lat, long);
-   });
+    });
+  }
 
-}
   void _update(Timer timer) {
     setState(() {});
-    // print("UPDATE");
     if (displaySites.isNotEmpty) {
       updateTimer.cancel();
-      // print("CANCELLED");
     }
   }
-
+  //not sure if this code is important, I will leave it in for now
   // Future<void> showRatingDialog() async {
   //   await showDialog<double>(
   //     context: context,
@@ -89,7 +87,9 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapDisplay(currentPosition: _currentPosition!,),
+          builder: (context) => MapDisplay(
+            currentPosition: _currentPosition!,
+          ),
         ),
       );
     } else {
@@ -143,11 +143,6 @@ class _ListPageState extends State<ListPage> {
                 List<HistSite> lst = [];
                 lst.addAll(fullSiteList.where((HistSite site) =>
                     site.name.toLowerCase().contains(query.toLowerCase())));
-                // for (HistSite site in widget.app_state.historicalSites) {
-                //   if (site.name.toLowerCase().contains(query.toLowerCase())) {
-                //     lst.add(site);
-                //   }
-                // }
                 setState(() {
                   displaySites = lst;
                 });
@@ -160,12 +155,12 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    while(_currentPosition == null){
+    while (_currentPosition == null) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
-    setDisplayItems(); //this is here so that it loads initially
+    setDisplayItems(); //this is here so that it loads initially. Otherwise nothing loads.
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
@@ -174,7 +169,6 @@ class _ListPageState extends State<ListPage> {
         actions: [
           IconButton(
               onPressed: () {
-                //open search dialog
                 openSearchDialog();
               },
               icon: const Icon(Icons.search,
@@ -195,7 +189,9 @@ class _ListPageState extends State<ListPage> {
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
-              ? MapDisplay(currentPosition: _currentPosition!,)
+              ? MapDisplay(
+                  currentPosition: _currentPosition!,
+                )
               : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),

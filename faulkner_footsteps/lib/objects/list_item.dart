@@ -43,8 +43,7 @@ class ListItem extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
-                  //added thumbnail image
-                  // 'assets/images/faulkner_thumbnail.png', // Replace with your actual image path
+                  // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
                   siteInfo.imageUrls.first,
                   height:
                       400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
