@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/pin_Dialog.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class MapDisplay extends StatefulWidget {
 
 
 class _MapDisplayState extends State<MapDisplay> {
+  final Distance distance = new Distance();
   final Map<String, LatLng> siteLocations = {
     "Buhler Hall": LatLng(35.0991, -92.4422), //done
     "Cardon Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
@@ -26,7 +29,17 @@ class _MapDisplayState extends State<MapDisplay> {
     "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
     "Simon Park": LatLng(35.089967, -92.44085), //done
   };
-
+  late Map<String, double> siteDistances = {
+    "Buhler Hall": distance.as(LengthUnit.Meter, LatLng(35.0991, -92.4422),widget.currentPosition),//done
+    "Cardon Blockhouse": distance.as(LengthUnit.Meter, LatLng(35.104633, -92.544917),widget.currentPosition),//maybe done? :')
+    "Church of Christ": distance.as(LengthUnit.Meter, LatLng(35.0925, -92.4378),widget.currentPosition), //done
+    "Conway Confederate Monument": distance.as(LengthUnit.Meter, LatLng(35.088571, -92.442956),widget.currentPosition), //done
+    "Faulkner County Museum": distance.as(LengthUnit.Meter,  LatLng(35.0892, -92.4436),widget.currentPosition), //done
+    "Hendrix Bell at Altus": distance.as(LengthUnit.Meter, LatLng(35.1, -92.441025),widget.currentPosition), //done
+    "Simon Park": distance.as(LengthUnit.Meter,LatLng(35.089967, -92.44085),widget.currentPosition), //done
+  };
+  late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
+  late var sortedlist = sorted.values.toList();
  @override
     void initState() {
     super.initState();
@@ -70,7 +83,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           body: FlutterMap(
             options: MapOptions(
-              initialCenter: widget.currentPosition!,
+              initialCenter: widget.currentPosition,
               initialZoom: 14.0,
             ),
             children: [
@@ -84,7 +97,8 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-      );});
+      );},
+      );
   }
 }
 
