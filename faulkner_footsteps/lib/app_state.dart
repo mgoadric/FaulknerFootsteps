@@ -60,7 +60,8 @@ class ApplicationState extends ChangeNotifier {
               name: document.data()["name"] as String,
               description: document.data()["description"] as String,
               blurbs: newBlurbs,
-              images: [],
+              imageUrls: List<String>.from(document.data()["images"]),
+
               //added ratings
               //set as 0.0 for testing, will have to change later to have consistent ratings
               avgRating: document.data()["avgRating"] != null
@@ -143,7 +144,7 @@ class ApplicationState extends ChangeNotifier {
         .doc(siteName)
         .update({"avgRating": finalRating, "ratingCount": ratingcount});
     notifyListeners();
-    }
+  }
 
   // Achievement Management Methods
   Future<void> loadAchievements() async {

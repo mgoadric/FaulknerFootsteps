@@ -42,17 +42,19 @@ class ListItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.asset(
-                  //added thumbnail image
-                  'assets/images/faulkner_thumbnail.png', // Replace with your actual image path
-                  height: 150, // Adjust height as needed
+                child: Image.network(
+                  // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
+                  siteInfo.imageUrls.first,
+                  height:
+                      400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
               // Row with text and icon inline
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,8 +67,10 @@ class ListItem extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 72, 52, 52), // Text color
                         ),
-                        overflow: TextOverflow.fade, // Fades text when it overflows
-                        softWrap: false, // Prevents text from wrapping to a new line
+                        overflow:
+                            TextOverflow.fade, // Fades text when it overflows
+                        softWrap:
+                            false, // Prevents text from wrapping to a new line
                       ),
                     ),
                     const SizedBox(width: 15),

@@ -33,7 +33,7 @@ class AppRouter {
                   value:
                       "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")
             ],
-            images: [],
+            imageUrls: [],
             //added ratings here
             avgRating: 0.0,
             ratingAmount: 0)
@@ -48,7 +48,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ListPage());
       case hsitePage:
         return MaterialPageRoute(
-            builder: (_) => HistSitePage(app_state: info["app_state"],histSite: info["info"]));
+            builder: (_) => HistSitePage(
+                app_state: info["app_state"], histSite: info["info"]));
       default:
         return _errorRoute();
     }
