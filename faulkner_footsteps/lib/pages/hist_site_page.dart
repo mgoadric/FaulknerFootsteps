@@ -62,9 +62,13 @@ class _HistSitePage extends State<HistSitePage> {
     'https://live.staticflickr.com/5479/14464952611_f462b97d7e_z.jpg',
     'https://live.staticflickr.com/5158/14461036375_1892f0c69b.jpg',
   ];
-
+  /*
+  How to add a link to a google drive file
+  https://stackoverflow.com/questions/59849232/display-images-from-google-drive-using-networkimage
+  */
   @override
   Widget build(BuildContext context) {
+    List<String> testList = widget.histSite.imageUrls;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
@@ -106,21 +110,22 @@ class _HistSitePage extends State<HistSitePage> {
                 height: 200,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: urls.length,
+                  itemCount: testList.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return Image.network(urls[galleryIndex]);
+                            return Image.network(testList[galleryIndex]);
                           },
-                          itemCount: urls.length,
+                          itemCount: testList.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.network(urls[index], fit: BoxFit.cover),
+                        child:
+                            Image.network(testList[index], fit: BoxFit.cover),
                       ),
                     );
                   },

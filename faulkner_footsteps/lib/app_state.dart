@@ -60,7 +60,8 @@ class ApplicationState extends ChangeNotifier {
               name: document.data()["name"] as String,
               description: document.data()["description"] as String,
               blurbs: newBlurbs,
-              images: [],
+              imageUrls: List<String>.from(document.data()["images"]),
+
               //added ratings
               //set as 0.0 for testing, will have to change later to have consistent ratings
               avgRating: document.data()["avgRating"] != null
@@ -171,7 +172,6 @@ class ApplicationState extends ChangeNotifier {
       print('Error loading achievements: $e');
     }
   }
-
   Future<void> saveAchievement(String place) async {
     if (!_loggedIn) return;
 

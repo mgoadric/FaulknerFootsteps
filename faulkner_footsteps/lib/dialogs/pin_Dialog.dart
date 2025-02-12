@@ -23,7 +23,7 @@ class PinDialog extends StatelessWidget {
         name: siteName,
         description: "No description available",
         blurbs: [],
-        images: [],
+        imageUrls: [],
         avgRating: 0.0,
         ratingAmount: 0,
       ),
