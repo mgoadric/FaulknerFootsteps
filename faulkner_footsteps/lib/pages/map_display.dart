@@ -112,6 +112,22 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              var AchievementState = AchievementsPageState();
+              // Navigate User to the HistSitePage
+              AchievementState.visitPlace(context, sorted.keys.first);
+              visited = true;
+            },
+            child: const Text(
+              "Close",
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Color.fromARGB(255, 2, 26, 77),
+              ),
+            ),
+          ),
         ],
       ),
     );
