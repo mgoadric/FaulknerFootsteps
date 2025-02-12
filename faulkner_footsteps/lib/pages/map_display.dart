@@ -22,6 +22,7 @@ class MapDisplay extends StatefulWidget {
 
 
 class _MapDisplayState extends State<MapDisplay> {
+  bool visited = false;
   final Distance distance = new Distance();
   final Map<String, LatLng> siteLocations = {
     "Buhler Hall": LatLng(35.0991, -92.4422), //done
@@ -49,7 +50,8 @@ class _MapDisplayState extends State<MapDisplay> {
     WidgetsBinding.instance.addPostFrameCallback((_) => locationDialog(context));
   }
   void locationDialog(context){
-    HistSite? selectedSite = widget.app_state.historicalSites.firstWhere(
+    final appState = Provider.of<ApplicationState>(context, listen: false);
+    HistSite? selectedSite = appState.historicalSites.firstWhere(
       (site) => site.name == sorted.keys.first,
       // if not found, it will say the following
       orElse: () => HistSite(
@@ -62,7 +64,7 @@ class _MapDisplayState extends State<MapDisplay> {
       ),
     );
     print(sorted.values.first);
-    if ((sorted.values.first < 30000.0) &  !widget.app_state.hasVisited(sorted.keys.first) ){
+    if ((sorted.values.first < 30000.0) &  (!appState.hasVisited(sorted.keys.first)) & !visited ){
       showDialog(context: context, 
       builder: (BuildContext context,){
       return AlertDialog(
@@ -81,7 +83,7 @@ class _MapDisplayState extends State<MapDisplay> {
                 MaterialPageRoute(
                   builder: (context) => HistSitePage(
                     histSite: selectedSite,
-                    app_state: widget.app_state,
+                    app_state: appState,
                   ),
                 ),
               );
@@ -100,6 +102,7 @@ class _MapDisplayState extends State<MapDisplay> {
               var AchievementState = AchievementsPageState();
               // Navigate User to the HistSitePage
               AchievementState.visitPlace(context, sorted.keys.first);
+              visited = true;
             },
             child: const Text(
               "Mark as visited.",
@@ -112,7 +115,6 @@ class _MapDisplayState extends State<MapDisplay> {
         ],
       ),
     );
-
     });
   }
   }
