@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
@@ -117,15 +119,15 @@ class _HistSitePage extends State<HistSitePage> {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return Image.network(testList[galleryIndex]);
+                            return Image.memory(base64Decode(testList.first));
                           },
                           itemCount: testList.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child:
-                            Image.network(testList[index], fit: BoxFit.cover),
+                        child: Image.memory(base64Decode(testList[index]),
+                            fit: BoxFit.cover),
                       ),
                     );
                   },

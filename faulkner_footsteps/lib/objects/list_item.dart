@@ -1,5 +1,7 @@
 // https://stackoverflow.com/questions/63869555/shadows-in-a-rounded-rectangle-in-flutter
 // -> To add a shadow effect for the listItem, mapDisplay, rating... etc
+import 'dart:convert';
+
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
@@ -42,10 +44,12 @@ class ListItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
+                child: Image.memory(
                   // 'assets/images/faulkner_thumbnail.png',
                   // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
-                  siteInfo.imageUrls.first,
+                  // siteInfo.imageUrls.first,
+
+                  base64Decode(siteInfo.imageUrls.first),
                   height:
                       400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
                   width: double.infinity,
