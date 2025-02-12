@@ -43,12 +43,24 @@ class ListItem extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
+                  // 'assets/images/faulkner_thumbnail.png',
                   // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
                   siteInfo.imageUrls.first,
                   height:
                       400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
                   width: double.infinity,
                   fit: BoxFit.cover,
+
+                  //TODO: understand exactly how this works
+                  // https://stackoverflow.com/questions/46629758/how-to-show-an-local-image-till-the-networkimage-loads-up-in-flutter
+                  frameBuilder: (context, child, frame, _) {
+                    if (frame == null) {
+                      //fallback to placeholder
+                      return Image.asset(
+                          'assets/images/faulkner_thumbnail.png');
+                    }
+                    return child;
+                  },
                 ),
               ),
               // Row with text and icon inline
