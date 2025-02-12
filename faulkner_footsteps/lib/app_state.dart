@@ -172,7 +172,6 @@ class ApplicationState extends ChangeNotifier {
       print('Error loading achievements: $e');
     }
   }
-
   Future<void> saveAchievement(String place) async {
     if (!_loggedIn) return;
 
