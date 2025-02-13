@@ -28,13 +28,11 @@ class _HistSitePage extends State<HistSitePage> {
   @override
   void initState() {
     getUserRating();
-    print("Personal Rating: $personalRating");
     super.initState();
   }
 
   void getUserRating() async {
     personalRating = await widget.app_state.getUserRating(widget.histSite.name);
-    print(personalRating);
     setState(() {});
   }
 
@@ -193,7 +191,7 @@ class _HistSitePage extends State<HistSitePage> {
                 children: [
                   // Personal Rating
                   Text(
-                    personalRating != null
+                    personalRating != 0.0
                         ? "You Rated: ${personalRating?.toStringAsFixed(1)} / 5"
                         : "You Rated: N/A",
                     style: GoogleFonts.rakkas(

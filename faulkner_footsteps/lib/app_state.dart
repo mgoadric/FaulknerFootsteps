@@ -124,9 +124,6 @@ class ApplicationState extends ChangeNotifier {
       if (docSnapshot.exists) {
         final data = docSnapshot.data();
         if (data != null) {
-          var s = docSnapshot.get("rating");
-          print("This is your review! $data");
-          print("this is the snapshot.get thing: $s");
           return docSnapshot.get("rating");
         } else {
           return 0.0;
@@ -138,14 +135,6 @@ class ApplicationState extends ChangeNotifier {
       print("error");
       return 0.0;
     }
-
-    final site = _historicalSites.firstWhere((s) => s.name == siteName);
-    FirebaseFirestore.instance
-        .collection("sites")
-        .doc(siteName)
-        .collection("ratings")
-        .doc(userId)
-        .get();
   }
 
   //update/store rating in firebase
