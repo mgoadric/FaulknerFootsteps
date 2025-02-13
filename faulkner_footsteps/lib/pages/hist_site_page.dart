@@ -25,6 +25,19 @@ class HistSitePage extends StatefulWidget {
 class _HistSitePage extends State<HistSitePage> {
   double? personalRating;
 
+  @override
+  void initState() {
+    getUserRating();
+    print("Personal Rating: $personalRating");
+    super.initState();
+  }
+
+  void getUserRating() async {
+    personalRating = await widget.app_state.getUserRating(widget.histSite.name);
+    print(personalRating);
+    setState(() {});
+  }
+
   Future<void> showRatingDialog() async {
     final double? userRating = await showDialog<double>(
       context: context,

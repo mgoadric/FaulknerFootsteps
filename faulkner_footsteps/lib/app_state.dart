@@ -108,6 +108,46 @@ class ApplicationState extends ChangeNotifier {
         .collection("ratings");
   }
 
+  Future<double> getUserRating(String siteName) async {
+    if (!_loggedIn) return 0.0;
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return 0.0;
+
+    try {
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection("sites")
+          .doc(siteName)
+          .collection("ratings")
+          .doc(userId)
+          .get();
+
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data();
+        if (data != null) {
+          var s = docSnapshot.get("rating");
+          print("This is your review! $data");
+          print("this is the snapshot.get thing: $s");
+          return docSnapshot.get("rating");
+        } else {
+          return 0.0;
+        }
+      } else {
+        return 0.0;
+      }
+    } catch (e) {
+      print("error");
+      return 0.0;
+    }
+
+    final site = _historicalSites.firstWhere((s) => s.name == siteName);
+    FirebaseFirestore.instance
+        .collection("sites")
+        .doc(siteName)
+        .collection("ratings")
+        .doc(userId)
+        .get();
+  }
+
   //update/store rating in firebase
   void updateSiteRating(String siteName, double newRating) async {
     final site = _historicalSites.firstWhere((s) => s.name == siteName);
@@ -172,6 +212,7 @@ class ApplicationState extends ChangeNotifier {
       print('Error loading achievements: $e');
     }
   }
+
   Future<void> saveAchievement(String place) async {
     if (!_loggedIn) return;
 
