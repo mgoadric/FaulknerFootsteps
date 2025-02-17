@@ -4,6 +4,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swipe_image_gallery/swipe_image_gallery.dart';
 
@@ -23,7 +24,19 @@ class HistSitePage extends StatefulWidget {
 }
 
 class _HistSitePage extends State<HistSitePage> {
-  double? personalRating;
+  late double personalRating;
+
+  @override
+  void initState() {
+    personalRating = 0.0;
+    getUserRating();
+    super.initState();
+  }
+
+  void getUserRating() async {
+    personalRating = await widget.app_state.getUserRating(widget.histSite.name);
+    setState(() {});
+  }
 
   Future<void> showRatingDialog() async {
     final double? userRating = await showDialog<double>(
@@ -41,29 +54,34 @@ class _HistSitePage extends State<HistSitePage> {
     }
   }
 
-  Widget buildRatingStars(double rating) {
-    int fullStars = rating.floor(); // Full stars
-    bool halfStar = (rating - fullStars) >= 0.5; // Check if it's a half star
+  // Widget buildRatingStars(double rating) {
+  //   int fullStars = rating.floor(); // Full stars
+  //   bool halfStar = (rating - fullStars) >= 0.5; // Check if it's a half star
+  //   return Row(children: [
+  //     Row(
+  //       children: List.generate(5, (index) {
+  //         if (index < fullStars) {
+  //           return const Icon(Icons.star, color: Colors.amber, size: 24);
+  //         } else if (index == fullStars && halfStar) {
+  //           return const Icon(Icons.star_half, color: Colors.amber, size: 24);
+  //         } else {
+  //           return const Icon(Icons.star_border, color: Colors.amber, size: 24);
+  //         }
+  //       }),
+  //     ),
+  //     Text(" (${widget.histSite.avgRating.toStringAsFixed(1)})",
+  //         style: GoogleFonts.rakkas(
+  //             textStyle: const TextStyle(
+  //                 color: Color.fromARGB(255, 72, 52, 52), fontSize: 16)))
+  //   ]);
+  // }
 
-    return Row(
-      children: List.generate(5, (index) {
-        if (index < fullStars) {
-          return const Icon(Icons.star, color: Colors.amber, size: 24);
-        } else if (index == fullStars && halfStar) {
-          return const Icon(Icons.star_half, color: Colors.amber, size: 24);
-        } else {
-          return const Icon(Icons.star_border, color: Colors.amber, size: 24);
-        }
-      }),
-    );
-  }
-
-  final urls = [
-    'https://live.staticflickr.com/2872/9142834823_503dee0d1c_b.jpg',
-    'https://live.staticflickr.com/3861/14459662112_505397428a_z.jpg',
-    'https://live.staticflickr.com/5479/14464952611_f462b97d7e_z.jpg',
-    'https://live.staticflickr.com/5158/14461036375_1892f0c69b.jpg',
-  ];
+  // final urls = [
+  //   'https://live.staticflickr.com/2872/9142834823_503dee0d1c_b.jpg',
+  //   'https://live.staticflickr.com/3861/14459662112_505397428a_z.jpg',
+  //   'https://live.staticflickr.com/5479/14464952611_f462b97d7e_z.jpg',
+  //   'https://live.staticflickr.com/5158/14461036375_1892f0c69b.jpg',
+  // ];
   /*
   How to add a link to a google drive file
   https://stackoverflow.com/questions/59849232/display-images-from-google-drive-using-networkimage
@@ -135,70 +153,95 @@ class _HistSitePage extends State<HistSitePage> {
               ),
             ),
             const SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: showRatingDialog,
-                    icon: const Icon(Icons.star,
-                        color: Color.fromARGB(255, 255, 243, 228), size: 24),
-                    label: const Text("Rate This Site"),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(255, 250, 235, 215),
-                      backgroundColor: const Color.fromARGB(255, 72, 52, 52),
-                      elevation: 6,
-                      shadowColor: Colors.black45,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 20.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  buildRatingStars(widget.histSite.avgRating),
-                  const SizedBox(width: 16.0)
-                  /*
-                  Text(
-                    "${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
-                    style: GoogleFonts.rakkas(
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
-                    ),
-                  ),
-                  */
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       ElevatedButton.icon(
+            //         onPressed: showRatingDialog,
+            //         icon: const Icon(Icons.star,
+            //             color: Color.fromARGB(255, 255, 243, 228), size: 24),
+            //         label: const Text("Rate This Site"),
+            //         style: ElevatedButton.styleFrom(
+            //           foregroundColor: const Color.fromARGB(255, 250, 235, 215),
+            //           backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+            //           elevation: 6,
+            //           shadowColor: Colors.black45,
+            //           padding: const EdgeInsets.symmetric(
+            //               vertical: 12.0, horizontal: 20.0),
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(30.0),
+            //           ),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 16.0),
+            //       buildRatingStars(widget.histSite.avgRating),
+            //       const SizedBox(width: 16.0)
+            //       /*
+            //       Text(
+            //         "${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
+            //         style: GoogleFonts.rakkas(
+            //           textStyle: const TextStyle(
+            //               color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
+            //         ),
+            //       ),
+            //       */
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 16.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Personal Rating
-                  Text(
-                    personalRating != null
-                        ? "You Rated: ${personalRating?.toStringAsFixed(1)} / 5"
-                        : "You Rated: N/A",
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                StarRating(
+                  rating: personalRating,
+                  starCount: 5,
+                  onRatingChanged: (rating) {
+                    setState(() {
+                      personalRating = rating;
+                      widget.app_state
+                          .updateSiteRating(widget.histSite.name, rating);
+                    });
+                  },
+                  borderColor: Colors.amber,
+                  color: Colors.amber,
+                  size: 60,
+                )
+                // Personal Rating
+
+                // Text(
+                //   personalRating != 0.0
+                //       ? "You Rated: ${personalRating?.toStringAsFixed(0)} / 5"
+                //       : "You Rated: N/A",
+                //   style: GoogleFonts.rakkas(
+                //     textStyle: const TextStyle(
+                //         color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
+                //   ),
+                // ),
+                ,
+                //This Updates Immediately, but one step behind
+                // Text(
+                //     " (${widget.app_state.historicalSites.firstWhere((site) {
+                //           if (site.name == widget.histSite.name) {
+                //             print(site.name);
+                //             return true;
+                //           }
+                //           return false;
+                //         }).avgRating.toStringAsFixed(1)})",
+                //     style: GoogleFonts.rakkas(
+                //         textStyle: const TextStyle(
+                //             color: Color.fromARGB(255, 72, 52, 52),
+                //             fontSize: 16))),
+
+                // This Updates After Each Reload
+                Text(" (${widget.histSite.avgRating.toStringAsFixed(1)})",
                     style: GoogleFonts.rakkas(
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(width: 21.0),
-                  // Average Ratings
-                  Text(
-                    "Average Rating: ${widget.histSite.avgRating.toStringAsFixed(1)} / 5",
-                    style: GoogleFonts.rakkas(
-                      textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52), fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
+                        textStyle: const TextStyle(
+                            color: Color.fromARGB(255, 72, 52, 52),
+                            fontSize: 16)))
+              ]),
             ),
             const SizedBox(height: 16.0),
             Padding(

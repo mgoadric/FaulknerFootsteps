@@ -10,18 +10,7 @@ class AchievementsPage extends StatefulWidget {
   AchievementsPageState createState() => AchievementsPageState();
 }
 
-class AchievementsPageState extends State<AchievementsPage> {
-  // List of all places
-  final List<String> places = [
-    "Buhler Hall",
-    "Cadron Blockhouse",
-    "Church of Christ",
-    "Confederate Monument",
-    "Museum",
-    "Hendrix Bell",
-    "Simon Park",
-  ];
-
+class _AchievementsPageState extends State<AchievementsPage> {
   // To track visited places
   void visitPlace(BuildContext context, String place) async {
     // If the place is visited for the first time, a popup will appear and update the state
@@ -79,13 +68,13 @@ class AchievementsPageState extends State<AchievementsPage> {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
               ),
-              itemCount: places.length,
+              itemCount: appState.historicalSites.length,
               itemBuilder: (context, index) {
-                final place = places[index];
-                final isVisited = appState.hasVisited(place);
+                final place = appState.historicalSites[index];
+                final isVisited = appState.hasVisited(place.name);
 
                 return GestureDetector(
-                  onTap: () => visitPlace(context, place),
+                  onTap: () => visitPlace(context, place.name),
                   child: Container(
                     decoration: BoxDecoration(
                       color: isVisited
@@ -112,7 +101,7 @@ class AchievementsPageState extends State<AchievementsPage> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            place,
+                            place.name,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
