@@ -55,17 +55,9 @@ class ListItem extends StatelessWidget {
                   width: double.infinity,
                   fit: BoxFit.cover,
 
-                  //TODO: understand exactly how this works
-                  // https://stackoverflow.com/questions/46629758/how-to-show-an-local-image-till-the-networkimage-loads-up-in-flutter
-                  // frameBuilder: (context, child, frame, _) {
-                  //   if (frame == null) {
-                  //     //fallback to placeholder
-                  //     return Image.asset(
-                  //         'assets/images/faulkner_thumbnail.png');
-
-                  //   }
-                  //   return child;
-                  // },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset('assets/images/faulkner_thumbnail.png');
+                  },
                 ),
               ),
               // Row with text and icon inline
