@@ -10,7 +10,7 @@ class AchievementsPage extends StatefulWidget {
   AchievementsPageState createState() => AchievementsPageState();
 }
 
-class _AchievementsPageState extends State<AchievementsPage> {
+class AchievementsPageState extends State<AchievementsPage> {
   // To track visited places
   void visitPlace(BuildContext context, String place) async {
     // If the place is visited for the first time, a popup will appear and update the state

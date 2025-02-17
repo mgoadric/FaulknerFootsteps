@@ -112,6 +112,7 @@ class _siteDialogueState extends State<SiteDialogue> {
                                 blurbs: newBlurbs,
                                 description: descText,
                                 imageUrls: [],
+                                images: [],
                                 ratingAmount: 0,
                                 avgRating: 0.0);
                             widget.siteAdded(newSite);
