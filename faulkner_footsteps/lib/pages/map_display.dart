@@ -51,7 +51,7 @@ class _MapDisplayState extends State<MapDisplay> {
   }
   void locationDialog(context){
     final appState = Provider.of<ApplicationState>(context, listen: false);
-    HistSite? selectedSite = appState.historicalSites.firstWhere(
+    HistSite? selectedSite = widget.app_state.historicalSites.firstWhere(
       (site) => site.name == sorted.keys.first,
       // if not found, it will say the following
       orElse: () => HistSite(
@@ -62,10 +62,11 @@ class _MapDisplayState extends State<MapDisplay> {
         imageUrls: [],
         avgRating: 0.0,
         ratingAmount: 0,
+        lat: 0,
+        lng: 0,
       ),
     );
-    print(sorted.values.first);
-    if ((sorted.values.first < 30000.0) &  (!appState.hasVisited(sorted.keys.first)) & !visited ){
+    if ((sorted.values.first < 30000.0) &  (!widget.app_state.hasVisited(sorted.keys.first)) & !visited ){
       showDialog(context: context, 
       builder: (BuildContext context,){
       return AlertDialog(
@@ -84,7 +85,7 @@ class _MapDisplayState extends State<MapDisplay> {
                 MaterialPageRoute(
                   builder: (context) => HistSitePage(
                     histSite: selectedSite,
-                    app_state: appState,
+                    app_state: widget.app_state,
                   ),
                 ),
               );
@@ -153,7 +154,7 @@ class _MapDisplayState extends State<MapDisplay> {
                   builder: (BuildContext context) {
                     return PinDialog(
                       siteName: entry.key,
-                      appState: appState,
+                      appState: widget.app_state,
                     );
                   },
                 );

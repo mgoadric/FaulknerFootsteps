@@ -25,6 +25,8 @@ class PinDialog extends StatelessWidget {
         blurbs: [],
         images: [],
         imageUrls: [],
+        lat: 0,
+        lng: 0,
         avgRating: 0.0,
         ratingAmount: 0,
       ),

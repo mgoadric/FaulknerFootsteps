@@ -62,6 +62,8 @@ class ApplicationState extends ChangeNotifier {
               blurbs: newBlurbs,
               imageUrls: List<String>.from(document.data()["images"]),
               images: [],
+              lat: 0,
+              lng: 0,
 
               //added ratings
               //set as 0.0 for testing, will have to change later to have consistent ratings

@@ -35,6 +35,8 @@ class AppRouter {
             ],
             images: [],
             imageUrls: [],
+            lat: 0,
+            lng: 0,
             //added ratings here
             avgRating: 0.0,
             ratingAmount: 0)

@@ -10,6 +10,8 @@ class HistSite {
     required this.imageUrls,
     required this.avgRating,
     required this.ratingAmount, required List images,
+    required this.lat,
+    required this.lng
   });
 
   String divider = "{ListDiv}";
@@ -19,6 +21,9 @@ class HistSite {
   List<String> imageUrls;
   double avgRating;
   int ratingAmount;
+  double lat;
+  double lng;
+
 
   String listifyBlurbs() {
     String fin = "";

@@ -96,11 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
               value:
                   "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")
         ],
-        imageUrls: [],
         images: [],
+        imageUrls: [],
         //added ratings here
         avgRating: 0.0,
         ratingAmount: 0,
+        lat: 0,
+        lng: 0,
       );
       app_state.addSite(newSite);
       print(historical_sites);
@@ -142,6 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ], // Add images if available
       avgRating: 0.0,
       ratingAmount: 0,
+      lat: 0,
+      lng: 0,
     );
     return Scaffold(
       appBar: AppBar(
