@@ -9,7 +9,7 @@ class HistSite {
     required this.description,
     required this.imageUrls,
     required this.avgRating,
-    required this.ratingAmount,
+    required this.ratingAmount, required List images,
   });
 
   String divider = "{ListDiv}";

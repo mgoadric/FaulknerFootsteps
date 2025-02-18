@@ -70,6 +70,7 @@ class _MapDisplayState extends State<MapDisplay> {
         name: sorted.keys.first,
         description: "No description available",
         blurbs: [],
+        images: [],
         imageUrls: [],
         avgRating: 0.0,
         ratingAmount: 0,
