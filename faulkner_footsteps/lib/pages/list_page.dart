@@ -4,6 +4,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/achievement.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
+import 'package:faulkner_footsteps/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/objects/list_item.dart';
@@ -87,7 +88,8 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapDisplay(currentPosition: _currentPosition!, app_state: widget.app_state),
+          builder: (context) => MapDisplay(
+              currentPosition: _currentPosition!, app_state: widget.app_state),
         ),
       );
     } else {
@@ -166,11 +168,13 @@ class _ListPageState extends State<ListPage> {
         elevation: 5.0,
         actions: [
           IconButton(
-              onPressed: () {
-                openSearchDialog();
-              },
-              icon: const Icon(Icons.search,
-                  color: Color.fromARGB(255, 255, 243, 228)))
+            onPressed: () {
+              openSearchDialog();
+            },
+            icon: const Icon(Icons.search,
+                color: Color.fromARGB(255, 255, 243, 228)),
+          ),
+          const LogoutButton(),
         ],
         title: Text(
           _selectedIndex == 0
@@ -187,7 +191,10 @@ class _ListPageState extends State<ListPage> {
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
-              ? MapDisplay(currentPosition: _currentPosition!,app_state: widget.app_state,)
+              ? MapDisplay(
+                  currentPosition: _currentPosition!,
+                  app_state: widget.app_state,
+                )
               : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
