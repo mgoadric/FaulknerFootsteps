@@ -22,29 +22,10 @@ class MapDisplay extends StatefulWidget {
 
 
 class _MapDisplayState extends State<MapDisplay> {
-  
   bool visited = false;
   final Distance distance = new Distance();
-  final Map<String, LatLng> siteLocations = {
-    "Buhler Hall": LatLng(35.0991, -92.4422), //done
-    "Cadron Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
-    "Church of Christ": LatLng(35.0925, -92.4378), //done
-    "Conway Confederate Monument": LatLng(35.088571, -92.442956), //done
-    "Faulkner County Museum": LatLng(35.0892, -92.4436), //done
-    "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
-    "Simon Park": LatLng(35.089967, -92.44085),
-    "Test Hall": LatLng(0, 0),  //done
-  };
-  late Map<String, double> siteDistances = {
-    "Buhler Hall": distance.as(LengthUnit.Meter, LatLng(35.0991, -92.4422),widget.currentPosition),//done
-    "Cadron Blockhouse": distance.as(LengthUnit.Meter, LatLng(35.104633, -92.544917),widget.currentPosition),//maybe done? :')
-    "Church of Christ": distance.as(LengthUnit.Meter, LatLng(35.0925, -92.4378),widget.currentPosition), //done
-    "Conway Confederate Monument": distance.as(LengthUnit.Meter, LatLng(35.088571, -92.442956),widget.currentPosition), //done
-    "Faulkner County Museum": distance.as(LengthUnit.Meter,  LatLng(35.0892, -92.4436),widget.currentPosition), //done
-    "Hendrix Bell at Altus": distance.as(LengthUnit.Meter, LatLng(35.1, -92.441025),widget.currentPosition), //done
-    "Simon Park": distance.as(LengthUnit.Meter,LatLng(35.089967, -92.44085),widget.currentPosition),
-    "Test Hall": distance.as(LengthUnit.Meter,LatLng(0, 0),widget.currentPosition), //done
-  };
+  late Map<String, LatLng> siteLocations = widget.appState.getLocations();
+  late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
  @override
@@ -139,9 +120,9 @@ class _MapDisplayState extends State<MapDisplay> {
     });
   }
   }
-  
   @override
   Widget build(BuildContext context) {
+    print(widget.appState.getLocations());
     return Consumer<ApplicationState>(
       builder: (context, appState, _) {
         // Red colored pins for each historical site
@@ -197,5 +178,12 @@ class _MapDisplayState extends State<MapDisplay> {
       );},
       );
   }
+  Map<String, double> getDistances(Map<String, LatLng> locations){
+    Map<String, double> distances = {};
+    for (int i = 0; i <locations.length; i ++){
+      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),widget.currentPosition);
+    }
+    return distances;
+}
 }
 
