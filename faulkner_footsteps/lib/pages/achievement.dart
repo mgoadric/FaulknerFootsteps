@@ -3,14 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 
 class AchievementsPage extends StatefulWidget {
-
   const AchievementsPage({super.key});
 
   @override
-  AchievementsPageState createState() => AchievementsPageState();
+  AchievementsPageState createState() {
+    return AchievementsPageState();
+  }
 }
 
-class _AchievementsPageState extends State<AchievementsPage> {
+class AchievementsPageState extends State<AchievementsPage> {
   // To track visited places
   void visitPlace(BuildContext context, String place) async {
     // If the place is visited for the first time, a popup will appear and update the state

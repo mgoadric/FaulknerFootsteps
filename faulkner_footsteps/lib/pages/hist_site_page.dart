@@ -137,15 +137,27 @@ class _HistSitePage extends State<HistSitePage> {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return Image.memory(base64Decode(testList.first));
+                            return Image.memory(
+                              base64Decode(testList[index]),
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                    'assets/images/faulkner_thumbnail.png');
+                              },
+                            );
                           },
                           itemCount: testList.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.memory(base64Decode(testList[index]),
-                            fit: BoxFit.cover),
+                        child: Image.memory(
+                          base64Decode(testList[index]),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                                'assets/images/faulkner_thumbnail.png');
+                          },
+                        ),
                       ),
                     );
                   },
