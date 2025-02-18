@@ -137,7 +137,8 @@ class _HistSitePage extends State<HistSitePage> {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return Image.memory(base64Decode(testList.first));
+                            return Image.memory(
+                                base64Decode(testList[galleryIndex]));
                           },
                           itemCount: testList.length,
                         ).show();
