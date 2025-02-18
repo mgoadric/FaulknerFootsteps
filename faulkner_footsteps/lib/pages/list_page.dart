@@ -5,6 +5,7 @@ import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/achievement.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:faulkner_footsteps/widgets/logout_button.dart';
+import 'package:faulkner_footsteps/widgets/profile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faulkner_footsteps/objects/list_item.dart';
@@ -167,6 +168,7 @@ class _ListPageState extends State<ListPage> {
         backgroundColor: const Color.fromARGB(255, 72, 52, 52),
         elevation: 5.0,
         actions: [
+          const ProfileButton(),
           IconButton(
             onPressed: () {
               openSearchDialog();
