@@ -6,15 +6,18 @@ import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:swipe_image_gallery/swipe_image_gallery.dart';
 
 class HistSitePage extends StatefulWidget {
   final HistSite histSite;
+  final LatLng currentPosition;
 
   const HistSitePage({
     super.key,
     required this.histSite,
     required this.app_state,
+    required this.currentPosition
   });
 
   final ApplicationState app_state;
@@ -25,6 +28,7 @@ class HistSitePage extends StatefulWidget {
 
 class _HistSitePage extends State<HistSitePage> {
   late double personalRating;
+  final Distance _distance = new Distance();
 
   @override
   void initState() {
@@ -88,6 +92,7 @@ class _HistSitePage extends State<HistSitePage> {
   */
   @override
   Widget build(BuildContext context) {
+    final String siteDistance = (_distance.as(LengthUnit.Meter, LatLng(widget.histSite.lat, widget.histSite.lng),widget.currentPosition) /  1609.344).toStringAsFixed(2);
     List<String> testList = widget.histSite.imageUrls;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
@@ -299,12 +304,27 @@ class _HistSitePage extends State<HistSitePage> {
                       ),
                     ),
                   );
-                }).toList(),
+                }).toList()
               ),
             ),
-          ],
-        ),
-      ),
-    );
+            const SizedBox(height: 16.0),
+            Padding(
+            padding: const EdgeInsets.all(16.0),
+                child: Card(elevation: 4,
+                    margin: const EdgeInsets.only(bottom: 16.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    color: const Color.fromARGB(255, 250, 235, 215),
+                    child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text("You are $siteDistance miles away from this location!", style: GoogleFonts.ultra(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 72, 52, 52),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                ))
+        )))
+      ]),
+    ));
   }
 }

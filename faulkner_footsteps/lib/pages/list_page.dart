@@ -87,7 +87,7 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapDisplay(currentPosition: _currentPosition!, app_state: widget.app_state),
+          builder: (context) => MapDisplay(currentPosition: _currentPosition!, appState: widget.app_state),
         ),
       );
     } else {
@@ -111,7 +111,7 @@ class _ListPageState extends State<ListPage> {
             itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = displaySites[index];
-              return ListItem(app_state: widget.app_state, siteInfo: site);
+              return ListItem(app_state: widget.app_state, siteInfo: site, currentPosition: _currentPosition?? LatLng(0, 0));
             },
           ),
         ),
@@ -187,7 +187,7 @@ class _ListPageState extends State<ListPage> {
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
-              ? MapDisplay(currentPosition: _currentPosition!,app_state: widget.app_state,)
+              ? MapDisplay(currentPosition: _currentPosition!,appState: widget.app_state,)
               : const AchievementsPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
