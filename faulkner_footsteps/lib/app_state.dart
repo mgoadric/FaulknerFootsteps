@@ -35,8 +35,7 @@ class ApplicationState extends ChangeNotifier {
     ]);
 
     FirebaseAuth.instance.userChanges().listen((user) async {
-      if (true) {
-        //user == null, changed for debugging
+      if (user != null) {
         _loggedIn = true;
 
         // Load achievements when user logs in
@@ -174,7 +173,7 @@ class ApplicationState extends ChangeNotifier {
         .doc(siteName)
         .update({"avgRating": finalRating, "ratingCount": ratingcount});
     notifyListeners();
-    }
+  }
 
   // Achievement Management Methods
   Future<void> loadAchievements() async {
