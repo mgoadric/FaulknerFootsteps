@@ -1,5 +1,6 @@
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
+import 'package:faulkner_footsteps/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/pages/list_page.dart';
 import 'package:faulkner_footsteps/pages/login_page.dart';
@@ -13,6 +14,7 @@ class AppRouter {
   static const String loginPage = '/login';
   static const String list = '/list';
   static const String hsitePage = '/hist';
+  static const String profilePage = '/profile';
 
   //static HistSite newSite = HistSite(name: "TEST", blurbs: [InfoText(title: "INTRO", value: "HELLO WORLD")], images: [AssetImage('assets/images/AutobotLogo.png')]);
 
@@ -52,6 +54,9 @@ class AppRouter {
       case hsitePage:
         return MaterialPageRoute(
             builder: (_) => HistSitePage(
+                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]));
+      case profilePage:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
                 app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]), );
       default:
         return _errorRoute();
