@@ -144,26 +144,14 @@ class _HistSitePage extends State<HistSitePage> {
                           itemBuilder: (context, galleryIndex) {
                             return Image.memory(
                                 base64Decode(testList[galleryIndex]));
-                              base64Decode(testList[index]),
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                    'assets/images/faulkner_thumbnail.png');
-                              },
-                            );
                           },
                           itemCount: testList.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.memory(
-                          base64Decode(testList[index]),
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                                'assets/images/faulkner_thumbnail.png');
-                          },
-                        ),
+                        child: Image.memory(base64Decode(testList[index]),
+                            fit: BoxFit.cover),
                       ),
                     );
                   },
@@ -261,7 +249,6 @@ class _HistSitePage extends State<HistSitePage> {
                             fontSize: 16)))
               ]),
             ),
-            const SizedBox(height: 16.0),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -308,7 +295,6 @@ class _HistSitePage extends State<HistSitePage> {
                 }).toList()
               ),
             ),
-            const SizedBox(height: 16.0),
             Padding(
             padding: const EdgeInsets.all(16.0),
                 child: Card(elevation: 4,

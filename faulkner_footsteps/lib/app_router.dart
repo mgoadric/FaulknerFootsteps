@@ -56,8 +56,8 @@ class AppRouter {
             builder: (_) => HistSitePage(
                 app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]));
       case profilePage:
-        return MaterialPageRoute(builder: (_) => const ProfilePage());
-                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]), );
+        return MaterialPageRoute(
+          builder: (_) => const ProfilePage());
       default:
         return _errorRoute();
     }
