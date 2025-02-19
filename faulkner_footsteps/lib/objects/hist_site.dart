@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:faulkner_footsteps/objects/info_text.dart';
+import 'package:latlong2/latlong.dart';
 
 class HistSite {
   HistSite({
@@ -10,6 +11,8 @@ class HistSite {
     required this.imageUrls,
     required this.avgRating,
     required this.ratingAmount, required List images,
+    required this.lat,
+    required this.lng
   });
 
   String divider = "{ListDiv}";
@@ -19,6 +22,9 @@ class HistSite {
   List<String> imageUrls;
   double avgRating;
   int ratingAmount;
+  double lat;
+  double lng;
+
 
   String listifyBlurbs() {
     String fin = "";
@@ -31,5 +37,8 @@ class HistSite {
   void updateRating(double newRating) {
     avgRating = ((avgRating * ratingAmount) + newRating) / (ratingAmount + 1);
     ratingAmount++;
+  }
+  LatLng getLocation(){
+    return LatLng(lat, lng);
   }
 }

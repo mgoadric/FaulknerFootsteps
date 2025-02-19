@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'firebase_options.dart';
 
@@ -62,7 +63,8 @@ class ApplicationState extends ChangeNotifier {
               blurbs: newBlurbs,
               imageUrls: List<String>.from(document.data()["images"]),
               images: [],
-
+              lat: document.data()["lat"] as double,
+              lng: document.data()["lng"] as double,
               //added ratings
               //set as 0.0 for testing, will have to change later to have consistent ratings
               avgRating: document.data()["avgRating"] != null
@@ -230,4 +232,15 @@ class ApplicationState extends ChangeNotifier {
   bool hasVisited(String place) {
     return _visitedPlaces.contains(place);
   }
+  Map<String, LatLng> getLocations(){
+    int i = 0;
+    Map<String, LatLng> sites = {};
+    while (i < historicalSites.length){
+      sites[historicalSites[i].name] = LatLng(historicalSites[i].lat, historicalSites[i].lng);
+      i++;
+    }
+    return sites;
+
+  }
+
 }

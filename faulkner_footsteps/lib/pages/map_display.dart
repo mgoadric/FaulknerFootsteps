@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 
 class MapDisplay extends StatefulWidget {
   final LatLng currentPosition;
-  final ApplicationState app_state;
-  const MapDisplay({super.key, required this.currentPosition, required this.app_state});
+  final ApplicationState appState;
+  const MapDisplay({super.key, required this.currentPosition, required this.appState});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
@@ -24,24 +24,8 @@ class MapDisplay extends StatefulWidget {
 class _MapDisplayState extends State<MapDisplay> {
   bool visited = false;
   final Distance distance = new Distance();
-  final Map<String, LatLng> siteLocations = {
-    "Buhler Hall": LatLng(35.0991, -92.4422), //done
-    "Cadron Blockhouse": LatLng(35.104633, -92.544917),//maybe done? :')
-    "Church of Christ": LatLng(35.0925, -92.4378), //done
-    "Conway Confederate Monument": LatLng(35.088571, -92.442956), //done
-    "Faulkner County Museum": LatLng(35.0892, -92.4436), //done
-    "Hendrix Bell at Altus": LatLng(35.1, -92.441025), //done
-    "Simon Park": LatLng(35.089967, -92.44085), //done
-  };
-  late Map<String, double> siteDistances = {
-    "Buhler Hall": distance.as(LengthUnit.Meter, LatLng(35.0991, -92.4422),widget.currentPosition),//done
-    "Cadron Blockhouse": distance.as(LengthUnit.Meter, LatLng(35.104633, -92.544917),widget.currentPosition),//maybe done? :')
-    "Church of Christ": distance.as(LengthUnit.Meter, LatLng(35.0925, -92.4378),widget.currentPosition), //done
-    "Conway Confederate Monument": distance.as(LengthUnit.Meter, LatLng(35.088571, -92.442956),widget.currentPosition), //done
-    "Faulkner County Museum": distance.as(LengthUnit.Meter,  LatLng(35.0892, -92.4436),widget.currentPosition), //done
-    "Hendrix Bell at Altus": distance.as(LengthUnit.Meter, LatLng(35.1, -92.441025),widget.currentPosition), //done
-    "Simon Park": distance.as(LengthUnit.Meter,LatLng(35.089967, -92.44085),widget.currentPosition), //done
-  };
+  late Map<String, LatLng> siteLocations = widget.appState.getLocations();
+  late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
  @override
@@ -51,8 +35,8 @@ class _MapDisplayState extends State<MapDisplay> {
   }
   void locationDialog(context){
     final appState = Provider.of<ApplicationState>(context, listen: false);
-    HistSite? selectedSite = appState.historicalSites.firstWhere(
-      (site) => site.name == sorted.keys.first,
+    HistSite? selectedSite = widget.appState.historicalSites.firstWhere(
+      (site) => site.name == sorted.keys.first.toString(),
       // if not found, it will say the following
       orElse: () => HistSite(
         name: sorted.keys.first,
@@ -60,12 +44,13 @@ class _MapDisplayState extends State<MapDisplay> {
         blurbs: [],
         images: [],
         imageUrls: [],
+        lat: 0,
+        lng: 0,
         avgRating: 0.0,
         ratingAmount: 0,
       ),
     );
-    print(sorted.values.first);
-    if ((sorted.values.first < 30000.0) &  (!appState.hasVisited(sorted.keys.first)) & !visited ){
+    if ((sorted.values.first < 30000.0) &  (!widget.appState.hasVisited(sorted.keys.first)) & !visited ){
       showDialog(context: context, 
       builder: (BuildContext context,){
       return AlertDialog(
@@ -84,7 +69,8 @@ class _MapDisplayState extends State<MapDisplay> {
                 MaterialPageRoute(
                   builder: (context) => HistSitePage(
                     histSite: selectedSite,
-                    app_state: appState,
+                    app_state: widget.appState,
+                    currentPosition: widget.currentPosition,
                   ),
                 ),
               );
@@ -135,7 +121,6 @@ class _MapDisplayState extends State<MapDisplay> {
     });
   }
   }
-  
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
@@ -154,6 +139,7 @@ class _MapDisplayState extends State<MapDisplay> {
                     return PinDialog(
                       siteName: entry.key,
                       appState: appState,
+                      currentPosition: widget.currentPosition,
                     );
                   },
                 );
@@ -181,7 +167,7 @@ class _MapDisplayState extends State<MapDisplay> {
             children: [
               TileLayer(
                 urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 subdomains: ['a', 'b', 'c'],
               ),
               MarkerLayer(
@@ -192,5 +178,12 @@ class _MapDisplayState extends State<MapDisplay> {
       );},
       );
   }
+  Map<String, double> getDistances(Map<String, LatLng> locations){
+    Map<String, double> distances = {};
+    for (int i = 0; i <locations.length; i ++){
+      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),widget.currentPosition);
+    }
+    return distances;
+}
 }
 
