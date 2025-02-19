@@ -20,7 +20,6 @@ class MapDisplay extends StatefulWidget {
   _MapDisplayState createState() => _MapDisplayState();
 }
 
-
 class _MapDisplayState extends State<MapDisplay> {
   bool visited = false;
   final Distance distance = new Distance();
@@ -28,12 +27,14 @@ class _MapDisplayState extends State<MapDisplay> {
   late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
- @override
-    void initState() {
+  @override
+  void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => locationDialog(context));
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => locationDialog(context));
   }
-  void locationDialog(context){
+
+  void locationDialog(context) {
     final appState = Provider.of<ApplicationState>(context, listen: false);
     HistSite? selectedSite = widget.appState.historicalSites.firstWhere(
       (site) => site.name == sorted.keys.first.toString(),
@@ -72,54 +73,43 @@ class _MapDisplayState extends State<MapDisplay> {
                     app_state: widget.appState,
                     currentPosition: widget.currentPosition,
                   ),
-                ),
-              );
-            },
-            child: const Text(
-              "Get Info",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      var AchievementState = AchievementsPageState();
+                      // Navigate User to the HistSitePage
+                      AchievementState.visitPlace(context, sorted.keys.first);
+                      visited = true;
+                    },
+                    child: const Text(
+                      "Mark as visited.",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromARGB(255, 2, 26, 77),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      var AchievementState = AchievementsPageState();
+                      // Navigate User to the HistSitePage
+                      AchievementState.visitPlace(context, sorted.keys.first);
+                      visited = true;
+                    },
+                    child: const Text(
+                      "Close",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromARGB(255, 2, 26, 77),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              var AchievementState = AchievementsPageState();
-              // Navigate User to the HistSitePage
-              AchievementState.visitPlace(context, sorted.keys.first);
-              visited = true;
-            },
-            child: const Text(
-              "Mark as visited.",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              var AchievementState = AchievementsPageState();
-              // Navigate User to the HistSitePage
-              AchievementState.visitPlace(context, sorted.keys.first);
-              visited = true;
-            },
-            child: const Text(
-              "Close",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    });
-  }
+            );
+          });
+          }
   }
   @override
   Widget build(BuildContext context) {
@@ -130,7 +120,8 @@ class _MapDisplayState extends State<MapDisplay> {
           return Marker(
             point: entry.value,
             child: IconButton(
-              icon: const Icon(Icons.location_pin, color: Color.fromARGB(255, 255, 70, 57), size: 30),
+              icon: const Icon(Icons.location_pin,
+                  color: Color.fromARGB(255, 255, 70, 57), size: 30),
               onPressed: () {
                 // Show PinDialog when a pin is clicked
                 showDialog(
@@ -147,7 +138,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
-          return Scaffold(
+        return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 107, 79, 79),
@@ -175,8 +166,9 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-      );},
-      );
+        );
+      },
+    );
   }
   Map<String, double> getDistances(Map<String, LatLng> locations){
     Map<String, double> distances = {};
@@ -186,4 +178,3 @@ class _MapDisplayState extends State<MapDisplay> {
     return distances;
 }
 }
-
