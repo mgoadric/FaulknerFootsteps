@@ -7,11 +7,13 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 
 class ListItem extends StatelessWidget {
-  const ListItem({super.key, required this.siteInfo, required this.app_state});
+  const ListItem({super.key, required this.siteInfo, required this.app_state, required this.currentPosition});
   final HistSite siteInfo;
   final ApplicationState app_state;
+  final LatLng currentPosition;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,7 +37,7 @@ class ListItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             AppRouter.navigateTo(context, "/hist",
-                arguments: {"info": siteInfo, "app_state": app_state});
+                arguments: {"info": siteInfo, "app_state": app_state, "currentPosition": currentPosition});
           },
           borderRadius: BorderRadius.circular(12),
           child: Column(

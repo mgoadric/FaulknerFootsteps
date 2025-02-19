@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 // IMPORT RELATED TO MAP
@@ -170,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => HistSitePage(
-                        app_state: app_state, histSite: sampleSite),
+                        app_state: app_state, histSite: sampleSite, currentPosition: LatLng(0, 0),),
                   ),
                 );
               },

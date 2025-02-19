@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:faulkner_footsteps/objects/info_text.dart';
+import 'package:latlong2/latlong.dart';
 
 class HistSite {
   HistSite({
@@ -36,5 +37,8 @@ class HistSite {
   void updateRating(double newRating) {
     avgRating = ((avgRating * ratingAmount) + newRating) / (ratingAmount + 1);
     ratingAmount++;
+  }
+  LatLng getLocation(){
+    return LatLng(lat, lng);
   }
 }

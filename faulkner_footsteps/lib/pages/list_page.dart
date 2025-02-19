@@ -111,7 +111,7 @@ class _ListPageState extends State<ListPage> {
             itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = displaySites[index];
-              return ListItem(app_state: widget.app_state, siteInfo: site);
+              return ListItem(app_state: widget.app_state, siteInfo: site, currentPosition: _currentPosition?? LatLng(0, 0));
             },
           ),
         ),

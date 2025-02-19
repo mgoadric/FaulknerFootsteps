@@ -52,7 +52,7 @@ class AppRouter {
       case hsitePage:
         return MaterialPageRoute(
             builder: (_) => HistSitePage(
-                app_state: info["app_state"], histSite: info["info"]));
+                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]), );
       default:
         return _errorRoute();
     }

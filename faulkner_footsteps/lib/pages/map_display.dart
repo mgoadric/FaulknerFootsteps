@@ -70,6 +70,7 @@ class _MapDisplayState extends State<MapDisplay> {
                   builder: (context) => HistSitePage(
                     histSite: selectedSite,
                     app_state: widget.appState,
+                    currentPosition: widget.currentPosition,
                   ),
                 ),
               );
@@ -122,7 +123,6 @@ class _MapDisplayState extends State<MapDisplay> {
   }
   @override
   Widget build(BuildContext context) {
-    print(widget.appState.getLocations());
     return Consumer<ApplicationState>(
       builder: (context, appState, _) {
         // Red colored pins for each historical site
@@ -132,7 +132,6 @@ class _MapDisplayState extends State<MapDisplay> {
             child: IconButton(
               icon: const Icon(Icons.location_pin, color: Color.fromARGB(255, 255, 70, 57), size: 30),
               onPressed: () {
-                print(entry.key);
                 // Show PinDialog when a pin is clicked
                 showDialog(
                   context: context,
@@ -140,6 +139,7 @@ class _MapDisplayState extends State<MapDisplay> {
                     return PinDialog(
                       siteName: entry.key,
                       appState: appState,
+                      currentPosition: widget.currentPosition,
                     );
                   },
                 );
