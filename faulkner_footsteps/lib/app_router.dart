@@ -37,6 +37,8 @@ class AppRouter {
             ],
             images: [],
             imageUrls: [],
+            lat: 0,
+            lng: 0,
             //added ratings here
             avgRating: 0.0,
             ratingAmount: 0)
@@ -52,9 +54,10 @@ class AppRouter {
       case hsitePage:
         return MaterialPageRoute(
             builder: (_) => HistSitePage(
-                app_state: info["app_state"], histSite: info["info"]));
+                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]));
       case profilePage:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
+                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]), );
       default:
         return _errorRoute();
     }

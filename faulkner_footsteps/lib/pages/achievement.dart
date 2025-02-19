@@ -3,11 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 
 class AchievementsPage extends StatefulWidget {
-
   const AchievementsPage({super.key});
 
   @override
-  AchievementsPageState createState() => AchievementsPageState();
+  AchievementsPageState createState() {
+    return AchievementsPageState();
+  }
 }
 
 class AchievementsPageState extends State<AchievementsPage> {

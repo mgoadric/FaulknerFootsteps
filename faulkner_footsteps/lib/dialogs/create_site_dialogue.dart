@@ -114,7 +114,9 @@ class _siteDialogueState extends State<SiteDialogue> {
                                 imageUrls: [],
                                 images: [],
                                 ratingAmount: 0,
-                                avgRating: 0.0);
+                                avgRating: 0.0,
+                                lat: 0,
+                                lng: 0);
                             widget.siteAdded(newSite);
                             Navigator.pop(context);
                           });

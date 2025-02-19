@@ -2,15 +2,18 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 class PinDialog extends StatelessWidget {
   final String siteName;
   final ApplicationState appState;
+  final LatLng currentPosition;
 
   const PinDialog({
     super.key,
     required this.siteName,
     required this.appState,
+    required this.currentPosition
   });
 
   @override
@@ -25,6 +28,8 @@ class PinDialog extends StatelessWidget {
         blurbs: [],
         images: [],
         imageUrls: [],
+        lat: 0,
+        lng: 0,
         avgRating: 0.0,
         ratingAmount: 0,
       ),
@@ -47,6 +52,7 @@ class PinDialog extends StatelessWidget {
                   builder: (context) => HistSitePage(
                     histSite: selectedSite,
                     app_state: appState,
+                    currentPosition: currentPosition,
                   ),
                 ),
               );
