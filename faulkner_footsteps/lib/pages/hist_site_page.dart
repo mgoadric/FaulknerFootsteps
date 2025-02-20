@@ -13,12 +13,11 @@ class HistSitePage extends StatefulWidget {
   final HistSite histSite;
   final LatLng currentPosition;
 
-  const HistSitePage({
-    super.key,
-    required this.histSite,
-    required this.app_state,
-    required this.currentPosition
-  });
+  const HistSitePage(
+      {super.key,
+      required this.histSite,
+      required this.app_state,
+      required this.currentPosition});
 
   final ApplicationState app_state;
 
@@ -92,24 +91,28 @@ class _HistSitePage extends State<HistSitePage> {
   */
   @override
   Widget build(BuildContext context) {
-    final String siteDistance = (_distance.as(LengthUnit.Meter, LatLng(widget.histSite.lat, widget.histSite.lng),widget.currentPosition) /  1609.344).toStringAsFixed(2);
+    final String siteDistance = (_distance.as(
+                LengthUnit.Meter,
+                LatLng(widget.histSite.lat, widget.histSite.lng),
+                widget.currentPosition) /
+            1609.344)
+        .toStringAsFixed(2);
     List<String> testList = widget.histSite.imageUrls;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 238, 214, 196),
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
-        title: Text(
-          "Faulkner Footsteps",
-          style: GoogleFonts.ultra(
-            textStyle:
-                const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
+        backgroundColor: const Color.fromARGB(255, 238, 214, 196),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 107, 79, 79),
+          title: Text(
+            "Faulkner Footsteps",
+            style: GoogleFonts.ultra(
+              textStyle:
+                  const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        body: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
@@ -143,15 +146,26 @@ class _HistSitePage extends State<HistSitePage> {
                           context: context,
                           itemBuilder: (context, galleryIndex) {
                             return Image.memory(
-                                base64Decode(testList[galleryIndex]));
+                              base64Decode(testList[galleryIndex]),
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                    "assets/images/faulkner_thumbnail.png");
+                              },
+                            );
                           },
                           itemCount: testList.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.memory(base64Decode(testList[index]),
-                            fit: BoxFit.cover),
+                        child: Image.memory(
+                          base64Decode(testList[index]),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                                "assets/images/faulkner_thumbnail.png");
+                          },
+                        ),
                       ),
                     );
                   },
@@ -252,66 +266,68 @@ class _HistSitePage extends State<HistSitePage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: widget.histSite.blurbs.map((infoText) {
-                  return Card(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.histSite.blurbs.map((infoText) {
+                    return Card(
+                      elevation: 4,
+                      margin: const EdgeInsets.only(bottom: 16.0),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                      color: const Color.fromARGB(255, 250, 235, 215),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(infoText.title,
+                                style: GoogleFonts.ultra(
+                                    textStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 72, 52, 52),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold))),
+                            const SizedBox(height: 6),
+                            Text(infoText.value,
+                                style: GoogleFonts.rakkas(
+                                    textStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 107, 79, 79),
+                                        fontSize: 14))),
+                            if (infoText.date != "")
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  "Date: ${infoText.date}",
+                                  style: GoogleFonts.acme(
+                                      textStyle: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 72, 52, 52),
+                                          fontSize: 12)),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList()),
+            ),
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Card(
                     elevation: 4,
                     margin: const EdgeInsets.only(bottom: 16.0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),
                     color: const Color.fromARGB(255, 250, 235, 215),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(infoText.title,
-                              style: GoogleFonts.ultra(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 72, 52, 52),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold))),
-                          const SizedBox(height: 6),
-                          Text(infoText.value,
-                              style: GoogleFonts.rakkas(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 107, 79, 79),
-                                      fontSize: 14))),
-                          if (infoText.date != "")
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                "Date: ${infoText.date}",
-                                style: GoogleFonts.acme(
-                                    textStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 72, 52, 52),
-                                        fontSize: 12)),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList()
-              ),
-            ),
-            Padding(
-            padding: const EdgeInsets.all(16.0),
-                child: Card(elevation: 4,
-                    margin: const EdgeInsets.only(bottom: 16.0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    color: const Color.fromARGB(255, 250, 235, 215),
-                    child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text("You are $siteDistance miles away from this location!", style: GoogleFonts.ultra(
-                                  textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 72, 52, 52),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                ))
-        )))
-      ]),
-    ));
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                            "You are $siteDistance miles away from this location!",
+                            style: GoogleFonts.ultra(
+                              textStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 72, 52, 52),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            )))))
+          ]),
+        ));
   }
 }
