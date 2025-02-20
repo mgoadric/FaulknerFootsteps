@@ -41,21 +41,21 @@ class _HistSitePage extends State<HistSitePage> {
     setState(() {});
   }
 
-  Future<void> showRatingDialog() async {
-    final double? userRating = await showDialog<double>(
-      context: context,
-      builder: (BuildContext context) => RatingDialog(
-        app_state: widget.app_state,
-        site_name: widget.histSite.name,
-      ),
-    );
-    if (userRating != null) {
-      setState(() {
-        personalRating = userRating;
-      });
-      widget.histSite.updateRating(userRating);
-    }
-  }
+  // Future<void> showRatingDialog() async {
+  //   final double? userRating = await showDialog<double>(
+  //     context: context,
+  //     builder: (BuildContext context) => RatingDialog(
+  //       app_state: widget.app_state,
+  //       site_name: widget.histSite.name,
+  //     ),
+  //   );
+  //   if (userRating != null) {
+  //     setState(() {
+  //       personalRating = userRating;
+  //     });
+  //     widget.histSite.updateRating(userRating);
+  //   }
+  // }
 
   // Widget buildRatingStars(double rating) {
   //   int fullStars = rating.floor(); // Full stars
@@ -220,6 +220,8 @@ class _HistSitePage extends State<HistSitePage> {
                   starCount: 5,
                   onRatingChanged: (rating) {
                     setState(() {
+                      widget.histSite.updateRating(
+                          personalRating, rating, personalRating == 0.0);
                       personalRating = rating;
                       widget.app_state
                           .updateSiteRating(widget.histSite.name, rating);
