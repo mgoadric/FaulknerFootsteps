@@ -166,8 +166,7 @@ class ApplicationState extends ChangeNotifier {
     });
     double finalRating = totalRating / ratingcount;
     // print("This is a final rating $finalRating");
-    site.avgRating = finalRating;
-    site.ratingAmount = ratingcount;
+
     FirebaseFirestore.instance
         .collection("sites")
         .doc(siteName)

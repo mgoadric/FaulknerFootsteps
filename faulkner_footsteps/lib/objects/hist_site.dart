@@ -34,11 +34,15 @@ class HistSite {
   }
 
   void updateRating(double oldRating, double newRating, bool firstRating) {
+    print("Number of ratings: $ratingAmount");
+    print("Starting Rating: $avgRating");
+    double totalRating = 0;
     if (firstRating) {
-      ratingAmount++;
+      totalRating = avgRating * (ratingAmount - 1);
+    } else {
+      totalRating = avgRating * ratingAmount;
     }
-    print("Rating Amount: $ratingAmount");
-    double totalRating = avgRating * ratingAmount;
+    print("Total Rating: $totalRating");
     totalRating -= oldRating;
     avgRating = (totalRating + newRating) / (ratingAmount);
     print("Average Rating: $avgRating");
