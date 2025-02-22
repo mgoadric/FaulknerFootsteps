@@ -168,31 +168,36 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 72, 52, 52),
-        elevation: 5.0,
-        actions: [
-          const ProfileButton(),
-          IconButton(
-            onPressed: () {
-              openSearchDialog();
-            },
-            icon: const Icon(Icons.search,
-                color: Color.fromARGB(255, 255, 243, 228)),
-          ),
-          const LogoutButton(),
-        ],
-        title: Text(
-          _selectedIndex == 0
-              ? "Faulkner Footsteps"
-              : _selectedIndex == 1
-                  ? "Map"
-                  : "Achievements",
-          style: GoogleFonts.ultra(
-            textStyle:
-                const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
-          ),
-        ),
-      ),
+          backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+          elevation: 5.0,
+          actions: [
+            const ProfileButton(),
+            IconButton(
+              onPressed: () {
+                openSearchDialog();
+              },
+              icon: const Icon(Icons.search,
+                  color: Color.fromARGB(255, 255, 243, 228)),
+            ),
+            const LogoutButton(),
+          ],
+          title: Container(
+            constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width - 50),
+            child: FittedBox(
+              child: Text(
+                _selectedIndex == 0
+                    ? "Historical Sites"
+                    : _selectedIndex == 1
+                        ? "Map"
+                        : "Achievements",
+                style: GoogleFonts.ultra(
+                    textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 255, 243, 228)),
+                    fontSize: 99),
+              ),
+            ),
+          )),
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
