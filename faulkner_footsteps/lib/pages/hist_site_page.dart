@@ -114,18 +114,29 @@ class _HistSitePage extends State<HistSitePage> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: Text(
-                widget.histSite.name,
-                style: GoogleFonts.ultra(
-                  textStyle: const TextStyle(
-                      color: Color.fromARGB(255, 72, 52, 52),
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.histSite.name,
+                      style: GoogleFonts.ultra(
+                        textStyle: const TextStyle(
+                            color: Color.fromARGB(255, 72, 52, 52),
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text("$siteDistance mi",
+                        style: GoogleFonts.ultra(
+                          textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 72, 52, 52),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ))
+                  ],
+                )),
             Container(
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 250, 235, 215),
@@ -311,24 +322,6 @@ class _HistSitePage extends State<HistSitePage> {
                     );
                   }).toList()),
             ),
-            Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Card(
-                    elevation: 4,
-                    margin: const EdgeInsets.only(bottom: 16.0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    color: const Color.fromARGB(255, 250, 235, 215),
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                            "You are $siteDistance miles away from this location!",
-                            style: GoogleFonts.ultra(
-                              textStyle: const TextStyle(
-                                  color: Color.fromARGB(255, 72, 52, 52),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )))))
           ]),
         ));
   }
