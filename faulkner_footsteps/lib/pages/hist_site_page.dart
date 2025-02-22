@@ -183,7 +183,6 @@ class _HistSitePage extends State<HistSitePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16.0),
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
             //   child: Row(
@@ -222,6 +221,7 @@ class _HistSitePage extends State<HistSitePage> {
             //   ),
             // ),
             const SizedBox(height: 16.0),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child:
