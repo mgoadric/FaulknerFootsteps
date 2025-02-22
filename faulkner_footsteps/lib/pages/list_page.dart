@@ -205,7 +205,9 @@ class _ListPageState extends State<ListPage> {
                   currentPosition: _currentPosition!,
                   appState: widget.app_state,
                 )
-              : const AchievementsPage(),
+              : AchievementsPage(
+                  displaySites: displaySites,
+                ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         selectedItemColor: const Color.fromARGB(255, 238, 214, 196),
