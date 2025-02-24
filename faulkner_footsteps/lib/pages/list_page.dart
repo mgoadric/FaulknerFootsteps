@@ -141,9 +141,8 @@ class _ListPageState extends State<ListPage> {
               title: Text("Search"),
               content: SearchAnchor(
                   isFullScreen: false,
-                  viewConstraints: BoxConstraints(
-                      maxHeight:
-                          500), //500 seems like a good height on my emulator TODO: make this dynamic
+                  viewConstraints:
+                      BoxConstraints(), //500 seems like a good height on my emulator TODO: make this dynamic
                   searchController: _searchController,
                   builder: (context, controller) {
                     return SearchBar(
@@ -170,18 +169,19 @@ class _ListPageState extends State<ListPage> {
                       onTap: () {
                         controller.openView();
                       },
-                      onChanged: (query) {
-                        List<HistSite> lst = [];
-                        lst.addAll(fullSiteList.where((HistSite site) {
-                          return site.name
-                              .toLowerCase()
-                              .contains(query.toLowerCase());
-                        }));
-                        setState(() {
-                          displaySites = lst;
-                        });
-                        Navigator.pop(context);
-                      },
+
+                      // onChanged: (query) {
+                      //   List<HistSite> lst = [];
+                      //   lst.addAll(fullSiteList.where((HistSite site) {
+                      //     return site.name
+                      //         .toLowerCase()
+                      //         .contains(query.toLowerCase());
+                      //   }));
+                      //   setState(() {
+                      //     displaySites = lst;
+                      //   });
+                      //   Navigator.pop(context);
+                      // },
                       onSubmitted: (query) {
                         List<HistSite> lst = [];
                         lst.addAll(fullSiteList.where((HistSite site) {
