@@ -137,23 +137,92 @@ class _ListPageState extends State<ListPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            alignment: Alignment.topCenter,
-            title: Text("Search"),
-            content: SearchBar(
-              leading: Icon(Icons.search),
-              controller: _searchController,
-              hintText: "Search",
-              onSubmitted: (query) {
-                List<HistSite> lst = [];
-                lst.addAll(fullSiteList.where((HistSite site) =>
-                    site.name.toLowerCase().contains(query.toLowerCase())));
-                setState(() {
-                  displaySites = lst;
-                });
-                Navigator.pop(context);
-              },
-            ),
-          );
+              alignment: Alignment.topCenter,
+              title: Text("Search"),
+              content: SearchAnchor(
+                  isFullScreen: false,
+                  viewConstraints: BoxConstraints(
+                      maxHeight:
+                          500), //500 seems like a good height on my emulator TODO: make this dynamic
+                  searchController: _searchController,
+                  builder: (context, controller) {
+                    return SearchBar(
+                      leading: Icon(Icons.search),
+                      trailing: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_right_alt),
+                          onPressed: () {
+                            List<HistSite> lst = [];
+                            lst.addAll(fullSiteList.where((HistSite site) {
+                              return site.name
+                                  .toLowerCase()
+                                  .contains(controller.text.toLowerCase());
+                            }));
+                            setState(() {
+                              displaySites = lst;
+                            });
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                      controller: _searchController,
+                      hintText: "Search",
+                      onTap: () {
+                        controller.openView();
+                      },
+                      onChanged: (query) {
+                        List<HistSite> lst = [];
+                        lst.addAll(fullSiteList.where((HistSite site) {
+                          return site.name
+                              .toLowerCase()
+                              .contains(query.toLowerCase());
+                        }));
+                        setState(() {
+                          displaySites = lst;
+                        });
+                        Navigator.pop(context);
+                      },
+                      onSubmitted: (query) {
+                        List<HistSite> lst = [];
+                        lst.addAll(fullSiteList.where((HistSite site) {
+                          return site.name
+                              .toLowerCase()
+                              .contains(query.toLowerCase());
+                        }));
+                        setState(() {
+                          displaySites = lst;
+                        });
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                  suggestionsBuilder: (context, controller) {
+                    final String input = controller.text.toLowerCase();
+                    List<HistSite> filteredItems = [];
+                    for (HistSite site in fullSiteList) {
+                      if (site.name.toLowerCase().contains(input)) {
+                        filteredItems.add(site);
+                      }
+                    }
+                    // return List<ListTile>.generate(filteredItems.length,
+                    //     (int index) {
+                    //   return ListTile(
+                    //     title: Text(filteredItems[index].name),
+                    //   );
+                    // });
+                    return filteredItems.map((HistSite filteredSite) {
+                      return ListTile(
+                        title: Text(filteredSite.name),
+                        onTap: () {
+                          setState(() {
+                            displaySites = [filteredSite];
+                            controller.closeView(filteredSite.name);
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    });
+                  }));
         });
   }
 
