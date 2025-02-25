@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 
 class AchievementsPage extends StatefulWidget {
-  const AchievementsPage({super.key});
-
+  AchievementsPage({super.key, required this.displaySites});
+  List displaySites;
   @override
   AchievementsPageState createState() {
     return AchievementsPageState();
@@ -69,9 +69,9 @@ class AchievementsPageState extends State<AchievementsPage> {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
               ),
-              itemCount: appState.historicalSites.length,
+              itemCount: widget.displaySites.length,
               itemBuilder: (context, index) {
-                final place = appState.historicalSites[index];
+                final place = widget.displaySites[index];
                 final isVisited = appState.hasVisited(place.name);
 
                 return GestureDetector(
