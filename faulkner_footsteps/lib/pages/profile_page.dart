@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:faulkner_footsteps/app_state.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -113,6 +115,68 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Card(
+              color: const Color.fromARGB(255, 250, 235, 215),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'My Achievements',
+                      style: GoogleFonts.ultra(
+                        textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 72, 52, 52),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Consumer<ApplicationState>(
+                      builder: (context, appState, _) {
+                        if (appState.visitedPlaces.isEmpty) {
+                          return Text(
+                            'You haven\'t visited any historical sites yet.',
+                            style: GoogleFonts.rakkas(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 107, 79, 79),
+                                fontSize: 14,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: appState.visitedPlaces.map((place) {
+                            return Chip(
+                              backgroundColor: Colors.green[100],
+                              avatar: Icon(
+                                Icons.emoji_events,
+                                color: Colors.green,
+                                size: 18,
+                              ),
+                              label: Text(
+                                place,
+                                style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 72, 52, 52),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              side: BorderSide(color: Colors.green),
+                            );
+                          }).toList(),
+                        );
+                      },
                     ),
                   ],
                 ),
