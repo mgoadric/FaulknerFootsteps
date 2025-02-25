@@ -72,11 +72,18 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    // Get screen width to set explicit width for all cards
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth =
+        screenWidth - 32.0; // Account for padding (16px on each side)
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+        iconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 255, 243, 228),
+        ),
         title: Text(
           'Profile',
           style: GoogleFonts.ultra(
@@ -89,112 +96,24 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center, // Center the cards
           children: [
-            Card(
-              color: const Color.fromARGB(255, 250, 235, 215),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email',
-                      style: GoogleFonts.ultra(
-                        textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      user?.email ?? 'Not signed in',
-                      style: GoogleFonts.rakkas(
-                        textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 107, 79, 79),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ],
+            // Email card
+            Container(
+              width: cardWidth,
+              child: Card(
+                color: const Color.fromARGB(255, 250, 235, 215),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Card(
-              color: const Color.fromARGB(255, 250, 235, 215),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'My Achievements',
-                      style: GoogleFonts.ultra(
-                        textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Consumer<ApplicationState>(
-                      builder: (context, appState, _) {
-                        if (appState.visitedPlaces.isEmpty) {
-                          return Text(
-                            'You haven\'t visited any historical sites yet.',
-                            style: GoogleFonts.rakkas(
-                              textStyle: const TextStyle(
-                                color: Color.fromARGB(255, 107, 79, 79),
-                                fontSize: 14,
-                              ),
-                            ),
-                          );
-                        }
-
-                        return Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: appState.visitedPlaces.map((place) {
-                            return Chip(
-                              backgroundColor: Colors.green[100],
-                              avatar: Icon(
-                                Icons.emoji_events,
-                                color: Colors.green,
-                                size: 18,
-                              ),
-                              label: Text(
-                                place,
-                                style: GoogleFonts.rakkas(
-                                  textStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 72, 52, 52),
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              side: BorderSide(color: Colors.green),
-                            );
-                          }).toList(),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Card(
-              color: const Color.fromARGB(255, 250, 235, 215),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Change Password',
+                        'Email',
                         style: GoogleFonts.ultra(
                           textStyle: const TextStyle(
                             color: Color.fromARGB(255, 72, 52, 52),
@@ -202,101 +121,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _currentPasswordController,
-                        decoration: InputDecoration(
-                          labelText: 'Current Password',
-                          labelStyle: GoogleFonts.rakkas(
-                            textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 107, 79, 79),
-                            ),
+                      const SizedBox(height: 8),
+                      Text(
+                        user?.email ?? 'Not signed in',
+                        style: GoogleFonts.rakkas(
+                          textStyle: const TextStyle(
+                            color: Color.fromARGB(255, 107, 79, 79),
+                            fontSize: 16,
                           ),
-                          border: const OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your current password';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _newPasswordController,
-                        decoration: InputDecoration(
-                          labelText: 'New Password',
-                          labelStyle: GoogleFonts.rakkas(
-                            textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 107, 79, 79),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a new password';
-                          }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _confirmPasswordController,
-                        decoration: InputDecoration(
-                          labelText: 'Confirm New Password',
-                          labelStyle: GoogleFonts.rakkas(
-                            textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 107, 79, 79),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value != _newPasswordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
-                      if (_errorMessage != null)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            _errorMessage!,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _isLoading ? null : _changePassword,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 72, 52, 52),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: _isLoading
-                              ? const CircularProgressIndicator()
-                              : Text(
-                                  'Update Password',
-                                  style: GoogleFonts.rakkas(
-                                    textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 255, 243, 228),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
                         ),
                       ),
                     ],
@@ -305,115 +137,326 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 24),
-            Card(
-              color: const Color.fromARGB(255, 250, 235, 215),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Account Actions',
-                      style: GoogleFonts.ultra(
-                        textStyle: const TextStyle(
-                          color: Color.fromARGB(255, 72, 52, 52),
-                          fontSize: 16,
+
+            // Achievements card
+            Container(
+              width: cardWidth,
+              child: Card(
+                color: const Color.fromARGB(255, 250, 235, 215),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'My Achievements',
+                        style: GoogleFonts.ultra(
+                          textStyle: const TextStyle(
+                            color: Color.fromARGB(255, 72, 52, 52),
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(
-                          Icons.logout,
-                          color: Color.fromARGB(255, 255, 243, 228),
-                        ),
-                        onPressed: () async {
-                          // Show confirmation dialog
-                          final bool? shouldLogout = await showDialog<bool>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 238, 214, 196),
-                                title: Text(
-                                  'Logout',
-                                  style: GoogleFonts.ultra(
-                                    textStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 72, 52, 52),
-                                    ),
-                                  ),
+                      const SizedBox(height: 16),
+                      Consumer<ApplicationState>(
+                        builder: (context, appState, _) {
+                          if (appState.visitedPlaces.isEmpty) {
+                            return Text(
+                              'You haven\'t visited any historical sites yet.',
+                              style: GoogleFonts.rakkas(
+                                textStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 107, 79, 79),
+                                  fontSize: 14,
                                 ),
-                                content: Text(
-                                  'Are you sure you want to logout?',
+                              ),
+                            );
+                          }
+
+                          return Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: appState.visitedPlaces.map((place) {
+                              return Chip(
+                                backgroundColor: Colors.green[100],
+                                avatar: Icon(
+                                  Icons.emoji_events,
+                                  color: Colors.green,
+                                  size: 18,
+                                ),
+                                label: Text(
+                                  place,
                                   style: GoogleFonts.rakkas(
                                     textStyle: const TextStyle(
                                       color: Color.fromARGB(255, 72, 52, 52),
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: Text(
-                                      'Cancel',
-                                      style: GoogleFonts.rakkas(
-                                        textStyle: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 72, 52, 52),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: Text(
-                                      'Logout',
-                                      style: GoogleFonts.rakkas(
-                                        textStyle: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 72, 52, 52),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                side: BorderSide(color: Colors.green),
                               );
-                            },
+                            }).toList(),
                           );
-
-                          if (shouldLogout == true) {
-                            await FirebaseAuth.instance.signOut();
-                            if (mounted) {
-                              // Navigate to login page and clear the navigation stack
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                AppRouter.loginPage,
-                                (route) => false,
-                              );
-                            }
-                          }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 72, 52, 52),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        label: Text(
-                          'Log Out',
-                          style: GoogleFonts.rakkas(
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Password card
+            Container(
+              width: cardWidth,
+              child: Card(
+                color: const Color.fromARGB(255, 250, 235, 215),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Change Password',
+                          style: GoogleFonts.ultra(
                             textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 255, 243, 228),
+                              color: Color.fromARGB(255, 72, 52, 52),
                               fontSize: 16,
                             ),
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _currentPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'Current Password',
+                            labelStyle: GoogleFonts.rakkas(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 107, 79, 79),
+                              ),
+                            ),
+                            border: const OutlineInputBorder(),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your current password';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _newPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'New Password',
+                            labelStyle: GoogleFonts.rakkas(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 107, 79, 79),
+                              ),
+                            ),
+                            border: const OutlineInputBorder(),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a new password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'Confirm New Password',
+                            labelStyle: GoogleFonts.rakkas(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 107, 79, 79),
+                              ),
+                            ),
+                            border: const OutlineInputBorder(),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value != _newPasswordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                        ),
+                        if (_errorMessage != null)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              _errorMessage!,
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _changePassword,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 72, 52, 52),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            child: _isLoading
+                                ? const CircularProgressIndicator()
+                                : Text(
+                                    'Update Password',
+                                    style: GoogleFonts.rakkas(
+                                      textStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 255, 243, 228),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Logout card
+            Container(
+              width: cardWidth,
+              child: Card(
+                color: const Color.fromARGB(255, 250, 235, 215),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Account Actions',
+                        style: GoogleFonts.ultra(
+                          textStyle: const TextStyle(
+                            color: Color.fromARGB(255, 72, 52, 52),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Color.fromARGB(255, 255, 243, 228),
+                          ),
+                          onPressed: () async {
+                            // Show confirmation dialog
+                            final bool? shouldLogout = await showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 238, 214, 196),
+                                  title: Text(
+                                    'Logout',
+                                    style: GoogleFonts.ultra(
+                                      textStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 72, 52, 52),
+                                      ),
+                                    ),
+                                  ),
+                                  content: Text(
+                                    'Are you sure you want to logout?',
+                                    style: GoogleFonts.rakkas(
+                                      textStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 72, 52, 52),
+                                      ),
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: Text(
+                                        'Cancel',
+                                        style: GoogleFonts.rakkas(
+                                          textStyle: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 72, 52, 52),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: Text(
+                                        'Logout',
+                                        style: GoogleFonts.rakkas(
+                                          textStyle: const TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 72, 52, 52),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (shouldLogout == true) {
+                              await FirebaseAuth.instance.signOut();
+                              if (mounted) {
+                                // Navigate to login page and clear the navigation stack
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRouter.loginPage,
+                                  (route) => false,
+                                );
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 72, 52, 52),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          label: Text(
+                            'Log Out',
+                            style: GoogleFonts.rakkas(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 255, 243, 228),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
