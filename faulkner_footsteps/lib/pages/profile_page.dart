@@ -1,3 +1,4 @@
+import 'package:faulkner_footsteps/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -300,6 +301,119 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Card(
+              color: const Color.fromARGB(255, 250, 235, 215),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Account Actions',
+                      style: GoogleFonts.ultra(
+                        textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 72, 52, 52),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Color.fromARGB(255, 255, 243, 228),
+                        ),
+                        onPressed: () async {
+                          // Show confirmation dialog
+                          final bool? shouldLogout = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 238, 214, 196),
+                                title: Text(
+                                  'Logout',
+                                  style: GoogleFonts.ultra(
+                                    textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 72, 52, 52),
+                                    ),
+                                  ),
+                                ),
+                                content: Text(
+                                  'Are you sure you want to logout?',
+                                  style: GoogleFonts.rakkas(
+                                    textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 72, 52, 52),
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text(
+                                      'Cancel',
+                                      style: GoogleFonts.rakkas(
+                                        textStyle: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 72, 52, 52),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text(
+                                      'Logout',
+                                      style: GoogleFonts.rakkas(
+                                        textStyle: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 72, 52, 52),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          if (shouldLogout == true) {
+                            await FirebaseAuth.instance.signOut();
+                            if (mounted) {
+                              // Navigate to login page and clear the navigation stack
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                AppRouter.loginPage,
+                                (route) => false,
+                              );
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 72, 52, 52),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        label: Text(
+                          'Log Out',
+                          style: GoogleFonts.rakkas(
+                            textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 255, 243, 228),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

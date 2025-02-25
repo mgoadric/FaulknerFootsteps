@@ -248,7 +248,6 @@ class _ListPageState extends State<ListPage> {
               icon: const Icon(Icons.search,
                   color: Color.fromARGB(255, 255, 243, 228)),
             ),
-            const LogoutButton(),
           ],
           title: Container(
             constraints: BoxConstraints(
