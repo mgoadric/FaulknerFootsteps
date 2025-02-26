@@ -73,6 +73,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
+        leading: BackButton(color: Color.fromARGB(255, 255, 243, 228)),
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 72, 52, 52),
         title: Text(
           'Profile',

@@ -14,26 +14,29 @@ import 'package:provider/provider.dart';
 class MapDisplay extends StatefulWidget {
   final LatLng currentPosition;
   final ApplicationState appState;
-  const MapDisplay({super.key, required this.currentPosition, required this.appState});
+  const MapDisplay(
+      {super.key, required this.currentPosition, required this.appState});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
 }
-
 
 class _MapDisplayState extends State<MapDisplay> {
   bool visited = false;
   final Distance distance = new Distance();
   late Map<String, LatLng> siteLocations = widget.appState.getLocations();
   late Map<String, double> siteDistances = getDistances(siteLocations);
-  late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
+  late var sorted = Map.fromEntries(siteDistances.entries.toList()
+    ..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
- @override
-    void initState() {
+  @override
+  void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => locationDialog(context));
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => locationDialog(context));
   }
-  void locationDialog(context){
+
+  void locationDialog(context) {
     final appState = Provider.of<ApplicationState>(context, listen: false);
     HistSite? selectedSite = widget.appState.historicalSites.firstWhere(
       (site) => site.name == sorted.keys.first.toString(),
@@ -50,77 +53,83 @@ class _MapDisplayState extends State<MapDisplay> {
         ratingAmount: 0,
       ),
     );
-    if ((sorted.values.first < 30000.0) &  (!widget.appState.hasVisited(sorted.keys.first)) & !visited ){
-      showDialog(context: context, 
-      builder: (BuildContext context,){
-      return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 247, 222, 231),
-      title: Text("You are near a historical site!"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(sorted.keys.first),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Navigate User to the HistSitePage
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HistSitePage(
-                    histSite: selectedSite,
-                    app_state: widget.appState,
-                    currentPosition: widget.currentPosition,
+    if ((sorted.values.first < 30000.0) &
+        (!widget.appState.hasVisited(sorted.keys.first)) &
+        !visited) {
+      showDialog(
+          context: context,
+          builder: (
+            BuildContext context,
+          ) {
+            return AlertDialog(
+              backgroundColor: const Color.fromARGB(255, 247, 222, 231),
+              title: Text("You are near a historical site!"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(sorted.keys.first),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      // Navigate User to the HistSitePage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HistSitePage(
+                            histSite: selectedSite,
+                            app_state: widget.appState,
+                            currentPosition: widget.currentPosition,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Get Info",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromARGB(255, 2, 26, 77),
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
-            child: const Text(
-              "Get Info",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      var AchievementState = AchievementsPageState();
+                      // Navigate User to the HistSitePage
+                      AchievementState.visitPlace(context, sorted.keys.first);
+                      visited = true;
+                    },
+                    child: const Text(
+                      "Mark as visited.",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromARGB(255, 2, 26, 77),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      var AchievementState = AchievementsPageState();
+                      // Navigate User to the HistSitePage
+                      AchievementState.visitPlace(context, sorted.keys.first);
+                      visited = true;
+                    },
+                    child: const Text(
+                      "Close",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromARGB(255, 2, 26, 77),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              var AchievementState = AchievementsPageState();
-              // Navigate User to the HistSitePage
-              AchievementState.visitPlace(context, sorted.keys.first);
-              visited = true;
-            },
-            child: const Text(
-              "Mark as visited.",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              var AchievementState = AchievementsPageState();
-              // Navigate User to the HistSitePage
-              AchievementState.visitPlace(context, sorted.keys.first);
-              visited = true;
-            },
-            child: const Text(
-              "Close",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    });
+            );
+          });
+    }
   }
-  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
@@ -130,7 +139,8 @@ class _MapDisplayState extends State<MapDisplay> {
           return Marker(
             point: entry.value,
             child: IconButton(
-              icon: const Icon(Icons.location_pin, color: Color.fromARGB(255, 255, 70, 57), size: 30),
+              icon: const Icon(Icons.location_pin,
+                  color: Color.fromARGB(255, 255, 70, 57), size: 30),
               onPressed: () {
                 // Show PinDialog when a pin is clicked
                 showDialog(
@@ -147,9 +157,12 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
-          return Scaffold(
+        return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
+            leading: BackButton(
+              color: Color.fromARGB(255, 255, 243, 228),
+            ),
             backgroundColor: const Color.fromARGB(255, 107, 79, 79),
             title: Text(
               "Faulkner County Map",
@@ -166,8 +179,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 subdomains: ['a', 'b', 'c'],
               ),
               MarkerLayer(
@@ -175,14 +187,17 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-      );},
-      );
+        );
+      },
+    );
   }
-  Map<String, double> getDistances(Map<String, LatLng> locations){
+
+  Map<String, double> getDistances(Map<String, LatLng> locations) {
     Map<String, double> distances = {};
-    for (int i = 0; i <locations.length; i ++){
-      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),widget.currentPosition);
+    for (int i = 0; i < locations.length; i++) {
+      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter,
+          locations.values.elementAt(i), widget.currentPosition);
     }
     return distances;
-}
+  }
 }

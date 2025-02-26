@@ -142,7 +142,7 @@ class _ListPageState extends State<ListPage> {
               content: SearchAnchor(
                   isFullScreen: false,
                   viewConstraints:
-                      BoxConstraints(), //500 seems like a good height on my emulator TODO: make this dynamic
+                      BoxConstraints(), //this works for some reason despite having no arguments
                   searchController: _searchController,
                   builder: (context, controller) {
                     return SearchBar(
@@ -237,6 +237,9 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
+          leading: BackButton(
+            color: Color.fromARGB(255, 255, 243, 228),
+          ),
           backgroundColor: const Color.fromARGB(255, 107, 79, 79),
           elevation: 5.0,
           actions: [
