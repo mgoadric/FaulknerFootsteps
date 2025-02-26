@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/pin_Dialog.dart';
@@ -55,11 +56,22 @@ class _MapDisplayState extends State<MapDisplay> {
       builder: (BuildContext context,){
       return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 247, 222, 231),
-      title: Text("You are near a historical site!"),
+      title: Text(sorted.keys.first, style: GoogleFonts.ultra(
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 72, 52, 52),
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold))),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(sorted.keys.first),
+          Text("You are near this historical site!",
+          style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 14))),
+          Image(image: MemoryImage(base64Decode(selectedSite.imageUrls.first))),
+          Row(
+          children: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -75,12 +87,12 @@ class _MapDisplayState extends State<MapDisplay> {
                 ),
               );
             },
-            child: const Text(
-              "Get Info",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
+            child: Text(
+              "Get Info      ",
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
             ),
           ),
           TextButton(
@@ -91,13 +103,15 @@ class _MapDisplayState extends State<MapDisplay> {
               AchievementState.visitPlace(context, sorted.keys.first);
               visited = true;
             },
-            child: const Text(
-              "Mark as visited.",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
+            child: Text(
+              "Mark as visited",
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
             ),
+          ),
+          ],
           ),
           TextButton(
             onPressed: () {
@@ -107,12 +121,12 @@ class _MapDisplayState extends State<MapDisplay> {
               AchievementState.visitPlace(context, sorted.keys.first);
               visited = true;
             },
-            child: const Text(
+            child: Text(
               "Close",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
-              ),
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
             ),
           ),
         ],
@@ -147,6 +161,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
+        markers.add(Marker(point: widget.currentPosition, child: Icon(Icons.circle, color: Colors.blue,)));
           return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
