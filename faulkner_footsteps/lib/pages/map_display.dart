@@ -147,6 +147,7 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
+        markers.add(Marker(point: widget.currentPosition, child: Icon(Icons.circle, color: Colors.blue,)));
           return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
