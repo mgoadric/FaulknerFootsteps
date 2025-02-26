@@ -89,7 +89,8 @@ class _ListPageState extends State<ListPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MapDisplay(currentPosition: _currentPosition!, appState: widget.app_state),
+          builder: (context) => MapDisplay(
+              currentPosition: _currentPosition!, appState: widget.app_state),
         ),
       );
     } else {
@@ -113,7 +114,10 @@ class _ListPageState extends State<ListPage> {
             itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
               HistSite site = displaySites[index];
-              return ListItem(app_state: widget.app_state, siteInfo: site, currentPosition: _currentPosition?? LatLng(0, 0));
+              return ListItem(
+                  app_state: widget.app_state,
+                  siteInfo: site,
+                  currentPosition: _currentPosition ?? LatLng(0, 0));
             },
           ),
         ),
@@ -133,23 +137,92 @@ class _ListPageState extends State<ListPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            alignment: Alignment.topCenter,
-            title: Text("Search"),
-            content: SearchBar(
-              leading: Icon(Icons.search),
-              controller: _searchController,
-              hintText: "Search",
-              onSubmitted: (query) {
-                List<HistSite> lst = [];
-                lst.addAll(fullSiteList.where((HistSite site) =>
-                    site.name.toLowerCase().contains(query.toLowerCase())));
-                setState(() {
-                  displaySites = lst;
-                });
-                Navigator.pop(context);
-              },
-            ),
-          );
+              alignment: Alignment.topCenter,
+              title: Text("Search"),
+              content: SearchAnchor(
+                  isFullScreen: false,
+                  viewConstraints:
+                      BoxConstraints(), //500 seems like a good height on my emulator TODO: make this dynamic
+                  searchController: _searchController,
+                  builder: (context, controller) {
+                    return SearchBar(
+                      leading: Icon(Icons.search),
+                      trailing: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_right_alt),
+                          onPressed: () {
+                            List<HistSite> lst = [];
+                            lst.addAll(fullSiteList.where((HistSite site) {
+                              return site.name
+                                  .toLowerCase()
+                                  .contains(controller.text.toLowerCase());
+                            }));
+                            setState(() {
+                              displaySites = lst;
+                            });
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                      controller: _searchController,
+                      hintText: "Search",
+                      onTap: () {
+                        controller.openView();
+                      },
+
+                      // onChanged: (query) {
+                      //   List<HistSite> lst = [];
+                      //   lst.addAll(fullSiteList.where((HistSite site) {
+                      //     return site.name
+                      //         .toLowerCase()
+                      //         .contains(query.toLowerCase());
+                      //   }));
+                      //   setState(() {
+                      //     displaySites = lst;
+                      //   });
+                      //   Navigator.pop(context);
+                      // },
+                      onSubmitted: (query) {
+                        List<HistSite> lst = [];
+                        lst.addAll(fullSiteList.where((HistSite site) {
+                          return site.name
+                              .toLowerCase()
+                              .contains(query.toLowerCase());
+                        }));
+                        setState(() {
+                          displaySites = lst;
+                        });
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                  suggestionsBuilder: (context, controller) {
+                    final String input = controller.text.toLowerCase();
+                    List<HistSite> filteredItems = [];
+                    for (HistSite site in fullSiteList) {
+                      if (site.name.toLowerCase().contains(input)) {
+                        filteredItems.add(site);
+                      }
+                    }
+                    // return List<ListTile>.generate(filteredItems.length,
+                    //     (int index) {
+                    //   return ListTile(
+                    //     title: Text(filteredItems[index].name),
+                    //   );
+                    // });
+                    return filteredItems.map((HistSite filteredSite) {
+                      return ListTile(
+                        title: Text(filteredSite.name),
+                        onTap: () {
+                          setState(() {
+                            displaySites = [filteredSite];
+                            controller.closeView(filteredSite.name);
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    });
+                  }));
         });
   }
 
@@ -164,36 +237,45 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 72, 52, 52),
-        elevation: 5.0,
-        actions: [
-          const ProfileButton(),
-          IconButton(
-            onPressed: () {
-              openSearchDialog();
-            },
-            icon: const Icon(Icons.search,
-                color: Color.fromARGB(255, 255, 243, 228)),
-          ),
-          const LogoutButton(),
-        ],
-        title: Text(
-          _selectedIndex == 0
-              ? "Faulkner Footsteps"
-              : _selectedIndex == 1
-                  ? "Map"
-                  : "Achievements",
-          style: GoogleFonts.ultra(
-            textStyle:
-                const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
-          ),
-        ),
-      ),
+          backgroundColor: const Color.fromARGB(255, 107, 79, 79),
+          elevation: 5.0,
+          actions: [
+            const ProfileButton(),
+            IconButton(
+              onPressed: () {
+                openSearchDialog();
+              },
+              icon: const Icon(Icons.search,
+                  color: Color.fromARGB(255, 255, 243, 228)),
+            ),
+          ],
+          title: Container(
+            constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width - 50),
+            child: FittedBox(
+              child: Text(
+                _selectedIndex == 0
+                    ? "Historical Sites"
+                    : _selectedIndex == 1
+                        ? "Map"
+                        : "Achievements",
+                style: GoogleFonts.ultra(
+                    textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 255, 243, 228)),
+                    fontSize: 99),
+              ),
+            ),
+          )),
       body: _selectedIndex == 0
           ? _buildHomeContent()
           : _selectedIndex == 1
-              ? MapDisplay(currentPosition: _currentPosition!,appState: widget.app_state,)
-              : const AchievementsPage(),
+              ? MapDisplay(
+                  currentPosition: _currentPosition!,
+                  appState: widget.app_state,
+                )
+              : AchievementsPage(
+                  displaySites: displaySites,
+                ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         selectedItemColor: const Color.fromARGB(255, 238, 214, 196),

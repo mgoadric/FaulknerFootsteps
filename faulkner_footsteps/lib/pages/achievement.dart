@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 
 class AchievementsPage extends StatefulWidget {
-  const AchievementsPage({super.key});
-
+  AchievementsPage({super.key, required this.displaySites});
+  List displaySites;
   @override
   AchievementsPageState createState() {
     return AchievementsPageState();
@@ -68,11 +68,15 @@ class AchievementsPageState extends State<AchievementsPage> {
                 crossAxisCount: 3,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
+                mainAxisExtent: 160, // Increased height further
               ),
-              itemCount: appState.historicalSites.length,
+              itemCount: widget.displaySites.length,
               itemBuilder: (context, index) {
-                final place = appState.historicalSites[index];
+                final place = widget.displaySites[index];
                 final isVisited = appState.hasVisited(place.name);
+
+                // Calculate font size based on text length
+                final fontSize = place.name.length > 20 ? 14.0 : 16.0;
 
                 return GestureDetector(
                   onTap: () => visitPlace(context, place.name),
@@ -89,37 +93,57 @@ class AchievementsPageState extends State<AchievementsPage> {
                         width: 2,
                       ),
                     ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
+                    child: Column(
+                      children: [
+                        // Top section with icon
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: Icon(
                             isVisited ? Icons.emoji_events : Icons.place,
                             size: 40,
                             color: isVisited
                                 ? Colors.green
                                 : const Color.fromARGB(255, 143, 6, 6),
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            place.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 72, 52, 52),
-                            ),
-                          ),
-                          if (isVisited)
-                            const Text(
-                              "Done!",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
+                        ),
+
+                        // Middle section with name
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Center(
+                              child: Text(
+                                place.name,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontSize, // Adaptive font size
+                                  color: Color.fromARGB(255, 72, 52, 52),
+                                ),
+                                maxLines: 3, // Increased max lines
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                        ],
-                      ),
+                          ),
+                        ),
+
+                        // Bottom section with "Done!" label
+                        Container(
+                          height: 24,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(bottom: 5.0),
+                          child: isVisited
+                              ? const Text(
+                                  "Done!",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : const SizedBox(), // Empty placeholder
+                        ),
+                      ],
                     ),
                   ),
                 );
