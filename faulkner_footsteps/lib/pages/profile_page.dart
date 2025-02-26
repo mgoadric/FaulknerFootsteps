@@ -80,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 72, 52, 52),
+        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         iconTheme: const IconThemeData(
           color: Color.fromARGB(255, 255, 243, 228),
         ),
@@ -315,7 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: _isLoading ? null : _changePassword,
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  const Color.fromARGB(255, 72, 52, 52),
+                                  const Color.fromARGB(255, 107, 79, 79),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
                             child: _isLoading
@@ -383,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     'Logout',
                                     style: GoogleFonts.ultra(
                                       textStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 72, 52, 52),
+                                        color: Color.fromARGB(255, 107, 79, 79),
                                       ),
                                     ),
                                   ),
@@ -391,7 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     'Are you sure you want to logout?',
                                     style: GoogleFonts.rakkas(
                                       textStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 72, 52, 52),
+                                        color: Color.fromARGB(255, 107, 79, 79),
                                       ),
                                     ),
                                   ),
@@ -403,8 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         'Cancel',
                                         style: GoogleFonts.rakkas(
                                           textStyle: const TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 72, 52, 52),
+                                            color: Color.fromARGB(
+                                                255, 107, 79, 79),
                                           ),
                                         ),
                                       ),
@@ -416,8 +416,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         'Logout',
                                         style: GoogleFonts.rakkas(
                                           textStyle: const TextStyle(
-                                            color:
-                                                Color.fromARGB(255, 72, 52, 52),
+                                            color: Color.fromARGB(
+                                                255, 107, 79, 79),
                                           ),
                                         ),
                                       ),
@@ -441,7 +441,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                const Color.fromARGB(255, 72, 52, 52),
+                                const Color.fromARGB(255, 107, 79, 79),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           label: Text(
