@@ -68,6 +68,7 @@ class AchievementsPageState extends State<AchievementsPage> {
                 crossAxisCount: 3,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
+                mainAxisExtent: 150,
               ),
               itemCount: widget.displaySites.length,
               itemBuilder: (context, index) {
