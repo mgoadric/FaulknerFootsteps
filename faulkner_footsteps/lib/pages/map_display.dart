@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/pin_Dialog.dart';
@@ -53,81 +54,88 @@ class _MapDisplayState extends State<MapDisplay> {
         ratingAmount: 0,
       ),
     );
-    if ((sorted.values.first < 30000.0) &
-        (!widget.appState.hasVisited(sorted.keys.first)) &
-        !visited) {
-      showDialog(
-          context: context,
-          builder: (
-            BuildContext context,
-          ) {
-            return AlertDialog(
-              backgroundColor: const Color.fromARGB(255, 247, 222, 231),
-              title: Text("You are near a historical site!"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(sorted.keys.first),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      // Navigate User to the HistSitePage
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HistSitePage(
-                            histSite: selectedSite,
-                            app_state: widget.appState,
-                            currentPosition: widget.currentPosition,
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Get Info",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Color.fromARGB(255, 2, 26, 77),
-                      ),
-                    ),
+    if ((sorted.values.first < 30000.0) &  (!widget.appState.hasVisited(sorted.keys.first)) & !visited ){
+      showDialog(context: context, 
+      builder: (BuildContext context,){
+      return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 247, 222, 231),
+      title: Text(sorted.keys.first, style: GoogleFonts.ultra(
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 72, 52, 52),
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold))),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("You are near this historical site!",
+          style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 14))),
+          Image(image: MemoryImage(base64Decode(selectedSite.imageUrls.first))),
+          Row(
+          children: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Navigate User to the HistSitePage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistSitePage(
+                    histSite: selectedSite,
+                    app_state: widget.appState,
+                    currentPosition: widget.currentPosition,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      var AchievementState = AchievementsPageState();
-                      // Navigate User to the HistSitePage
-                      AchievementState.visitPlace(context, sorted.keys.first);
-                      visited = true;
-                    },
-                    child: const Text(
-                      "Mark as visited.",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Color.fromARGB(255, 2, 26, 77),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      var AchievementState = AchievementsPageState();
-                      // Navigate User to the HistSitePage
-                      AchievementState.visitPlace(context, sorted.keys.first);
-                      visited = true;
-                    },
-                    child: const Text(
-                      "Close",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Color.fromARGB(255, 2, 26, 77),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-    }
+                ),
+              );
+            },
+            child: Text(
+              "Get Info      ",
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              var AchievementState = AchievementsPageState();
+              // Navigate User to the HistSitePage
+              AchievementState.visitPlace(context, sorted.keys.first);
+              visited = true;
+            },
+            child: Text(
+              "Mark as visited",
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
+            ),
+          ),
+          ],
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              var AchievementState = AchievementsPageState();
+              // Navigate User to the HistSitePage
+              AchievementState.visitPlace(context, sorted.keys.first);
+              visited = true;
+            },
+            child: Text(
+              "Close",
+              style: GoogleFonts.rakkas(
+                                  textStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79),
+                                      fontSize: 20)),
+            ),
+          ),
+        ],
+      ),
+    );
+    });
   }
 
   @override
@@ -157,7 +165,8 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
-        return Scaffold(
+        markers.add(Marker(point: widget.currentPosition, child: Icon(Icons.circle, color: Colors.blue,)));
+          return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           appBar: AppBar(
             leading: BackButton(
