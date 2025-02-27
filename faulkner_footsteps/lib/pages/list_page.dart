@@ -165,7 +165,6 @@ class _ListPageState extends State<ListPage> {
                         )
                       ],
                       controller: _searchController,
-                      hintText: "Search",
                       onTap: () {
                         controller.openView();
                       },

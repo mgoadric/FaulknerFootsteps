@@ -160,7 +160,7 @@ class _HistSitePage extends State<HistSitePage> {
                           context: context,
                           itemBuilder: (context, galleryIndex) {
                             return Image.memory(
-                              base64Decode(testList[galleryIndex]),
+                              base64Decode(testList[index]),
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                     "assets/images/faulkner_thumbnail.png");
