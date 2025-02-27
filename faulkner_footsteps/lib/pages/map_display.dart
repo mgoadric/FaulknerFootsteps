@@ -15,8 +15,12 @@ import 'package:provider/provider.dart';
 class MapDisplay extends StatefulWidget {
   final LatLng currentPosition;
   final ApplicationState appState;
+  final LatLng initialPosition;
   const MapDisplay(
-      {super.key, required this.currentPosition, required this.appState});
+      {super.key,
+      required this.currentPosition,
+      required this.initialPosition,
+      required this.appState});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
@@ -198,7 +202,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           body: FlutterMap(
             options: MapOptions(
-              initialCenter: widget.currentPosition,
+              initialCenter: widget.initialPosition,
               initialZoom: 14.0,
             ),
             children: [

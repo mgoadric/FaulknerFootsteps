@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
+import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -131,13 +132,37 @@ class _HistSitePage extends State<HistSitePage> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text("$siteDistance mi",
-                        style: GoogleFonts.ultra(
-                          textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 72, 52, 52),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ))
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        textDirection: TextDirection.ltr,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MapDisplay(
+                                        currentPosition: widget.currentPosition,
+                                        initialPosition: LatLng(
+                                            widget.histSite.lat,
+                                            widget.histSite.lng),
+                                        appState: widget.app_state),
+                                  ),
+                                );
+                                ;
+                              },
+                              icon: Icon(
+                                Icons.location_on,
+                                color: Colors.red.shade700,
+                              )),
+                          Text("$siteDistance mi",
+                              style: GoogleFonts.ultra(
+                                textStyle: const TextStyle(
+                                    color: Color.fromARGB(255, 72, 52, 52),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ])
                   ],
                 )),
             Container(

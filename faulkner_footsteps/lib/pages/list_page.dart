@@ -90,7 +90,9 @@ class _ListPageState extends State<ListPage> {
         context,
         MaterialPageRoute(
           builder: (context) => MapDisplay(
-              currentPosition: _currentPosition!, appState: widget.app_state),
+              currentPosition: _currentPosition!,
+              initialPosition: _currentPosition!,
+              appState: widget.app_state),
         ),
       );
     } else {
@@ -273,6 +275,7 @@ class _ListPageState extends State<ListPage> {
           : _selectedIndex == 1
               ? MapDisplay(
                   currentPosition: _currentPosition!,
+                  initialPosition: _currentPosition!,
                   appState: widget.app_state,
                 )
               : AchievementsPage(
