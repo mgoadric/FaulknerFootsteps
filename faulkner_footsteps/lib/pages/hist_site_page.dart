@@ -161,6 +161,7 @@ class _HistSitePage extends State<HistSitePage> {
                           itemBuilder: (context, galleryIndex) {
                             return Image.memory(
                               base64Decode(testList[index]),
+                              fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                     "assets/images/faulkner_thumbnail.png");
