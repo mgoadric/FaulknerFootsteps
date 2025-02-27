@@ -89,7 +89,7 @@ class ListItem extends StatelessWidget {
                         overflow:
                             TextOverflow.fade, // Fades text when it overflows
                         softWrap:
-                            false, // Prevents text from wrapping to a new line
+                            true, // Prevents text from wrapping to a new line
                       ),
                     ),
                     const SizedBox(width: 15),
