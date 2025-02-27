@@ -127,7 +127,7 @@ class _HistSitePage extends State<HistSitePage> {
                       style: GoogleFonts.ultra(
                         textStyle: const TextStyle(
                             color: Color.fromARGB(255, 72, 52, 52),
-                            fontSize: 24.0,
+                            fontSize: 32.0,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -135,7 +135,7 @@ class _HistSitePage extends State<HistSitePage> {
                         style: GoogleFonts.ultra(
                           textStyle: const TextStyle(
                               color: Color.fromARGB(255, 72, 52, 52),
-                              fontSize: 16,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ))
                   ],
@@ -299,14 +299,14 @@ class _HistSitePage extends State<HistSitePage> {
                                 style: GoogleFonts.ultra(
                                     textStyle: const TextStyle(
                                         color: Color.fromARGB(255, 72, 52, 52),
-                                        fontSize: 16,
+                                        fontSize: 26,
                                         fontWeight: FontWeight.bold))),
                             const SizedBox(height: 6),
                             Text(infoText.value,
                                 style: GoogleFonts.rakkas(
                                     textStyle: const TextStyle(
                                         color: Color.fromARGB(255, 107, 79, 79),
-                                        fontSize: 14))),
+                                        fontSize: 20))),
                             if (infoText.date != "")
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
