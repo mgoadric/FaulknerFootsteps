@@ -252,6 +252,12 @@ class _ListPageState extends State<ListPage> {
               icon: const Icon(Icons.search,
                   color: Color.fromARGB(255, 255, 243, 228)),
             ),
+            IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Filter Dialog shows")));
+                },
+                icon: Icon(Icons.filter_alt_sharp))
           ],
           title: Container(
             constraints: BoxConstraints(
