@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:faulkner_footsteps/app_state.dart';
+import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/achievement.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
@@ -253,9 +254,14 @@ class _ListPageState extends State<ListPage> {
                   color: Color.fromARGB(255, 255, 243, 228)),
             ),
             IconButton(
+                color: Color.fromARGB(255, 255, 243, 228),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Filter Dialog shows")));
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          FilterDialog(displaySites: displaySites));
                 },
                 icon: Icon(Icons.filter_alt_sharp))
           ],
