@@ -138,8 +138,29 @@ class _ListPageState extends State<ListPage> {
   }
 
   void filterChangedCallback(List<siteFilter> filters) {
-    activeFilters = filters;
+    print("Filter Changed Callback");
+    activeFilters.clear();
+    activeFilters.addAll(filters);
+    List<HistSite> lst = [];
+    print(fullSiteList);
     //TODO: set display items so that only items with the filter will appear in display items list
+    if (filters.isEmpty) {
+      lst.addAll(fullSiteList);
+    } else {
+      for (HistSite site in fullSiteList) {
+        for (siteFilter filter in activeFilters) {
+          print("Filter: $filter");
+          print("Site: $site");
+          if (site.filters.contains(filter)) {
+            lst.add(site);
+          }
+        }
+      }
+    }
+
+    setState(() {
+      displaySites = lst;
+    });
   }
 
   void openSearchDialog() {

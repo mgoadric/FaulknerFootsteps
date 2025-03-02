@@ -61,10 +61,10 @@ class ApplicationState extends ChangeNotifier {
             //TODO: ensure that all sitefilters have a if statement here
 
             List<siteFilter> filters = [];
-            print("reached!");
+            // print("reached!");
             for (String filter
                 in List<String>.from(document.data()["filters"])) {
-              print("Filter: $filter");
+              // print("Filter: $filter");
               if (filter.toLowerCase() == "monument")
                 filters.add(siteFilter.Monument);
               else if (filter.toLowerCase() == "park") {
