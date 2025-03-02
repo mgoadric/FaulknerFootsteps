@@ -4,23 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum siteFilter { Monument, Park }
+enum siteFilter { Monument, Park, Hall }
 
 class FilterDialog extends StatefulWidget {
-  const FilterDialog({super.key, required this.displaySites});
+  const FilterDialog(
+      {super.key, required this.activeFilters, required this.onFiltersChanged});
 
-  final List<HistSite> displaySites;
+  final List<siteFilter> activeFilters;
+
+  final Function onFiltersChanged;
+
   @override
   _FilterDialogState createState() => _FilterDialogState();
 }
 
 class _FilterDialogState extends State<FilterDialog> {
   List<siteFilter> filters = [];
-  double userRating = 0.0;
+
+  void initState() {
+    super.initState();
+
+    filters.addAll(widget.activeFilters);
+  }
 
   @override
   Widget build(BuildContext build) {
     return AlertDialog(
+      alignment: Alignment.topCenter,
       backgroundColor: const Color.fromARGB(255, 168, 124, 124),
       title: Text(
         'Select your filters',
@@ -28,30 +38,28 @@ class _FilterDialogState extends State<FilterDialog> {
             textStyle: const TextStyle(
                 color: Color.fromARGB(255, 62, 50, 50), fontSize: 20.0)),
       ),
-      content: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-                child: Wrap(
-              children: siteFilter.values.map((siteFilter site) {
-                return FilterChip(
-                  label: Text(site.name),
-                  selected: filters.contains(site),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        filters.add(site);
-                      } else {
-                        filters.remove(site);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            ))
-          ],
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              child: Wrap(
+            children: siteFilter.values.map((siteFilter site) {
+              return FilterChip(
+                label: Text(site.name),
+                selected: filters.contains(site),
+                onSelected: (bool selected) {
+                  setState(() {
+                    if (selected) {
+                      filters.add(site);
+                    } else {
+                      filters.remove(site);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+          ))
+        ],
       ),
       actions: [
         TextButton(
@@ -67,6 +75,7 @@ class _FilterDialogState extends State<FilterDialog> {
         ),
         TextButton(
           onPressed: () {
+            widget.onFiltersChanged(filters);
             Navigator.of(context).pop();
           },
           child: Text(

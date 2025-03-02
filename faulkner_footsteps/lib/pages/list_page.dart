@@ -73,6 +73,7 @@ class _ListPageState extends State<ListPage> {
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
   late SearchController _searchController;
+  List<siteFilter> activeFilters = [];
   @override
   void initState() {
     getlocation();
@@ -133,6 +134,10 @@ class _ListPageState extends State<ListPage> {
       fullSiteList = widget.app_state.historicalSites;
       displaySites = fullSiteList;
     }
+  }
+
+  void filterChangedCallback(List<siteFilter> filters) {
+    activeFilters = filters;
   }
 
   void openSearchDialog() {
@@ -260,8 +265,10 @@ class _ListPageState extends State<ListPage> {
                       SnackBar(content: Text("Filter Dialog shows")));
                   showDialog(
                       context: context,
-                      builder: (context) =>
-                          FilterDialog(displaySites: displaySites));
+                      builder: (context) => FilterDialog(
+                            activeFilters: activeFilters,
+                            onFiltersChanged: filterChangedCallback,
+                          ));
                 },
                 icon: Icon(Icons.filter_alt_sharp))
           ],
