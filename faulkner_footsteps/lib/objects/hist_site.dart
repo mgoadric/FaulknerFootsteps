@@ -1,3 +1,4 @@
+import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:faulkner_footsteps/objects/info_text.dart';
@@ -13,7 +14,8 @@ class HistSite {
       required this.ratingAmount,
       required List images,
       required this.lat,
-      required this.lng});
+      required this.lng,
+      required this.filters});
 
   String divider = "{ListDiv}";
   String name;
@@ -24,6 +26,7 @@ class HistSite {
   int ratingAmount;
   double lat;
   double lng;
+  List<siteFilter> filters;
 
   String listifyBlurbs() {
     String fin = "";

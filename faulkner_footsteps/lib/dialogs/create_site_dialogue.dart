@@ -113,6 +113,7 @@ class _siteDialogueState extends State<SiteDialogue> {
                                 description: descText,
                                 imageUrls: [],
                                 images: [],
+                                filters: [],
                                 ratingAmount: 0,
                                 avgRating: 0.0,
                                 lat: 0,

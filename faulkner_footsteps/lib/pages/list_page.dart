@@ -59,6 +59,7 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
     if (displaySites.isNotEmpty) {
       updateTimer.cancel();
+      print(displaySites);
     }
   }
   //not sure if this code is important, I will leave it in for now
@@ -138,6 +139,7 @@ class _ListPageState extends State<ListPage> {
 
   void filterChangedCallback(List<siteFilter> filters) {
     activeFilters = filters;
+    //TODO: set display items so that only items with the filter will appear in display items list
   }
 
   void openSearchDialog() {
