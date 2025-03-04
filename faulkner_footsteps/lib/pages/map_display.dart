@@ -51,7 +51,7 @@ class _MapDisplayState extends State<MapDisplay> {
         ratingAmount: 0,
       ),
     );
-    if ((sorted.values.first < 30000.0) &  (!widget.appState.hasVisited(sorted.keys.first)) & !visited ){
+    if ((sorted.values.first < 30000.0) &  (!appState.hasVisited(sorted.keys.first))){
       showDialog(context: context, 
       builder: (BuildContext context,){
       return AlertDialog(
