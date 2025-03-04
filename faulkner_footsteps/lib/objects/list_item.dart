@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 
 class ListItem extends StatelessWidget {
-  const ListItem(
+  ListItem(
       {super.key,
       required this.siteInfo,
       required this.app_state,
@@ -18,8 +18,15 @@ class ListItem extends StatelessWidget {
   final HistSite siteInfo;
   final ApplicationState app_state;
   final LatLng currentPosition;
+
+  final _distance = new Distance();
+
   @override
   Widget build(BuildContext context) {
+    String siteDistance = (_distance.as(LengthUnit.Meter,
+                LatLng(siteInfo.lat, siteInfo.lng), currentPosition) /
+            1609.344)
+        .toStringAsFixed(2);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
       child: Container(
@@ -74,41 +81,70 @@ class ListItem extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    // Site name with fading overflow
-                    Flexible(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Site name with fading overflow
+                        Flexible(
+                          child: Text(
+                            siteInfo.name,
+                            style: GoogleFonts.ultra(
+                              fontSize: 18,
+                              color: const Color.fromARGB(255, 107, 79,
+                                  79), // Text color.   const Color.fromARGB(255, 107, 79, 79): Maroon. Previously: Color.fromARGB(255, 72, 52, 52)
+                            ),
+                            overflow: TextOverflow
+                                .fade, // Fades text when it overflows
+                            softWrap:
+                                true, // Prevents text from wrapping to a new line
+                          ),
+                        ),
+                        // Flexible(
+                        //     child: Text("test text",
+                        //         style: GoogleFonts.ultra(
+                        //           fontSize: 12,
+                        //           color: const Color.fromARGB(255, 107, 79,
+                        //               79), // Text color.   const Color.fromARGB(255, 107, 79, 79): Maroon. Previously: Color.fromARGB(255, 72, 52, 52)
+                        //         ),
+                        //         overflow: TextOverflow
+                        //             .fade, // Fades text when it overflows
+                        //         softWrap: true)),
+                        const SizedBox(width: 15),
+                        // Add star rating icons here
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            onPressed: () {
+                              AppRouter.navigateTo(context, "/hist",
+                                  arguments: {
+                                    "info": siteInfo,
+                                    "app_state": app_state
+                                  });
+                            },
+                            icon: const Icon(
+                              Icons.arrow_circle_right_outlined,
+                              color: Color.fromARGB(255, 62, 50, 50),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Align(
                       child: Text(
-                        siteInfo.name,
+                        "$siteDistance miles away!",
                         style: GoogleFonts.ultra(
-                          fontSize: 18,
+                          fontSize: 12,
                           color: const Color.fromARGB(255, 107, 79,
                               79), // Text color.   const Color.fromARGB(255, 107, 79, 79): Maroon. Previously: Color.fromARGB(255, 72, 52, 52)
                         ),
                         overflow:
                             TextOverflow.fade, // Fades text when it overflows
-                        softWrap:
-                            true, // Prevents text from wrapping to a new line
+                        softWrap: true,
                       ),
-                    ),
-                    const SizedBox(width: 15),
-                    // Add star rating icons here
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        onPressed: () {
-                          AppRouter.navigateTo(context, "/hist", arguments: {
-                            "info": siteInfo,
-                            "app_state": app_state
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.arrow_circle_right_outlined,
-                          color: Color.fromARGB(255, 62, 50, 50),
-                        ),
-                      ),
-                    ),
+                      alignment: Alignment.centerLeft,
+                    )
                   ],
                 ),
               )
