@@ -74,13 +74,17 @@ class _ListPageState extends State<ListPage> {
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
   late SearchController _searchController;
-  List<siteFilter> activeFilters = [];
+  late List<siteFilter> activeFilters;
+  late List<HistSite> searchSites;
   @override
   void initState() {
     getlocation();
     updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
+    activeFilters = [];
+    searchSites = fullSiteList;
+
     _searchController = SearchController();
     super.initState();
   }
@@ -134,6 +138,7 @@ class _ListPageState extends State<ListPage> {
     if (fullSiteList.isEmpty) {
       fullSiteList = widget.app_state.historicalSites;
       displaySites = fullSiteList;
+      searchSites = fullSiteList;
     }
   }
 
@@ -142,15 +147,15 @@ class _ListPageState extends State<ListPage> {
     activeFilters.clear();
     activeFilters.addAll(filters);
     List<HistSite> lst = [];
-    print(fullSiteList);
+    // print(fullSiteList);
     //TODO: set display items so that only items with the filter will appear in display items list
     if (filters.isEmpty) {
       lst.addAll(fullSiteList);
     } else {
-      for (HistSite site in fullSiteList) {
+      for (HistSite site in displaySites) {
         for (siteFilter filter in activeFilters) {
-          print("Filter: $filter");
-          print("Site: $site");
+          // print("Filter: $filter");
+          // print("Site: $site");
           if (site.filters.contains(filter)) {
             lst.add(site);
           }
@@ -158,8 +163,32 @@ class _ListPageState extends State<ListPage> {
       }
     }
 
+    onDisplaySitesChanged();
+  }
+
+  void onDisplaySitesChanged() {
+    List<HistSite> filteredSites = [];
+    List<HistSite> newDisplaySites = [];
+    if (activeFilters.isEmpty) {
+      newDisplaySites = searchSites;
+    } else {
+      for (HistSite site in searchSites) {
+        for (siteFilter filter in activeFilters) {
+          // print("Filter: $filter");
+          // print("Site: $site");
+          if (site.filters.contains(filter)) {
+            newDisplaySites.add(site);
+          }
+        }
+      }
+      // for (HistSite site in searchSites) {
+      //   if (filteredSites.contains(site)) {
+      //     newDisplaySites.add(site);
+      //   }
+      // }
+    }
     setState(() {
-      displaySites = lst;
+      displaySites = newDisplaySites;
     });
   }
 
@@ -189,8 +218,9 @@ class _ListPageState extends State<ListPage> {
                                   .contains(controller.text.toLowerCase());
                             }));
                             setState(() {
-                              displaySites = lst;
+                              searchSites = lst;
                             });
+                            onDisplaySitesChanged();
                             Navigator.pop(context);
                           },
                         )
@@ -198,6 +228,10 @@ class _ListPageState extends State<ListPage> {
                       controller: _searchController,
                       onTap: () {
                         controller.openView();
+                      },
+                      onChanged: (query) {
+                        print("here!");
+                        controller.closeView(query);
                       },
 
                       // onChanged: (query) {
@@ -213,6 +247,7 @@ class _ListPageState extends State<ListPage> {
                       //   Navigator.pop(context);
                       // },
                       onSubmitted: (query) {
+                        controller.closeView(query);
                         List<HistSite> lst = [];
                         lst.addAll(fullSiteList.where((HistSite site) {
                           return site.name
@@ -220,8 +255,9 @@ class _ListPageState extends State<ListPage> {
                               .contains(query.toLowerCase());
                         }));
                         setState(() {
-                          displaySites = lst;
+                          searchSites = lst;
                         });
+                        onDisplaySitesChanged();
                         Navigator.pop(context);
                       },
                     );
@@ -284,8 +320,6 @@ class _ListPageState extends State<ListPage> {
             IconButton(
                 color: Color.fromARGB(255, 255, 243, 228),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Filter Dialog shows")));
                   showDialog(
                       context: context,
                       builder: (context) => FilterDialog(
