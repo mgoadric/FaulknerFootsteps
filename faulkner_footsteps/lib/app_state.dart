@@ -74,6 +74,7 @@ class ApplicationState extends ChangeNotifier {
                   : 0,
             ));
           }
+          //print(historicalSites);
           notifyListeners();
         });
       } else {

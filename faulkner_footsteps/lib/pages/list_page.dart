@@ -71,7 +71,12 @@ class _ListPageState extends State<ListPage> {
   late Timer updateTimer;
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
+  late List<HistSite> displaySitesSorted = [];
   late SearchController _searchController;
+  final Distance distance = new Distance();
+  late Map<String, LatLng> siteLocations = widget.app_state.getLocations();
+  late Map<String, double> siteDistances = getDistances(siteLocations);
+  late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   @override
   void initState() {
     getlocation();
@@ -80,6 +85,21 @@ class _ListPageState extends State<ListPage> {
     fullSiteList = widget.app_state.historicalSites;
     _searchController = SearchController();
     super.initState();
+  }
+  Map<String, double> getDistances(Map<String, LatLng> locations){
+    Map<String, double> distances = {};
+    for (int i = 0; i <locations.length; i ++){
+      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),_currentPosition!);
+    }
+    return distances;
+}
+void sortSites(){
+  int i = 0;
+  while (i < sorted.keys.length){
+    displaySitesSorted.add(displaySites.firstWhere((x) => x.name == sorted.keys.elementAt(i)));
+    i++;
+    }
+    print(displaySitesSorted);
   }
 
   int _selectedIndex = 0;
@@ -109,13 +129,14 @@ class _ListPageState extends State<ListPage> {
   }
 
   Widget _buildHomeContent() {
+    sortSites();
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: displaySites.length,
+            itemCount: displaySitesSorted.length,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = displaySites[index];
+              HistSite site = displaySitesSorted[index];
               return ListItem(
                   app_state: widget.app_state,
                   siteInfo: site,

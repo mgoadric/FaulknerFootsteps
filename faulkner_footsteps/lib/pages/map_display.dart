@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class MapDisplay extends StatefulWidget {
   final LatLng currentPosition;
   final ApplicationState appState;
-  const MapDisplay({super.key, required this.currentPosition, required this.appState});
+  const MapDisplay({super.key, required this.currentPosition, required this.appState, required LatLng initialPosition});
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
