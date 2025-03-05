@@ -80,7 +80,8 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     getlocation();
-    updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
+    sortSites();
+    updateTimer = Timer.periodic(const Duration(milliseconds: 1000), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
     _searchController = SearchController();
@@ -94,12 +95,14 @@ class _ListPageState extends State<ListPage> {
     return distances;
 }
 void sortSites(){
+  print("sorts");
   int i = 0;
-  displaySitesSorted = [];
+  if (displaySitesSorted.isEmpty){
   while (i < sorted.keys.length){
     displaySitesSorted.add(displaySites.firstWhere((x) => x.name == sorted.keys.elementAt(i)));
     i++;
     }
+  }
   }
 
   int _selectedIndex = 0;
@@ -117,7 +120,6 @@ void sortSites(){
   }
 
   Widget _buildHomeContent() {
-    sortSites();
     return Column(
       children: [
         Expanded(
