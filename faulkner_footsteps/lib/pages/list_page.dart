@@ -105,21 +105,9 @@ void sortSites(){
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MapDisplay(
-              currentPosition: _currentPosition!,
-              initialPosition: _currentPosition!,
-              appState: widget.app_state),
-        ),
-      );
-    } else {
       setState(() {
         _selectedIndex = index;
       });
-    }
   }
 
   @override
@@ -282,7 +270,7 @@ void sortSites(){
                 _selectedIndex == 0
                     ? "Historical Sites"
                     : _selectedIndex == 1
-                        ? "Map"
+                        ? "Map                    "
                         : "Achievements",
                 style: GoogleFonts.ultra(
                     textStyle: const TextStyle(

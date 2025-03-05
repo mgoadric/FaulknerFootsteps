@@ -29,10 +29,16 @@ class _MapDisplayState extends State<MapDisplay> {
   late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
+  int _selectedIndex = 0;
  @override
     void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => locationDialog(context));
+  }
+  void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
   }
   void locationDialog(context){
     final appState = Provider.of<ApplicationState>(context, listen: false);
@@ -51,7 +57,7 @@ class _MapDisplayState extends State<MapDisplay> {
         ratingAmount: 0,
       ),
     );
-    if ((sorted.values.first < 30000.0) &  (!appState.hasVisited(sorted.keys.first))){
+    if ((sorted.values.first < 30000.0)  &  (!widget.appState.hasVisited(sorted.keys.first))){
       showDialog(context: context, 
       builder: (BuildContext context,){
       return AlertDialog(
@@ -160,16 +166,6 @@ class _MapDisplayState extends State<MapDisplay> {
         markers.add(Marker(point: widget.currentPosition, child: Icon(Icons.circle, color: Colors.blue,)));
           return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 107, 79, 79),
-            title: Text(
-              "Faulkner County Map",
-              style: GoogleFonts.ultra(
-                textStyle:
-                    const TextStyle(color: Color.fromARGB(255, 255, 243, 228)),
-              ),
-            ),
-          ),
           body: FlutterMap(
             options: MapOptions(
               initialCenter: widget.currentPosition,
@@ -186,25 +182,6 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
-          bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
-        selectedItemColor: const Color.fromARGB(255, 238, 214, 196),
-        unselectedItemColor: const Color.fromARGB(200, 238, 214, 196),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Achievements',
-          ),
-        ],
-      ),
       );},
       );
   }
