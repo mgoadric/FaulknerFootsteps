@@ -95,11 +95,11 @@ class _ListPageState extends State<ListPage> {
 }
 void sortSites(){
   int i = 0;
+  displaySitesSorted = [];
   while (i < sorted.keys.length){
     displaySitesSorted.add(displaySites.firstWhere((x) => x.name == sorted.keys.elementAt(i)));
     i++;
     }
-    print(displaySitesSorted);
   }
 
   int _selectedIndex = 0;

@@ -115,11 +115,7 @@ class _MapDisplayState extends State<MapDisplay> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              var AchievementState = AchievementsPageState();
-              // Navigate User to the HistSitePage
-              AchievementState.visitPlace(context, sorted.keys.first);
-              visited = true;
+              Navigator.of(context).pop();          // Navigate User to the HistSitePage
             },
             child: Text(
               "Close",
@@ -190,6 +186,25 @@ class _MapDisplayState extends State<MapDisplay> {
               ),
             ],
           ),
+          bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 107, 79, 79),
+        selectedItemColor: const Color.fromARGB(255, 238, 214, 196),
+        unselectedItemColor: const Color.fromARGB(200, 238, 214, 196),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emoji_events),
+            label: 'Achievements',
+          ),
+        ],
+      ),
       );},
       );
   }
