@@ -9,6 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+  // Static variable to track admin status
+  static bool isAdmin = false;
+
   // This checks the 'admins' collection in firebase for authorized accounts
   // The result is stored in the user's app state for later use
   Future<void> checkAndStoreAdminStatus(User user, BuildContext context) async {
@@ -16,14 +19,9 @@ class LoginPage extends StatelessWidget {
         .collection('admins')
         .doc(user.uid)
         .get();
-
-    // Store the admin status in a shared preference or similar
-    // We'll just use a static variable for simplicity
+    // Store the admin status in a static variable
     isAdmin = adminDoc.exists;
   }
-
-  // Static variable to track admin status
-  static bool isAdmin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +70,6 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
-    return Scaffold(
-      // temp color scheme, can be made better later
-      backgroundColor: const Color.fromARGB(255, 219, 196, 166),
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // waits for connection between firebase and app, ultimately unnecessary but wanted to try it out
-            return const Center(
-                child:
-                    CircularProgressIndicator()); // adds loading circle, nice little detail
-          }
 
     return Theme(
       data: customTheme,
@@ -106,7 +92,8 @@ class LoginPage extends StatelessWidget {
                 providers: [EmailAuthProvider()],
                 headerBuilder: (context, constraints, shrinkOffset) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    padding: const EdgeInsets.only(
+                        top: 30, bottom: 20),
                     child: Column(
                       children: [
                         // App title
@@ -136,7 +123,8 @@ class LoginPage extends StatelessWidget {
                 },
                 subtitleBuilder: (context, action) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 4.0),
                     child: Text(
                       action == AuthAction.signIn
                           ? 'Welcome back! Please sign in to continue.'
@@ -189,29 +177,13 @@ class LoginPage extends StatelessWidget {
               );
             }
 
-            return FutureBuilder<bool>(
-              future: checkAdminStatus(snapshot.data!),
-              builder: (context, adminSnapshot) {
-                if (adminSnapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Color.fromARGB(255, 107, 79, 79),
-                    ),
-                  );
-                }
-
-                // This is what directs the user to a specific page depending if they are an admin or not
-                return adminSnapshot.data == true
-                    ? AdminListPage()
-                    : ListPage();
-              },
-            );
-          }
-
-          // If we have a user, check their admin status but always return to ListPage
-          checkAndStoreAdminStatus(snapshot.data!, context);
-          return ListPage();
-        },
+            // If we have a user, check their admin status and return to the appropriate page
+            checkAndStoreAdminStatus(snapshot.data!, context);
+            
+            // Return the appropriate page based on admin status
+            return isAdmin ? AdminListPage() : ListPage();
+          },
+        ),
       ),
     );
   }
