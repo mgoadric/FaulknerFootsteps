@@ -3,21 +3,25 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faulkner_footsteps/pages/list_page.dart';
-import 'package:faulkner_footsteps/pages/admin_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   // This checks the 'admins' collection in firebase for authorized accounts
-  // if you want 
-  Future<bool> checkAdminStatus(User user) async {
+  // The result is stored in the user's app state for later use
+  Future<void> checkAndStoreAdminStatus(User user, BuildContext context) async {
     final adminDoc = await FirebaseFirestore.instance
         .collection('admins')
         .doc(user.uid)
         .get();
-    // if the person logging in is in the 'admins' collection, then return true, if not false
-    return adminDoc.exists;
+
+    // Store the admin status in a shared preference or similar
+    // We'll just use a static variable for simplicity
+    isAdmin = adminDoc.exists;
   }
+
+  // Static variable to track admin status
+  static bool isAdmin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +31,11 @@ class LoginPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) { // waits for connection between firebase and app, ultimately unnecessary but wanted to try it out
-            return const Center(child: CircularProgressIndicator()); // adds loading circle, nice little detail
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // waits for connection between firebase and app, ultimately unnecessary but wanted to try it out
+            return const Center(
+                child:
+                    CircularProgressIndicator()); // adds loading circle, nice little detail
           }
 
           if (!snapshot.hasData) {
@@ -43,17 +50,9 @@ class LoginPage extends StatelessWidget {
             );
           }
 
-          return FutureBuilder<bool>(
-            future: checkAdminStatus(snapshot.data!),
-            builder: (context, adminSnapshot) {
-              if (adminSnapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              // this is what directs the user to a specific page depending if they are an admin or not
-              return adminSnapshot.data == true ? AdminListPage() : ListPage();
-            },
-          );
+          // If we have a user, check their admin status but always return to ListPage
+          checkAndStoreAdminStatus(snapshot.data!, context);
+          return ListPage();
         },
       ),
     );
