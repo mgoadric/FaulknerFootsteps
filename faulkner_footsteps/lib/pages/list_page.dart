@@ -73,13 +73,21 @@ class _ListPageState extends State<ListPage> {
   late Timer updateTimer;
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
+  late List<HistSite> displaySitesSorted = [];
   late SearchController _searchController;
+
+  final Distance distance = new Distance();
+  late Map<String, LatLng> siteLocations = widget.app_state.getLocations();
+  late Map<String, double> siteDistances = getDistances(siteLocations);
+  late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late List<siteFilter> activeFilters;
   late List<HistSite> searchSites;
+
   @override
   void initState() {
     getlocation();
-    updateTimer = Timer.periodic(const Duration(milliseconds: 500), _update);
+    sortSites();
+    updateTimer = Timer.periodic(const Duration(milliseconds: 1000), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
     activeFilters = [];
@@ -88,25 +96,30 @@ class _ListPageState extends State<ListPage> {
     _searchController = SearchController();
     super.initState();
   }
+  Map<String, double> getDistances(Map<String, LatLng> locations){
+    Map<String, double> distances = {};
+    for (int i = 0; i <locations.length; i ++){
+      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),_currentPosition!);
+    }
+    return distances;
+}
+void sortSites(){
+  print("sorts");
+  int i = 0;
+  if (displaySitesSorted.isEmpty){
+  while (i < sorted.keys.length){
+    displaySitesSorted.add(displaySites.firstWhere((x) => x.name == sorted.keys.elementAt(i)));
+    i++;
+    }
+  }
+  }
 
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MapDisplay(
-              currentPosition: _currentPosition!,
-              initialPosition: _currentPosition!,
-              appState: widget.app_state),
-        ),
-      );
-    } else {
       setState(() {
         _selectedIndex = index;
       });
-    }
   }
 
   @override
@@ -120,9 +133,9 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: displaySites.length,
+            itemCount: displaySitesSorted.length,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = displaySites[index];
+              HistSite site = displaySitesSorted[index];
               return ListItem(
                   app_state: widget.app_state,
                   siteInfo: site,
@@ -337,7 +350,7 @@ class _ListPageState extends State<ListPage> {
                 _selectedIndex == 0
                     ? "Historical Sites"
                     : _selectedIndex == 1
-                        ? "Map"
+                        ? "Map                    "
                         : "Achievements",
                 style: GoogleFonts.ultra(
                     textStyle: const TextStyle(
