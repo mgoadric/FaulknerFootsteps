@@ -1,4 +1,6 @@
 import 'package:faulkner_footsteps/app_router.dart';
+import 'package:faulkner_footsteps/pages/admin_page.dart';
+import 'package:faulkner_footsteps/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -77,10 +79,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final cardWidth =
         screenWidth - 32.0; // Account for padding (16px on each side)
 
+    // Check if user is admin based on the static flag in LoginPage
+    final isAdmin = LoginPage.isAdmin;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 214, 196),
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 107, 79, 79),
         iconTheme: const IconThemeData(
           color: Color.fromARGB(255, 255, 243, 228),
@@ -138,6 +142,70 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 24),
+
+            // Admin section (only visible for admins)
+            if (isAdmin) ...[
+              Container(
+                width: cardWidth,
+                child: Card(
+                  color: const Color.fromARGB(255, 218, 186, 130),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Admin Controls',
+                          style: GoogleFonts.ultra(
+                            textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 72, 52, 52),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.admin_panel_settings,
+                              color: Color.fromARGB(255, 255, 243, 228),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AdminListPage(),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 107, 79, 79),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            label: Text(
+                              'Admin Dashboard',
+                              style: GoogleFonts.rakkas(
+                                textStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 243, 228),
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
 
             // Achievements card
             Container(

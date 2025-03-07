@@ -118,10 +118,12 @@ class ApplicationState extends ChangeNotifier {
       "name": newSite.name,
       "description": newSite.description,
       "blurbs": newSite.listifyBlurbs(),
-      "images": "testValue",
+      "images":["test"],
       //added ratings here
       "avgRating": newSite.avgRating,
       "ratingAmount": newSite.ratingAmount,
+      "lat": 35.1,
+      "lng": -92.1,
     };
 
     print('Adding site with $data');
