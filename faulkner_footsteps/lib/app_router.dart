@@ -41,7 +41,8 @@ class AppRouter {
             lng: 0,
             //added ratings here
             avgRating: 0.0,
-            ratingAmount: 0)
+            ratingAmount: 0,
+            filters: [])
       };
     }
     switch (settings.name) {
@@ -54,10 +55,11 @@ class AppRouter {
       case hsitePage:
         return MaterialPageRoute(
             builder: (_) => HistSitePage(
-                app_state: info["app_state"], histSite: info["info"], currentPosition: info["currentPosition"]));
+                app_state: info["app_state"],
+                histSite: info["info"],
+                currentPosition: info["currentPosition"]));
       case profilePage:
-        return MaterialPageRoute(
-          builder: (_) => const ProfilePage());
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       default:
         return _errorRoute();
     }

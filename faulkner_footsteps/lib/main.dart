@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         images: [],
         imageUrls: [],
+        filters: [],
         //added ratings here
         avgRating: 0.0,
         ratingAmount: 0,
@@ -143,6 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
         AssetImage('assets/images/AutobotLogo.png'),
         */
       ], // Add images if available
+      filters: [],
       avgRating: 0.0,
       ratingAmount: 0,
       lat: 0,
@@ -171,7 +173,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => HistSitePage(
-                        app_state: app_state, histSite: sampleSite, currentPosition: LatLng(0, 0),),
+                      app_state: app_state,
+                      histSite: sampleSite,
+                      currentPosition: LatLng(0, 0),
+                    ),
                   ),
                 );
               },

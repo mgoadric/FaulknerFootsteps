@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:firebase_auth/firebase_auth.dart'
@@ -56,6 +57,26 @@ class ApplicationState extends ChangeNotifier {
               newBlurbs.add(InfoText(
                   title: values[0], value: values[1], date: values[2]));
             }
+            //convert firebase filters to siteFilters
+            //TODO: ensure that all sitefilters have a if statement here
+
+            List<siteFilter> filters = [];
+            // print("reached!");
+            for (String filter
+                in List<String>.from(document.data()["filters"])) {
+              // print("Filter: $filter");
+              if (filter.toLowerCase() == "monument")
+                filters.add(siteFilter.Monument);
+              else if (filter.toLowerCase() == "park") {
+                filters.add(siteFilter.Park);
+              } else if (filter.toLowerCase() == "hall") {
+                filters.add(siteFilter.Hall);
+              } else {
+                print(
+                    "Filter not found in siteFilter enum list. Filter: $filter");
+              }
+            }
+
             _historicalSites.add(HistSite(
               name: document.data()["name"] as String,
               description: document.data()["description"] as String,
@@ -64,6 +85,7 @@ class ApplicationState extends ChangeNotifier {
               images: [],
               lat: document.data()["lat"] as double,
               lng: document.data()["lng"] as double,
+              filters: filters,
               //added ratings
               //set as 0.0 for testing, will have to change later to have consistent ratings
               avgRating: document.data()["avgRating"] != null

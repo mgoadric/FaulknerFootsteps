@@ -52,6 +52,7 @@ class _MapDisplayState extends State<MapDisplay> {
         blurbs: [],
         images: [],
         imageUrls: [],
+        filters: [],
         lat: 0,
         lng: 0,
         avgRating: 0.0,
