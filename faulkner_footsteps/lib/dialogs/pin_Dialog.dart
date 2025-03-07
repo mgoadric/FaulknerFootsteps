@@ -9,12 +9,11 @@ class PinDialog extends StatelessWidget {
   final ApplicationState appState;
   final LatLng currentPosition;
 
-  const PinDialog({
-    super.key,
-    required this.siteName,
-    required this.appState,
-    required this.currentPosition
-  });
+  const PinDialog(
+      {super.key,
+      required this.siteName,
+      required this.appState,
+      required this.currentPosition});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +27,7 @@ class PinDialog extends StatelessWidget {
         blurbs: [],
         images: [],
         imageUrls: [],
+        filters: [],
         lat: 0,
         lng: 0,
         avgRating: 0.0,

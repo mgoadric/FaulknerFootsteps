@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:faulkner_footsteps/app_state.dart';
+import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/achievement.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
@@ -58,6 +59,7 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
     if (displaySites.isNotEmpty) {
       updateTimer.cancel();
+      print(displaySites);
     }
   }
   //not sure if this code is important, I will leave it in for now
@@ -73,10 +75,14 @@ class _ListPageState extends State<ListPage> {
   late List<HistSite> displaySites;
   late List<HistSite> displaySitesSorted = [];
   late SearchController _searchController;
+
   final Distance distance = new Distance();
   late Map<String, LatLng> siteLocations = widget.app_state.getLocations();
   late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
+  late List<siteFilter> activeFilters;
+  late List<HistSite> searchSites;
+
   @override
   void initState() {
     getlocation();
@@ -84,6 +90,9 @@ class _ListPageState extends State<ListPage> {
     updateTimer = Timer.periodic(const Duration(milliseconds: 1000), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
+    activeFilters = [];
+    searchSites = fullSiteList;
+
     _searchController = SearchController();
     super.initState();
   }
@@ -142,7 +151,58 @@ void sortSites(){
     if (fullSiteList.isEmpty) {
       fullSiteList = widget.app_state.historicalSites;
       displaySites = fullSiteList;
+      searchSites = fullSiteList;
     }
+  }
+
+  void filterChangedCallback(List<siteFilter> filters) {
+    print("Filter Changed Callback");
+    activeFilters.clear();
+    activeFilters.addAll(filters);
+    List<HistSite> lst = [];
+    // print(fullSiteList);
+    //TODO: set display items so that only items with the filter will appear in display items list
+    if (filters.isEmpty) {
+      lst.addAll(fullSiteList);
+    } else {
+      for (HistSite site in displaySites) {
+        for (siteFilter filter in activeFilters) {
+          // print("Filter: $filter");
+          // print("Site: $site");
+          if (site.filters.contains(filter)) {
+            lst.add(site);
+          }
+        }
+      }
+    }
+
+    onDisplaySitesChanged();
+  }
+
+  void onDisplaySitesChanged() {
+    List<HistSite> filteredSites = [];
+    List<HistSite> newDisplaySites = [];
+    if (activeFilters.isEmpty) {
+      newDisplaySites = searchSites;
+    } else {
+      for (HistSite site in searchSites) {
+        for (siteFilter filter in activeFilters) {
+          // print("Filter: $filter");
+          // print("Site: $site");
+          if (site.filters.contains(filter)) {
+            newDisplaySites.add(site);
+          }
+        }
+      }
+      // for (HistSite site in searchSites) {
+      //   if (filteredSites.contains(site)) {
+      //     newDisplaySites.add(site);
+      //   }
+      // }
+    }
+    setState(() {
+      displaySites = newDisplaySites;
+    });
   }
 
   void openSearchDialog() {
@@ -171,8 +231,9 @@ void sortSites(){
                                   .contains(controller.text.toLowerCase());
                             }));
                             setState(() {
-                              displaySites = lst;
+                              searchSites = lst;
                             });
+                            onDisplaySitesChanged();
                             Navigator.pop(context);
                           },
                         )
@@ -180,6 +241,10 @@ void sortSites(){
                       controller: _searchController,
                       onTap: () {
                         controller.openView();
+                      },
+                      onChanged: (query) {
+                        print("here!");
+                        controller.closeView(query);
                       },
 
                       // onChanged: (query) {
@@ -195,6 +260,7 @@ void sortSites(){
                       //   Navigator.pop(context);
                       // },
                       onSubmitted: (query) {
+                        controller.closeView(query);
                         List<HistSite> lst = [];
                         lst.addAll(fullSiteList.where((HistSite site) {
                           return site.name
@@ -202,8 +268,9 @@ void sortSites(){
                               .contains(query.toLowerCase());
                         }));
                         setState(() {
-                          displaySites = lst;
+                          searchSites = lst;
                         });
+                        onDisplaySitesChanged();
                         Navigator.pop(context);
                       },
                     );
@@ -263,6 +330,17 @@ void sortSites(){
               icon: const Icon(Icons.search,
                   color: Color.fromARGB(255, 255, 243, 228)),
             ),
+            IconButton(
+                color: Color.fromARGB(255, 255, 243, 228),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => FilterDialog(
+                            activeFilters: activeFilters,
+                            onFiltersChanged: filterChangedCallback,
+                          ));
+                },
+                icon: Icon(Icons.filter_alt_sharp))
           ],
           title: Container(
             constraints: BoxConstraints(
