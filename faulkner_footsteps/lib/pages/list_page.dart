@@ -152,6 +152,18 @@ class _ListPageState extends State<ListPage> {
               if (index == 0) {
                 return Column(
                   children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: 20,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Text(
+                                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT $index");
+                          }),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.max,
