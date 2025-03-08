@@ -63,9 +63,11 @@ dev_dependencies:
 flutter_launcher_icons:
   android: 
     generate: true
-    adaptive_icon_background: "#FFFFFF"
+    adaptive_icon_background: "assets/images/Background.png" 
+    adaptive_icon_foreground: "assets/images/LauncherIcon2.png" 
+    adaptive_icon_foreground_inset: 8
   ios: true
-  image_path: "assets/images/FFSplash2.png"
+  image_path: "assets/images/LauncherIcon2.png"
   remove_alpha_ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -95,8 +97,10 @@ flutter:
     - assets/images/FFSplash.png
     - assets/images/FFSplash2.png
     - assets/images/faulkner_thumbnail.png
-
+    - assets/images/LauncherIcon.png
     - assets/audio/GuitarStrumFF.mp3
+    - assets/images/LauncherIcon2.png
+    - assets/images/Background.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
