@@ -170,6 +170,7 @@ class _AdminListPageState extends State<AdminListPage> {
                         imageUrls: [],
                         avgRating: 0.0,
                         ratingAmount: 0,
+                        filters: [],
                         lat: double.tryParse(latController.text) ?? 0.0,
                         lng: double.tryParse(lngController.text) ?? 0.0,
                       );
@@ -407,6 +408,7 @@ class _AdminListPageState extends State<AdminListPage> {
                       imageUrls: site.imageUrls,
                       avgRating: site.avgRating,
                       ratingAmount: site.ratingAmount,
+                      filters: [],
                       lat: double.tryParse(latController.text) ?? site.lat,
                       lng: double.tryParse(lngController.text) ?? site.lng,
                     );

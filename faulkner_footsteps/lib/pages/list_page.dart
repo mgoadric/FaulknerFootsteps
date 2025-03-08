@@ -59,7 +59,7 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
     if (displaySites.isNotEmpty) {
       updateTimer.cancel();
-      print(displaySites);
+      print("update loop");
     }
   }
   //not sure if this code is important, I will leave it in for now
@@ -73,53 +73,44 @@ class _ListPageState extends State<ListPage> {
   late Timer updateTimer;
   late List<HistSite> fullSiteList;
   late List<HistSite> displaySites;
-  late List<HistSite> displaySitesSorted = [];
   late SearchController _searchController;
 
   final Distance distance = new Distance();
-  late Map<String, LatLng> siteLocations = widget.app_state.getLocations();
-  late Map<String, double> siteDistances = getDistances(siteLocations);
-  late var sorted = Map.fromEntries(siteDistances.entries.toList()..sort((e1, e2) => e1.value.compareTo(e2.value)));
+  late Map<String, LatLng> siteLocations;
+  late Map<String, double> siteDistances;
+  late var sorted;
   late List<siteFilter> activeFilters;
   late List<HistSite> searchSites;
 
   @override
   void initState() {
     getlocation();
-    sortSites();
     updateTimer = Timer.periodic(const Duration(milliseconds: 1000), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
     activeFilters = [];
     searchSites = fullSiteList;
+    print("INIT STATE");
 
     _searchController = SearchController();
     super.initState();
   }
-  Map<String, double> getDistances(Map<String, LatLng> locations){
+
+  Map<String, double> getDistances(Map<String, LatLng> locations) {
     Map<String, double> distances = {};
-    for (int i = 0; i <locations.length; i ++){
-      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter, locations.values.elementAt(i),_currentPosition!);
+    for (int i = 0; i < locations.length; i++) {
+      distances[locations.keys.elementAt(i)] = distance.as(
+          LengthUnit.Meter, locations.values.elementAt(i), _currentPosition!);
     }
     return distances;
-}
-void sortSites(){
-  print("sorts");
-  int i = 0;
-  if (displaySitesSorted.isEmpty){
-  while (i < sorted.keys.length){
-    displaySitesSorted.add(displaySites.firstWhere((x) => x.name == sorted.keys.elementAt(i)));
-    i++;
-    }
-  }
   }
 
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -133,9 +124,9 @@ void sortSites(){
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: displaySitesSorted.length,
+            itemCount: displaySites.length,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = displaySitesSorted[index];
+              HistSite site = displaySites[index];
               return ListItem(
                   app_state: widget.app_state,
                   siteInfo: site,
@@ -148,11 +139,24 @@ void sortSites(){
   }
 
   void setDisplayItems() {
+    siteLocations = widget.app_state.getLocations();
+    siteDistances = getDistances(siteLocations);
+    sorted = Map.fromEntries(siteDistances.entries.toList()
+      ..sort((e1, e2) => e1.value.compareTo(e2.value)));
     if (fullSiteList.isEmpty) {
       fullSiteList = widget.app_state.historicalSites;
-      displaySites = fullSiteList;
+      print("Full Site List: $fullSiteList");
+      int i = 0;
+      while (i < sorted.keys.length) {
+        displaySites.add(fullSiteList.firstWhere((x) {
+          return x.name == sorted.keys.elementAt(i);
+        }));
+        i++;
+      }
       searchSites = fullSiteList;
     }
+    print("Sorted: $sorted");
+    print("Display List: $displaySites");
   }
 
   void filterChangedCallback(List<siteFilter> filters) {
@@ -180,7 +184,6 @@ void sortSites(){
   }
 
   void onDisplaySitesChanged() {
-    List<HistSite> filteredSites = [];
     List<HistSite> newDisplaySites = [];
     if (activeFilters.isEmpty) {
       newDisplaySites = searchSites;
