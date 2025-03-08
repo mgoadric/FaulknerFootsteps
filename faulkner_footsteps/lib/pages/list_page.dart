@@ -122,27 +122,6 @@ class _ListPageState extends State<ListPage> {
   Widget _buildHomeContent() {
     return Column(
       children: [
-        // Row(children: [
-        //   Text("test"),
-        //   ListView.builder(itemBuilder: (BuildContext context, int index) {
-        //     return Text("hey $index");
-        //   })
-        // ],
-
-        // ),
-        // Row(
-        //   children: [
-        //     ListView.builder(
-        //         scrollDirection: Axis.horizontal,
-        //         itemCount: 5,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return ListTile(
-        //             title: Text("Title"),
-        //             subtitle: Text("Title $index"),
-        //           );
-        //         })
-        //   ],
-        // ),
         Expanded(
           child: ListView.builder(
             itemCount: displaySites.length,
@@ -150,27 +129,24 @@ class _ListPageState extends State<ListPage> {
               HistSite site = displaySites[index];
 
               if (index == 0) {
-                return Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: 20,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Text(
-                                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT $index");
-                          }),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [Text("Hey"), Text("data"), Text("dd")],
-                    ),
-                    Padding(padding: EdgeInsets.all(50))
-                  ],
+                return Container(
+                  padding: EdgeInsets.all(16),
+                  // height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / 10,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: 50,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          padding: EdgeInsets.all(8),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                  "HeTTfcvyguhgiyktcjxcfyugigyftcTTTTy $index")),
+                        );
+                      }),
                 );
               } else {
                 return ListItem(
