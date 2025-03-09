@@ -150,6 +150,11 @@ class _ListPageState extends State<ListPage> {
                         return Padding(
                           padding: EdgeInsets.all(8),
                           child: FilterChip(
+                            backgroundColor: Color.fromARGB(255, 255, 243, 228),
+                            disabledColor: Color.fromARGB(255, 255, 243, 228),
+                            selectedColor: Color.fromARGB(255, 107, 79, 79),
+                            checkmarkColor: Color.fromARGB(255, 255, 243, 228),
+                            //TODO: change text color to change depending on if filter chip is selected or not
                             label: Text(currentFilter.name),
                             selected: activeFilters.contains(currentFilter),
                             onSelected: (bool selected) {
