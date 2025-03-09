@@ -124,10 +124,8 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: displaySites.length,
+            itemCount: displaySites.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = displaySites[index];
-
               if (index == 0) {
                 return Container(
                   padding: EdgeInsets.all(16),
@@ -153,6 +151,8 @@ class _ListPageState extends State<ListPage> {
                   ),
                 );
               } else {
+                HistSite site = displaySites[index - 1];
+
                 return ListItem(
                     app_state: widget.app_state,
                     siteInfo: site,
