@@ -138,8 +138,10 @@ class _ListPageState extends State<ListPage> {
                       if (index == 0) {
                         return TextButton(
                             style: ButtonStyle(
-                              overlayColor: WidgetStatePropertyAll(
-                                  Color.fromARGB(255, 107, 79, 79)),
+                              // overlayColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79)),
+                              overlayColor:
+                                  WidgetStatePropertyAll(Colors.transparent),
                               maximumSize: WidgetStatePropertyAll(
                                   Size(MediaQuery.of(context).size.width, 50)),
                               // backgroundColor: WidgetStatePropertyAll(
@@ -153,8 +155,10 @@ class _ListPageState extends State<ListPage> {
                             },
                             child: Text(
                               "Clear Filters (${activeFilters.length})",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 107, 79, 79)),
+                              style: GoogleFonts.ultra(
+                                  textStyle: TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79)),
+                                  fontSize: 14),
                             ));
                       } else {
                         siteFilter currentFilter = siteFilter.values[index - 1];
@@ -165,12 +169,14 @@ class _ListPageState extends State<ListPage> {
                             disabledColor: Color.fromARGB(255, 255, 243, 228),
                             selectedColor: Color.fromARGB(255, 107, 79, 79),
                             checkmarkColor: Color.fromARGB(255, 255, 243, 228),
-                            //TODO: change text color to change depending on if filter chip is selected or not
                             label: Text(currentFilter.name,
-                                style: TextStyle(
-                                    color: activeFilters.contains(currentFilter)
-                                        ? Color.fromARGB(255, 255, 243, 228)
-                                        : Color.fromARGB(255, 107, 79, 79))),
+                                style: GoogleFonts.ultra(
+                                    textStyle: TextStyle(
+                                        color: activeFilters
+                                                .contains(currentFilter)
+                                            ? Color.fromARGB(255, 255, 243, 228)
+                                            : Color.fromARGB(255, 107, 79, 79),
+                                        fontSize: 14))),
                             selected: activeFilters.contains(currentFilter),
                             onSelected: (bool selected) {
                               setState(() {
