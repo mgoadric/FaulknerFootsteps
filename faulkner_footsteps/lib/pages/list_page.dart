@@ -131,23 +131,30 @@ class _ListPageState extends State<ListPage> {
                   padding: EdgeInsets.all(16),
                   // height: MediaQuery.of(context).size.height,
                   height: MediaQuery.of(context).size.height / 10,
-                  child: Wrap(
-                    children: siteFilter.values.map((siteFilter site) {
-                      return FilterChip(
-                        label: Text(site.name),
-                        selected: activeFilters.contains(site),
-                        onSelected: (bool selected) {
-                          setState(() {
-                            if (selected) {
-                              activeFilters.add(site);
-                            } else {
-                              activeFilters.remove(site);
-                            }
-                            filterChangedCallback();
-                          });
-                        },
+                  child: ListView.builder(
+                    itemCount: siteFilter.values.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      siteFilter currentFilter = siteFilter.values[index];
+                      return Padding(
+                        padding: EdgeInsets.all(8),
+                        child: FilterChip(
+                          label: Text(currentFilter.name),
+                          selected: activeFilters.contains(currentFilter),
+                          onSelected: (bool selected) {
+                            setState(() {
+                              if (selected) {
+                                activeFilters.add(currentFilter);
+                              } else {
+                                activeFilters.remove(currentFilter);
+                              }
+                              filterChangedCallback();
+                            });
+                          },
+                        ),
                       );
-                    }).toList(),
+                    },
+                    // children: siteFilter.values.map((siteFilter filter) {
                   ),
                 );
               } else {
