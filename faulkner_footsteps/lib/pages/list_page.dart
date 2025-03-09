@@ -132,27 +132,39 @@ class _ListPageState extends State<ListPage> {
                   // height: MediaQuery.of(context).size.height,
                   height: MediaQuery.of(context).size.height / 10,
                   child: ListView.builder(
-                    itemCount: siteFilter.values.length,
+                    itemCount: siteFilter.values.length + 1,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      siteFilter currentFilter = siteFilter.values[index];
-                      return Padding(
-                        padding: EdgeInsets.all(8),
-                        child: FilterChip(
-                          label: Text(currentFilter.name),
-                          selected: activeFilters.contains(currentFilter),
-                          onSelected: (bool selected) {
-                            setState(() {
-                              if (selected) {
-                                activeFilters.add(currentFilter);
-                              } else {
-                                activeFilters.remove(currentFilter);
-                              }
-                              filterChangedCallback();
-                            });
-                          },
-                        ),
-                      );
+                      if (index == 0) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                activeFilters.clear();
+                                filterChangedCallback();
+                              });
+                              print("Active Filters are Cleared!!");
+                            },
+                            child: Text("Clear Filters!"));
+                      } else {
+                        siteFilter currentFilter = siteFilter.values[index - 1];
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: FilterChip(
+                            label: Text(currentFilter.name),
+                            selected: activeFilters.contains(currentFilter),
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  activeFilters.add(currentFilter);
+                                } else {
+                                  activeFilters.remove(currentFilter);
+                                }
+                                filterChangedCallback();
+                              });
+                            },
+                          ),
+                        );
+                      }
                     },
                     // children: siteFilter.values.map((siteFilter filter) {
                   ),
