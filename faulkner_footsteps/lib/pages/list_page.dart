@@ -136,15 +136,24 @@ class _ListPageState extends State<ListPage> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        return ElevatedButton(
+                        return TextButton(
+                            style: ButtonStyle(
+                              maximumSize: WidgetStatePropertyAll(
+                                  Size(MediaQuery.of(context).size.width, 50)),
+                              // backgroundColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79))
+                            ),
                             onPressed: () {
                               setState(() {
                                 activeFilters.clear();
                                 filterChangedCallback();
                               });
-                              print("Active Filters are Cleared!!");
                             },
-                            child: Text("Clear Filters!"));
+                            child: Text(
+                              "Clear Filters (${activeFilters.length})",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 79, 79)),
+                            ));
                       } else {
                         siteFilter currentFilter = siteFilter.values[index - 1];
                         return Padding(
