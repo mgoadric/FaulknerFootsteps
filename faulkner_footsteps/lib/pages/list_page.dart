@@ -133,20 +133,24 @@ class _ListPageState extends State<ListPage> {
                   padding: EdgeInsets.all(16),
                   // height: MediaQuery.of(context).size.height,
                   height: MediaQuery.of(context).size.height / 10,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 50,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: EdgeInsets.all(8),
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                  "HeTTfcvyguhgiyktcjxcfyugigyftcTTTTy $index")),
-                        );
-                      }),
+                  child: Wrap(
+                    children: siteFilter.values.map((siteFilter site) {
+                      return FilterChip(
+                        label: Text(site.name),
+                        selected: activeFilters.contains(site),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            if (selected) {
+                              activeFilters.add(site);
+                            } else {
+                              activeFilters.remove(site);
+                            }
+                            filterChangedCallback();
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
                 );
               } else {
                 return ListItem(
@@ -182,14 +186,12 @@ class _ListPageState extends State<ListPage> {
     print("Display List: $displaySites");
   }
 
-  void filterChangedCallback(List<siteFilter> filters) {
+  void filterChangedCallback() {
     print("Filter Changed Callback");
-    activeFilters.clear();
-    activeFilters.addAll(filters);
     List<HistSite> lst = [];
     // print(fullSiteList);
     //TODO: set display items so that only items with the filter will appear in display items list
-    if (filters.isEmpty) {
+    if (activeFilters.isEmpty) {
       lst.addAll(fullSiteList);
     } else {
       for (HistSite site in displaySites) {
