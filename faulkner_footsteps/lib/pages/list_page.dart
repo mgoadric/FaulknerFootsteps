@@ -210,25 +210,48 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-  void setDisplayItems() {
+  void sortDisplayItems() {
+    List<HistSite> lst = [];
     siteLocations = widget.app_state.getLocations();
     siteDistances = getDistances(siteLocations);
     sorted = Map.fromEntries(siteDistances.entries.toList()
       ..sort((e1, e2) => e1.value.compareTo(e2.value)));
-    if (fullSiteList.isEmpty) {
-      fullSiteList = widget.app_state.historicalSites;
-      print("Full Site List: $fullSiteList");
-      int i = 0;
-      while (i < sorted.keys.length) {
-        displaySites.add(fullSiteList.firstWhere((x) {
-          return x.name == sorted.keys.elementAt(i);
-        }));
-        i++;
+    int i = 0;
+    while (i < sorted.keys.length) {
+      //TODO: issue with contains. It is looking for a string, not a HistSite!!!
+      for (HistSite site in displaySites) {
+        if (site.name == sorted.keys.elementAt(i)) {
+          lst.add(site);
+          print("x: ${site.name}");
+          print("sorted name: ${sorted.keys.elementAt(i)}");
+        }
       }
-      searchSites = fullSiteList;
+
+      // displaySites.add(fullSiteList.firstWhere((x) {
+      //   return x.name == sorted.keys.elementAt(i);
+      // }));
+      i++;
     }
+    print("Lst: $lst");
+    displaySites.clear();
+    displaySites.addAll(lst);
+
     print("Sorted: $sorted");
     print("Display List: $displaySites");
+  }
+
+  void setDisplayItems() {
+    if (fullSiteList.isEmpty) {
+      fullSiteList = widget.app_state.historicalSites;
+      displaySites.addAll(fullSiteList);
+      print("Full Site List: $fullSiteList");
+      print("Display Sites: $displaySites");
+    }
+    searchSites = fullSiteList;
+    sortDisplayItems();
+
+    // print("Sorted: $sorted");
+    // print("Display List: $displaySites");
   }
 
   void filterChangedCallback() {
