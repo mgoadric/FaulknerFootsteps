@@ -210,6 +210,9 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
+  //So funny enough, I don't think this is necessary.
+  // I changed the way the site list forms, so i think once you sort them once they are always sorted.
+  // Whoops, i guess we have this if we need it.
   void sortDisplayItems() {
     List<HistSite> lst = [];
     siteLocations = widget.app_state.getLocations();
@@ -299,6 +302,7 @@ class _ListPageState extends State<ListPage> {
     setState(() {
       displaySites = newDisplaySites;
     });
+    // sortDisplayItems();
   }
 
   void openSearchDialog() {
