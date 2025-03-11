@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,6 +22,7 @@ class AdminListPage extends StatefulWidget {
 class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
   int _selectedIndex = 0;
+  File? image;
 
   @override
   void initState() {
@@ -30,6 +34,21 @@ class _AdminListPageState extends State<AdminListPage> {
     setState(() {});
     if (widget.app_state.historicalSites.isNotEmpty) {
       updateTimer.cancel();
+    }
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(
+          source: ImageSource
+              .gallery); //could be camera so user can just take picture
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print("Failed to pick image: $e");
     }
   }
 
@@ -147,6 +166,16 @@ class _AdminListPageState extends State<AdminListPage> {
                               ))
                           .toList(),
                     ],
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 218, 186, 130),
+                      ),
+                      onPressed: () async {
+                        await pickImage();
+                      },
+                      child: const Text('Add Image'),
+                    ),
                   ],
                 ),
               ),
