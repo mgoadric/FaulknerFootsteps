@@ -50,6 +50,7 @@ class _AdminListPageState extends State<AdminListPage> {
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }
+    setState(() {});
   }
 
   void _onItemTapped(int index) {
@@ -173,9 +174,21 @@ class _AdminListPageState extends State<AdminListPage> {
                       ),
                       onPressed: () async {
                         await pickImage();
+                        print("here");
+                        print("Image: ${this.image}");
+                        setState(
+                            () {}); //idk why, but setState is acting weird here but it works now
                       },
                       child: const Text('Add Image'),
                     ),
+                    if (image != null) ...[
+                      const SizedBox(height: 10),
+                      const Text("Current Image: "),
+                      image != null
+                          ? Image.file(image!,
+                              width: 160, height: 160, fit: BoxFit.contain)
+                          : FlutterLogo()
+                    ]
                   ],
                 ),
               ),
