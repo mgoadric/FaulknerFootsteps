@@ -124,13 +124,85 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: displaySites.length,
+            itemCount: displaySites.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              HistSite site = displaySites[index];
-              return ListItem(
-                  app_state: widget.app_state,
-                  siteInfo: site,
-                  currentPosition: _currentPosition ?? LatLng(0, 0));
+              if (index == 0) {
+                return Container(
+                  padding: EdgeInsets.all(16),
+                  // height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / 10,
+                  child: ListView.builder(
+                    itemCount: siteFilter.values.length + 1,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return TextButton(
+                            style: ButtonStyle(
+                              // overlayColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79)),
+                              overlayColor:
+                                  WidgetStatePropertyAll(Colors.transparent),
+                              maximumSize: WidgetStatePropertyAll(
+                                  Size(MediaQuery.of(context).size.width, 50)),
+                              // backgroundColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79))
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                activeFilters.clear();
+                                filterChangedCallback();
+                              });
+                            },
+                            child: Text(
+                              "Clear Filters (${activeFilters.length})",
+                              style: GoogleFonts.ultra(
+                                  textStyle: TextStyle(
+                                      color: Color.fromARGB(255, 107, 79, 79)),
+                                  fontSize: 14),
+                            ));
+                      } else {
+                        siteFilter currentFilter = siteFilter.values[index - 1];
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: FilterChip(
+                            backgroundColor: Color.fromARGB(255, 255, 243, 228),
+                            disabledColor: Color.fromARGB(255, 255, 243, 228),
+                            selectedColor: Color.fromARGB(255, 107, 79, 79),
+                            checkmarkColor: Color.fromARGB(255, 255, 243, 228),
+                            label: Text(currentFilter.name,
+                                style: GoogleFonts.ultra(
+                                    textStyle: TextStyle(
+                                        color: activeFilters
+                                                .contains(currentFilter)
+                                            ? Color.fromARGB(255, 255, 243, 228)
+                                            : Color.fromARGB(255, 107, 79, 79),
+                                        fontSize: 14))),
+                            selected: activeFilters.contains(currentFilter),
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  activeFilters.add(currentFilter);
+                                } else {
+                                  activeFilters.remove(currentFilter);
+                                }
+                                filterChangedCallback();
+                              });
+                            },
+                          ),
+                        );
+                      }
+                    },
+                    // children: siteFilter.values.map((siteFilter filter) {
+                  ),
+                );
+              } else {
+                HistSite site = displaySites[index - 1];
+
+                return ListItem(
+                    app_state: widget.app_state,
+                    siteInfo: site,
+                    currentPosition: _currentPosition ?? LatLng(0, 0));
+              }
             },
           ),
         ),
@@ -138,35 +210,59 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-  void setDisplayItems() {
+  //So funny enough, I don't think this is necessary.
+  // I changed the way the site list forms, so i think once you sort them once they are always sorted.
+  // Whoops, i guess we have this if we need it.
+  void sortDisplayItems() {
+    List<HistSite> lst = [];
     siteLocations = widget.app_state.getLocations();
     siteDistances = getDistances(siteLocations);
     sorted = Map.fromEntries(siteDistances.entries.toList()
       ..sort((e1, e2) => e1.value.compareTo(e2.value)));
-    if (fullSiteList.isEmpty) {
-      fullSiteList = widget.app_state.historicalSites;
-      print("Full Site List: $fullSiteList");
-      int i = 0;
-      while (i < sorted.keys.length) {
-        displaySites.add(fullSiteList.firstWhere((x) {
-          return x.name == sorted.keys.elementAt(i);
-        }));
-        i++;
+    int i = 0;
+    while (i < sorted.keys.length) {
+      //TODO: issue with contains. It is looking for a string, not a HistSite!!!
+      for (HistSite site in displaySites) {
+        if (site.name == sorted.keys.elementAt(i)) {
+          lst.add(site);
+          print("x: ${site.name}");
+          print("sorted name: ${sorted.keys.elementAt(i)}");
+        }
       }
-      searchSites = fullSiteList;
+
+      // displaySites.add(fullSiteList.firstWhere((x) {
+      //   return x.name == sorted.keys.elementAt(i);
+      // }));
+      i++;
     }
+    print("Lst: $lst");
+    displaySites.clear();
+    displaySites.addAll(lst);
+
     print("Sorted: $sorted");
     print("Display List: $displaySites");
   }
 
-  void filterChangedCallback(List<siteFilter> filters) {
+  void setDisplayItems() {
+    if (fullSiteList.isEmpty) {
+      fullSiteList = widget.app_state.historicalSites;
+      displaySites.addAll(fullSiteList);
+      print("Full Site List: $fullSiteList");
+      print("Display Sites: $displaySites");
+    }
+    searchSites = fullSiteList;
+    sortDisplayItems();
+
+    // print("Sorted: $sorted");
+    // print("Display List: $displaySites");
+  }
+
+  void filterChangedCallback() {
     print("Filter Changed Callback");
-    activeFilters.clear();
-    activeFilters.addAll(filters);
     List<HistSite> lst = [];
     // print(fullSiteList);
     //TODO: set display items so that only items with the filter will appear in display items list
-    if (filters.isEmpty) {
+    if (activeFilters.isEmpty) {
       lst.addAll(fullSiteList);
     } else {
       for (HistSite site in displaySites) {
@@ -206,6 +302,7 @@ class _ListPageState extends State<ListPage> {
     setState(() {
       displaySites = newDisplaySites;
     });
+    // sortDisplayItems();
   }
 
   void openSearchDialog() {

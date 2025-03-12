@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,6 +23,7 @@ class AdminListPage extends StatefulWidget {
 class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
   int _selectedIndex = 0;
+  File? image;
 
   @override
   void initState() {
@@ -31,6 +36,36 @@ class _AdminListPageState extends State<AdminListPage> {
     if (widget.app_state.historicalSites.isNotEmpty) {
       updateTimer.cancel();
     }
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(
+          source: ImageSource
+              .gallery); //could be camera so user can just take picture
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print("Failed to pick image: $e");
+    }
+    setState(() {});
+  }
+
+  Future<String> imageFiletoBase64(File? imageFile) async {
+    //I want to allow the imagefile to be null so that it is possible to create a site w/o an image
+    //https: //community.flutterflow.io/c/community-custom-widgets/post/view-local-files-and-uploading-them-to-firestore-dfvxUu2ojKQlTwu
+    var bytes;
+    if (imageFile == null) {
+      print("imageFile is null!");
+      return "";
+    }
+    bytes = File(imageFile.path).readAsBytesSync();
+    String image64 = base64Encode(bytes);
+    print("Function call image64: $image64");
+    return image64;
   }
 
   void _onItemTapped(int index) {
@@ -147,6 +182,28 @@ class _AdminListPageState extends State<AdminListPage> {
                               ))
                           .toList(),
                     ],
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 218, 186, 130),
+                      ),
+                      onPressed: () async {
+                        await pickImage();
+                        print("here");
+                        print("Image: ${this.image}");
+                        setState(
+                            () {}); //idk why, but setState is acting weird here but it works now
+                      },
+                      child: const Text('Add Image'),
+                    ),
+                    if (image != null) ...[
+                      const SizedBox(height: 10),
+                      const Text("Current Image: "),
+                      image != null
+                          ? Image.file(image!,
+                              width: 160, height: 160, fit: BoxFit.contain)
+                          : FlutterLogo()
+                    ]
                   ],
                 ),
               ),
@@ -159,14 +216,17 @@ class _AdminListPageState extends State<AdminListPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 218, 186, 130),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
+                      String imageString64 = await imageFiletoBase64(image);
+                      print("ImageString64: $imageString64");
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [],
+                        images: [imageString64],
                         imageUrls: [],
                         avgRating: 0.0,
                         ratingAmount: 0,

@@ -119,7 +119,7 @@ class ApplicationState extends ChangeNotifier {
       "name": newSite.name,
       "description": newSite.description,
       "blurbs": newSite.listifyBlurbs(),
-      "images":["test"],
+      "images": newSite.images,
       //added ratings here
       "avgRating": newSite.avgRating,
       "ratingAmount": newSite.ratingAmount,
