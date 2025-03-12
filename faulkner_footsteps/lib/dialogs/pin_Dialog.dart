@@ -2,6 +2,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/pages/hist_site_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 
 class PinDialog extends StatelessWidget {
@@ -9,11 +10,12 @@ class PinDialog extends StatelessWidget {
   final ApplicationState appState;
   final LatLng currentPosition;
 
-  const PinDialog(
-      {super.key,
-      required this.siteName,
-      required this.appState,
-      required this.currentPosition});
+  const PinDialog({
+    super.key,
+    required this.siteName,
+    required this.appState,
+    required this.currentPosition,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +38,40 @@ class PinDialog extends StatelessWidget {
     );
 
     return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 247, 222, 231),
-      title: Text(selectedSite.name),
+      backgroundColor: const Color.fromARGB(255, 238, 214, 196),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        side: BorderSide(
+          color: Color.fromARGB(255, 107, 79, 79),
+          width: 2.0,
+        ),
+      ),
+      title: Text(
+        selectedSite.name,
+        style: GoogleFonts.ultra(
+          textStyle: const TextStyle(
+            color: Color.fromARGB(255, 72, 52, 52),
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        textAlign: TextAlign.center,
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(selectedSite.description),
-          TextButton(
+          Text(
+            selectedSite.description,
+            style: GoogleFonts.rakkas(
+              textStyle: const TextStyle(
+                color: Color.fromARGB(255, 107, 79, 79),
+                fontSize: 16,
+              ),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          OutlinedButton(
             onPressed: () {
               Navigator.of(context).pop();
               // Navigate User to the HistSitePage
@@ -57,11 +86,24 @@ class PinDialog extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Color.fromARGB(255, 107, 79, 79),
+              side: BorderSide(
+                color: Color.fromARGB(255, 107, 79, 79),
+                width: 1.5,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
+            child: Text(
               "More Info",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromARGB(255, 2, 26, 77),
+              style: GoogleFonts.rakkas(
+                textStyle: const TextStyle(
+                  color: Color.fromARGB(255, 107, 79, 79),
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
