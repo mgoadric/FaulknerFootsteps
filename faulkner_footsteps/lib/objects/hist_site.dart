@@ -12,7 +12,7 @@ class HistSite {
       required this.imageUrls,
       required this.avgRating,
       required this.ratingAmount,
-      required List images,
+      required this.images,
       required this.lat,
       required this.lng,
       required this.filters});
@@ -21,6 +21,7 @@ class HistSite {
   String name;
   String description;
   List<InfoText> blurbs;
+  List<String> images;
   List<String> imageUrls;
   double avgRating;
   int ratingAmount;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
@@ -51,6 +52,20 @@ class _AdminListPageState extends State<AdminListPage> {
       print("Failed to pick image: $e");
     }
     setState(() {});
+  }
+
+  Future<String> imageFiletoBase64(File? imageFile) async {
+    //I want to allow the imagefile to be null so that it is possible to create a site w/o an image
+    //https: //community.flutterflow.io/c/community-custom-widgets/post/view-local-files-and-uploading-them-to-firestore-dfvxUu2ojKQlTwu
+    var bytes;
+    if (imageFile == null) {
+      print("imageFile is null!");
+      return "";
+    }
+    bytes = File(imageFile.path).readAsBytesSync();
+    String image64 = base64Encode(bytes);
+    print("Function call image64: $image64");
+    return image64;
   }
 
   void _onItemTapped(int index) {
@@ -201,14 +216,17 @@ class _AdminListPageState extends State<AdminListPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 218, 186, 130),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
+                      String imageString64 = await imageFiletoBase64(image);
+                      print("ImageString64: $imageString64");
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [],
+                        images: [imageString64],
                         imageUrls: [],
                         avgRating: 0.0,
                         ratingAmount: 0,
