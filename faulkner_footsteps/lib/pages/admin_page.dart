@@ -64,7 +64,7 @@ class _AdminListPageState extends State<AdminListPage> {
 // final metadata = SettableMetadata(contentType: "image/jpeg");
 
 // Upload file and metadata to the path 'images/mountains.jpg'
-    final uploadTask = imagesRef.child("images").putFile(image!);
+    final uploadTask = imagesRef.child("images.jpg").putFile(image!);
 
 // Listen for state changes, errors, and completion of the upload.
     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
