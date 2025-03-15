@@ -5,6 +5,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,8 @@ class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
   int _selectedIndex = 0;
   File? image;
+  final storage = FirebaseStorage.instance;
+  final storageRef = FirebaseStorage.instance.ref();
 
   @override
   void initState() {
@@ -52,6 +55,40 @@ class _AdminListPageState extends State<AdminListPage> {
       print("Failed to pick image: $e");
     }
     setState(() {});
+  }
+
+  Future<void> uploadImage() async {
+    final imagesRef = storageRef.child("images");
+
+// // Create the file metadata
+// final metadata = SettableMetadata(contentType: "image/jpeg");
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = imagesRef.child("images").putFile(image!);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+          // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          // Handle successful uploads on complete
+          // ...
+          break;
+      }
+    });
   }
 
   Future<String> imageFiletoBase64(File? imageFile) async {
@@ -220,13 +257,12 @@ class _AdminListPageState extends State<AdminListPage> {
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
-                      String imageString64 = await imageFiletoBase64(image);
-                      print("ImageString64: $imageString64");
+                      uploadImage();
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [imageString64],
+                        images: [],
                         imageUrls: [],
                         avgRating: 0.0,
                         ratingAmount: 0,
