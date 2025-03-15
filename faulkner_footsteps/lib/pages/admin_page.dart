@@ -57,16 +57,13 @@ class _AdminListPageState extends State<AdminListPage> {
     setState(() {});
   }
 
-  Future<void> uploadImage(String fileName) async {
-    final imagesRef = storageRef.child("images");
-
+  Future<String> uploadImage(String fileName) async {
 // // Create the file metadata
     final metadata = SettableMetadata(contentType: "image/jpeg");
 
 // Upload file and metadata. Metadata ensures it is saved in jpg format
-
-    final uploadTask =
-        imagesRef.child("$fileName.jpg").putFile(image!, metadata);
+    final path = "images/$fileName.jpg";
+    final uploadTask = storageRef.child(path).putFile(image!, metadata);
 
 // Listen for state changes, errors, and completion of the upload.
     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
@@ -91,6 +88,7 @@ class _AdminListPageState extends State<AdminListPage> {
           break;
       }
     });
+    return path; //path is what we will store in firebase
   }
 
   Future<String> imageFiletoBase64(File? imageFile) async {
@@ -259,12 +257,12 @@ class _AdminListPageState extends State<AdminListPage> {
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
-                      uploadImage(nameController.text);
+                      String path = await uploadImage(nameController.text);
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [],
+                        images: [path],
                         imageUrls: [],
                         avgRating: 0.0,
                         ratingAmount: 0,
