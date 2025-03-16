@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,7 @@ class HistSite {
   String name;
   String description;
   List<InfoText> blurbs;
-  List<String> images;
+  List<Uint8List?> images;
   List<String> imageUrls;
   double avgRating;
   int ratingAmount;

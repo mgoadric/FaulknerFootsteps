@@ -91,20 +91,6 @@ class _AdminListPageState extends State<AdminListPage> {
     return path; //path is what we will store in firebase
   }
 
-  Future<String> imageFiletoBase64(File? imageFile) async {
-    //I want to allow the imagefile to be null so that it is possible to create a site w/o an image
-    //https: //community.flutterflow.io/c/community-custom-widgets/post/view-local-files-and-uploading-them-to-firestore-dfvxUu2ojKQlTwu
-    var bytes;
-    if (imageFile == null) {
-      print("imageFile is null!");
-      return "";
-    }
-    bytes = File(imageFile.path).readAsBytesSync();
-    String image64 = base64Encode(bytes);
-    print("Function call image64: $image64");
-    return image64;
-  }
-
   void _onItemTapped(int index) {
     if (index == 1) {
       Navigator.push(
@@ -262,8 +248,8 @@ class _AdminListPageState extends State<AdminListPage> {
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [path],
-                        imageUrls: [],
+                        images: [],
+                        imageUrls: [path],
                         avgRating: 0.0,
                         ratingAmount: 0,
                         filters: [],

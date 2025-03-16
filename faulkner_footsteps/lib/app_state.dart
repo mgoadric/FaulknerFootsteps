@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
@@ -7,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart'
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
@@ -46,7 +49,7 @@ class ApplicationState extends ChangeNotifier {
         _siteSubscription = FirebaseFirestore.instance
             .collection('sites')
             .snapshots()
-            .listen((snapshot) {
+            .listen((snapshot) async {
           _historicalSites = [];
           for (final document in snapshot.docs) {
             var blurbCont = document.data()["blurbs"];
@@ -82,7 +85,8 @@ class ApplicationState extends ChangeNotifier {
               description: document.data()["description"] as String,
               blurbs: newBlurbs,
               imageUrls: List<String>.from(document.data()["images"]),
-              images: [],
+              images: await getImageList(
+                  List<String>.from(document.data()["images"])),
               lat: document.data()["lat"] as double,
               lng: document.data()["lng"] as double,
               filters: filters,
@@ -109,6 +113,45 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
+  final storageRef = FirebaseStorage.instance.ref();
+
+  Future<Uint8List?> getImage(String s) async {
+    final imageRef = storageRef.child("$s");
+    Uint8List? data;
+    try {
+      const oneMegabyte = 1024 * 1024 * 1000000;
+      data = await imageRef.getData(oneMegabyte).timeout(Duration(minutes: 2));
+      // Data for "images/island.jpg" is returned, use this as needed.
+    } catch (e) {
+      // Handle any errors.
+      print(("ERROR!!! This occured when calling getImage(). Error: $e"));
+    } finally {}
+    return data;
+  }
+
+  // Future<Uint8List> loadImage(String path) async {
+  //   try {
+  //     // Reference to the file in Firebase Storage
+  //     final ref = FirebaseStorage.instance.ref().child(path);
+
+  //     // Download data with max size of 5MB
+  //     final Uint8List? data = await ref.getData(5 * 1024 * 1024);
+  //     return data!;
+  //   } catch (e) {
+  //     print("Error loading image: $e");
+  //   }
+  //   throw {print("Data was null?")};
+  // }
+
+  Future<List<Uint8List?>> getImageList(List<String> lst) async {
+    List<Uint8List?> rList = [];
+    for (String s in lst) {
+      Uint8List? item = await getImage(s);
+      rList.add(item);
+    }
+    return rList;
+  }
+
   void addSite(HistSite newSite) {
     //using the variable to contain information for sake of readability. May refactor later
     // if(!_loggedIn) { UNCOMMENT THIS LATER. COMMENTED OUT FOR TESTING PURPOSES
@@ -119,7 +162,7 @@ class ApplicationState extends ChangeNotifier {
       "name": newSite.name,
       "description": newSite.description,
       "blurbs": newSite.listifyBlurbs(),
-      "images": newSite.images,
+      "images": newSite.imageUrls,
       //added ratings here
       "avgRating": newSite.avgRating,
       "ratingAmount": newSite.ratingAmount,

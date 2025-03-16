@@ -90,7 +90,7 @@ class _ListPageState extends State<ListPage> {
     fullSiteList = widget.app_state.historicalSites;
     activeFilters = [];
     searchSites = fullSiteList;
-    print("INIT STATE");
+    // print("INIT STATE");
 
     _searchController = SearchController();
     super.initState();
