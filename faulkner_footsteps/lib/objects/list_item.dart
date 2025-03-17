@@ -64,21 +64,28 @@ class ListItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.memory(
-                  // 'assets/images/faulkner_thumbnail.png',
-                  // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
-                  siteInfo.images.first != null
-                      ? siteInfo.images.first!
-                      : Uint8List(0),
-                  height:
-                      400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: siteInfo.images.first != null
+                    ? Image.memory(
+                        // 'assets/images/faulkner_thumbnail.png',
+                        // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
+                        siteInfo.images.first!,
+                        height:
+                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                        width: double.infinity,
+                        fit: BoxFit.cover,
 
-                  // errorBuilder: (context, error, stackTrace) {
-                  //   return Image.asset('assets/images/faulkner_thumbnail.png');
-                  // },
-                ),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                              'assets/images/faulkner_thumbnail.png');
+                        },
+                      )
+                    : Image.asset(
+                        'assets/images/faulkner_thumbnail.png',
+                        height:
+                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               // Row with text and icon inline
               Padding(
