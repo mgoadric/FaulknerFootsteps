@@ -57,12 +57,12 @@ class _AdminListPageState extends State<AdminListPage> {
     setState(() {});
   }
 
-  Future<String> uploadImage(String fileName) async {
+  Future<String> uploadImage(String folderName, String fileName) async {
 // // Create the file metadata
     final metadata = SettableMetadata(contentType: "image/jpeg");
 
 // Upload file and metadata. Metadata ensures it is saved in jpg format
-    final path = "images/$fileName.jpg";
+    final path = "images/$folderName/$fileName.jpg";
     final uploadTask = storageRef.child(path).putFile(image!, metadata);
 
 // Listen for state changes, errors, and completion of the upload.
@@ -243,7 +243,8 @@ class _AdminListPageState extends State<AdminListPage> {
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
-                      String path = await uploadImage(nameController.text);
+                      String path = await uploadImage(nameController.text,
+                          "first"); //TODO: change "first" so that the file name makes sense and is unique
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
