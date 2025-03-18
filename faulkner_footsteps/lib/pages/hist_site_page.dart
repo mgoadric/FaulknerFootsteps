@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/rating_Dialog.dart';
@@ -98,7 +99,6 @@ class _HistSitePage extends State<HistSitePage> {
                 widget.currentPosition) /
             1609.344)
         .toStringAsFixed(2);
-    List<String> testList = widget.histSite.imageUrls;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 238, 214, 196),
         appBar: AppBar(
@@ -177,35 +177,35 @@ class _HistSitePage extends State<HistSitePage> {
                 height: 200,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: testList.length,
+                  itemCount: widget.histSite.images.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return Image.memory(
-                              base64Decode(testList[index]),
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                    "assets/images/faulkner_thumbnail.png");
-                              },
-                            );
+                            return widget.histSite.images[index] != null
+                                ? Image.memory(
+                                    widget.histSite.images[index]!,
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.asset(
+                                    "assets/images/faulkner_thumbnail.png",
+                                    fit: BoxFit.contain);
                           },
-                          itemCount: testList.length,
+                          itemCount: widget.histSite.images.length,
                         ).show();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.memory(
-                          base64Decode(testList[index]),
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                                "assets/images/faulkner_thumbnail.png");
-                          },
-                        ),
+                        child: widget.histSite.images[index] != null
+                            ? Image.memory(
+                                widget.histSite.images[index]!,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.asset(
+                                "assets/images/faulkner_thumbnail.png",
+                                fit: BoxFit.contain),
                       ),
                     );
                   },

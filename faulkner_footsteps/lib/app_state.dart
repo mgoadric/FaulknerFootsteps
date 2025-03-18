@@ -125,6 +125,7 @@ class ApplicationState extends ChangeNotifier {
     } catch (e) {
       // Handle any errors.
       print(("ERROR!!! This occured when calling getImage(). Error: $e"));
+      print("Error is for $s");
     } finally {}
     return data;
   }
