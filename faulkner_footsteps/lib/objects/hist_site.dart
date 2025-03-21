@@ -14,7 +14,6 @@ class HistSite {
       required this.imageUrls,
       required this.avgRating,
       required this.ratingAmount,
-      required this.images,
       required this.lat,
       required this.lng,
       required this.filters});
@@ -23,13 +22,17 @@ class HistSite {
   String name;
   String description;
   List<InfoText> blurbs;
-  List<Uint8List?> images;
+  List<Uint8List?> images = [];
   List<String> imageUrls;
   double avgRating;
   int ratingAmount;
   double lat;
   double lng;
   List<siteFilter> filters;
+
+  void updateImage(List<Uint8List?> images) {
+    this.images = images;
+  }
 
   String listifyBlurbs() {
     String fin = "";

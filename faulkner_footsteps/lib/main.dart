@@ -97,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
               value:
                   "This does not have a date but we still exist beyond the current state of human understanding and everything is something to another ellos")
         ],
-        images: [],
         imageUrls: [],
         filters: [],
         //added ratings here
@@ -136,7 +135,6 @@ class _MyHomePageState extends State<MyHomePage> {
             title: "Significance",
             value: "It played a major role in local history."),
       ],
-      images: [],
       imageUrls: [
         /*
         AssetImage('assets/images/AutobotLogo.png'),

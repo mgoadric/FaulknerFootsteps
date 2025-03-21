@@ -64,7 +64,7 @@ class ListItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
-                child: siteInfo.images.first != null
+                child: siteInfo.images.length > 0
                     ? Image.memory(
                         // 'assets/images/faulkner_thumbnail.png',
                         // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using

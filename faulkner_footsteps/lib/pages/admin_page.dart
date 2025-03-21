@@ -249,7 +249,6 @@ class _AdminListPageState extends State<AdminListPage> {
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [],
                         imageUrls: [path],
                         avgRating: 0.0,
                         ratingAmount: 0,
@@ -487,7 +486,6 @@ class _AdminListPageState extends State<AdminListPage> {
                       name: nameController.text,
                       description: descriptionController.text,
                       blurbs: blurbs,
-                      images: [], // Using empty list since we're working with imageUrls
                       imageUrls: site.imageUrls,
                       avgRating: site.avgRating,
                       ratingAmount: site.ratingAmount,

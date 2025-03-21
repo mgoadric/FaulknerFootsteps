@@ -79,14 +79,11 @@ class ApplicationState extends ChangeNotifier {
                     "Filter not found in siteFilter enum list. Filter: $filter");
               }
             }
-
-            _historicalSites.add(HistSite(
+            HistSite site = HistSite(
               name: document.data()["name"] as String,
               description: document.data()["description"] as String,
               blurbs: newBlurbs,
               imageUrls: List<String>.from(document.data()["images"]),
-              images: await getImageList(
-                  List<String>.from(document.data()["images"])),
               lat: document.data()["lat"] as double,
               lng: document.data()["lng"] as double,
               filters: filters,
@@ -98,7 +95,9 @@ class ApplicationState extends ChangeNotifier {
               ratingAmount: document.data()["ratingCount"] != null
                   ? document.data()["ratingCount"] as int
                   : 0,
-            ));
+            );
+            _historicalSites.add(site);
+            loadImageToHistSite(document, site);
           }
           //print(historicalSites);
           notifyListeners();
@@ -151,6 +150,16 @@ class ApplicationState extends ChangeNotifier {
       rList.add(item);
     }
     return rList;
+  }
+
+  //TODO: implement this!!!
+  // load all the images to the hist site
+  Future<void> loadImageToHistSite(
+      QueryDocumentSnapshot<Map<String, dynamic>> document,
+      HistSite site) async {
+    List<Uint8List?> imgList =
+        await getImageList(List<String>.from(document.data()["images"]));
+    site.images = imgList;
   }
 
   void addSite(HistSite newSite) {

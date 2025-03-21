@@ -35,7 +35,6 @@ class AppRouter {
                   value:
                       "An error has appeared when trying to navigate to a page for this historical site. Please restart the app.")
             ],
-            images: [],
             imageUrls: [],
             lat: 0,
             lng: 0,
