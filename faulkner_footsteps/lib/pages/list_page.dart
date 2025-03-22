@@ -128,42 +128,17 @@ class _ListPageState extends State<ListPage> {
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Container(
-                  padding: EdgeInsets.all(16),
                   // height: MediaQuery.of(context).size.height,
-                  height: MediaQuery.of(context).size.height / 10,
-                  child: ListView.builder(
-                    itemCount: siteFilter.values.length + 1,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return TextButton(
-                            style: ButtonStyle(
-                              // overlayColor: WidgetStatePropertyAll(
-                              //     Color.fromARGB(255, 107, 79, 79)),
-                              overlayColor:
-                                  WidgetStatePropertyAll(Colors.transparent),
-                              maximumSize: WidgetStatePropertyAll(
-                                  Size(MediaQuery.of(context).size.width, 50)),
-                              // backgroundColor: WidgetStatePropertyAll(
-                              //     Color.fromARGB(255, 107, 79, 79))
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                activeFilters.clear();
-                                filterChangedCallback();
-                              });
-                            },
-                            child: Text(
-                              "Clear Filters (${activeFilters.length})",
-                              style: GoogleFonts.ultra(
-                                  textStyle: TextStyle(
-                                      color: Color.fromARGB(255, 107, 79, 79)),
-                                  fontSize: 14),
-                            ));
-                      } else {
-                        siteFilter currentFilter = siteFilter.values[index - 1];
+                  height: MediaQuery.of(context).size.height / 9,
+                  child: Stack(children: [
+                    ListView.builder(
+                      itemCount: siteFilter.values.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        siteFilter currentFilter = siteFilter.values[index];
                         return Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.fromLTRB(8, 32, 8, 16),
+                          // padding: EdgeInsets.all(8),
                           child: FilterChip(
                             backgroundColor: Color.fromARGB(255, 255, 243, 228),
                             disabledColor: Color.fromARGB(255, 255, 243, 228),
@@ -190,10 +165,41 @@ class _ListPageState extends State<ListPage> {
                             },
                           ),
                         );
-                      }
-                    },
-                    // children: siteFilter.values.map((siteFilter filter) {
-                  ),
+                      },
+                      // children: siteFilter.values.map((siteFilter filter) {
+                    ),
+                    Align(
+                      child: Container(
+                        // padding: EdgeInsets.fromLTRB(0, 0, 0, 32),
+                        child: TextButton(
+                            style: ButtonStyle(
+                              // overlayColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79)),
+                              overlayColor:
+                                  WidgetStatePropertyAll(Colors.transparent),
+                              maximumSize: WidgetStatePropertyAll(
+                                  Size(MediaQuery.of(context).size.width, 50)),
+                              // backgroundColor: WidgetStatePropertyAll(
+                              //     Color.fromARGB(255, 107, 79, 79))
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                activeFilters.clear();
+                                filterChangedCallback();
+                              });
+                            },
+                            child: Text(
+                              "Clear (${activeFilters.length})",
+                              style: GoogleFonts.ultra(
+                                  textStyle: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Color.fromARGB(255, 107, 79, 79)),
+                                  fontSize: 14),
+                            )),
+                      ),
+                      alignment: Alignment.topRight,
+                    ),
+                  ]),
                 );
               } else {
                 HistSite site = displaySites[index - 1];
@@ -430,17 +436,6 @@ class _ListPageState extends State<ListPage> {
               icon: const Icon(Icons.search,
                   color: Color.fromARGB(255, 255, 243, 228)),
             ),
-            IconButton(
-                color: Color.fromARGB(255, 255, 243, 228),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => FilterDialog(
-                            activeFilters: activeFilters,
-                            onFiltersChanged: filterChangedCallback,
-                          ));
-                },
-                icon: Icon(Icons.filter_alt_sharp))
           ],
           title: Container(
             constraints: BoxConstraints(
