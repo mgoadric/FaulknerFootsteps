@@ -189,7 +189,9 @@ class _ListPageState extends State<ListPage> {
                               });
                             },
                             child: Text(
-                              "Clear (${activeFilters.length})",
+                              activeFilters.length > 0
+                                  ? "Clear (${activeFilters.length})"
+                                  : "",
                               style: GoogleFonts.ultra(
                                   textStyle: TextStyle(
                                       decoration: TextDecoration.underline,
