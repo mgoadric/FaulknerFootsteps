@@ -64,7 +64,9 @@ class _AdminListPageState extends State<AdminListPage> {
     final metadata = SettableMetadata(contentType: "image/jpeg");
 
 // Change the filename to a string that has no spaces
-    fileName = fileName.replaceAll(" ", "_");
+    // folderName.replaceAll(' ', '_');
+    folderName.split(" ").join("_");
+    print("FileName: $folderName");
 
 // Upload file and metadata. Metadata ensures it is saved in jpg format
     final path = "images/$folderName/$fileName.jpg";
