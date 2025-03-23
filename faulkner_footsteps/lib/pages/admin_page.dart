@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class AdminListPage extends StatefulWidget {
   AdminListPage({super.key});
@@ -27,6 +28,7 @@ class _AdminListPageState extends State<AdminListPage> {
   File? image;
   final storage = FirebaseStorage.instance;
   final storageRef = FirebaseStorage.instance.ref();
+  var uuid = Uuid();
 
   @override
   void initState() {
@@ -243,8 +245,9 @@ class _AdminListPageState extends State<AdminListPage> {
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
+                      String randomName = uuid.v4();
                       String path = await uploadImage(nameController.text,
-                          "first"); //TODO: change "first" so that the file name makes sense and is unique
+                          randomName); //TODO: change "first" so that the file name makes sense and is unique
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
