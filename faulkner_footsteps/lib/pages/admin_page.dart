@@ -219,8 +219,6 @@ class _AdminListPageState extends State<AdminListPage> {
                       ),
                       onPressed: () async {
                         await pickImage();
-                        print("here");
-                        print("Image: ${this.image}");
                         setState(
                             () {}); //idk why, but setState is acting weird here but it works now
                       },
@@ -233,7 +231,7 @@ class _AdminListPageState extends State<AdminListPage> {
                           ? Image.file(image!,
                               width: 160, height: 160, fit: BoxFit.contain)
                           : FlutterLogo()
-                    ]
+                    ],
                   ],
                 ),
               ),
