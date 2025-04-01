@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:faulkner_footsteps/app_router.dart';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
@@ -23,6 +25,7 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // setImages();
     String siteDistance = (_distance.as(LengthUnit.Meter,
                 LatLng(siteInfo.lat, siteInfo.lng), currentPosition) /
             1609.344)
@@ -61,21 +64,28 @@ class ListItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.memory(
-                  // 'assets/images/faulkner_thumbnail.png',
-                  // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
-                  // siteInfo.imageUrls.first,
+                child: siteInfo.images.length > 0 && siteInfo.images[0] != null
+                    ? Image.memory(
+                        // 'assets/images/faulkner_thumbnail.png',
+                        // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
+                        siteInfo.images.first!,
+                        height:
+                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                        width: double.infinity,
+                        fit: BoxFit.cover,
 
-                  base64Decode(siteInfo.imageUrls.first),
-                  height:
-                      400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset('assets/images/faulkner_thumbnail.png');
-                  },
-                ),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                              'assets/images/faulkner_thumbnail.png');
+                        },
+                      )
+                    : Image.asset(
+                        'assets/images/faulkner_thumbnail.png',
+                        height:
+                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               // Row with text and icon inline
               Padding(

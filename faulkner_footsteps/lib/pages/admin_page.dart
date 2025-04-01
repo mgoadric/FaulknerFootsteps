@@ -5,12 +5,14 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:faulkner_footsteps/pages/map_display.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class AdminListPage extends StatefulWidget {
   AdminListPage({super.key});
@@ -24,6 +26,9 @@ class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
   int _selectedIndex = 0;
   File? image;
+  final storage = FirebaseStorage.instance;
+  final storageRef = FirebaseStorage.instance.ref();
+  var uuid = Uuid();
 
   @override
   void initState() {
@@ -54,18 +59,43 @@ class _AdminListPageState extends State<AdminListPage> {
     setState(() {});
   }
 
-  Future<String> imageFiletoBase64(File? imageFile) async {
-    //I want to allow the imagefile to be null so that it is possible to create a site w/o an image
-    //https: //community.flutterflow.io/c/community-custom-widgets/post/view-local-files-and-uploading-them-to-firestore-dfvxUu2ojKQlTwu
-    var bytes;
-    if (imageFile == null) {
-      print("imageFile is null!");
-      return "";
-    }
-    bytes = File(imageFile.path).readAsBytesSync();
-    String image64 = base64Encode(bytes);
-    print("Function call image64: $image64");
-    return image64;
+  Future<String> uploadImage(String folderName, String fileName) async {
+// // Create the file metadata
+    final metadata = SettableMetadata(contentType: "image/jpeg");
+
+// Change the filename to a string that has no spaces
+    // folderName.replaceAll(' ', '_');
+    folderName.split(" ").join("_");
+    print("FileName: $folderName");
+
+// Upload file and metadata. Metadata ensures it is saved in jpg format
+    final path = "images/$folderName/$fileName.jpg";
+    final uploadTask = storageRef.child(path).putFile(image!, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+          // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          // Handle successful uploads on complete
+          // ...
+          break;
+      }
+    });
+    return path; //path is what we will store in firebase
   }
 
   void _onItemTapped(int index) {
@@ -189,8 +219,6 @@ class _AdminListPageState extends State<AdminListPage> {
                       ),
                       onPressed: () async {
                         await pickImage();
-                        print("here");
-                        print("Image: ${this.image}");
                         setState(
                             () {}); //idk why, but setState is acting weird here but it works now
                       },
@@ -203,7 +231,7 @@ class _AdminListPageState extends State<AdminListPage> {
                           ? Image.file(image!,
                               width: 160, height: 160, fit: BoxFit.contain)
                           : FlutterLogo()
-                    ]
+                    ],
                   ],
                 ),
               ),
@@ -220,14 +248,14 @@ class _AdminListPageState extends State<AdminListPage> {
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
-                      String imageString64 = await imageFiletoBase64(image);
-                      print("ImageString64: $imageString64");
+                      String randomName = uuid.v4();
+                      String path = await uploadImage(nameController.text,
+                          randomName); //TODO: change "first" so that the file name makes sense and is unique
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
                         blurbs: blurbs,
-                        images: [imageString64],
-                        imageUrls: [],
+                        imageUrls: [path],
                         avgRating: 0.0,
                         ratingAmount: 0,
                         filters: [],
@@ -464,7 +492,6 @@ class _AdminListPageState extends State<AdminListPage> {
                       name: nameController.text,
                       description: descriptionController.text,
                       blurbs: blurbs,
-                      images: [], // Using empty list since we're working with imageUrls
                       imageUrls: site.imageUrls,
                       avgRating: site.avgRating,
                       ratingAmount: site.ratingAmount,

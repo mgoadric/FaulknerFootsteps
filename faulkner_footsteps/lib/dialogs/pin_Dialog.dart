@@ -27,7 +27,6 @@ class PinDialog extends StatelessWidget {
         name: siteName,
         description: "No description available",
         blurbs: [],
-        images: [],
         imageUrls: [],
         filters: [],
         lat: 0,
