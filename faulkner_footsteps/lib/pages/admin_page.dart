@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
-import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +23,6 @@ class AdminListPage extends StatefulWidget {
 
 class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
-  int _selectedIndex = 0;
   File? image;
   final storage = FirebaseStorage.instance;
   final storageRef = FirebaseStorage.instance.ref();
@@ -96,25 +94,6 @@ class _AdminListPageState extends State<AdminListPage> {
       }
     });
     return path; //path is what we will store in firebase
-  }
-
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MapDisplay(
-            currentPosition: const LatLng(2, 2),
-            initialPosition: const LatLng(2, 2),
-            appState: widget.app_state,
-          ),
-        ),
-      );
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
   }
 
   Future<void> _showAddSiteDialog() async {
@@ -756,36 +735,13 @@ class _AdminListPageState extends State<AdminListPage> {
         elevation: 12.0,
         shadowColor: const Color.fromARGB(135, 255, 255, 255),
         title: Text(
-          _selectedIndex == 0 ? "Admin Dashboard" : "Map Display",
+          "Admin Dashboard",
           style: GoogleFonts.ultra(
             textStyle: const TextStyle(color: Color.fromARGB(255, 76, 32, 8)),
           ),
         ),
       ),
-      body: _selectedIndex == 0
-          ? _buildAdminContent()
-          : MapDisplay(
-              currentPosition: const LatLng(2, 2),
-              initialPosition: const LatLng(2, 2),
-              appState: widget.app_state,
-            ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
-        selectedItemColor: const Color.fromARGB(255, 124, 54, 16),
-        unselectedItemColor: const Color.fromARGB(255, 124, 54, 16),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.admin_panel_settings),
-            label: 'Admin',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+      body: _buildAdminContent(),
     );
   }
 
