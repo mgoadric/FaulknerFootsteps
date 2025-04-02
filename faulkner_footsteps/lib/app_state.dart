@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
+import 'package:faulkner_footsteps/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 
@@ -42,6 +43,9 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         _loggedIn = true;
+
+        // Check if user is admin and update status
+        await checkAdminStatus(user);
 
         // Load achievements when user logs in
         await loadAchievements();
@@ -112,6 +116,23 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
+  // Check if user is an admin and update the static flag
+  Future<void> checkAdminStatus(User user) async {
+    try {
+      final adminDoc = await FirebaseFirestore.instance
+          .collection('admins')
+          .doc(user.uid)
+          .get();
+
+      // Store the admin status in the LoginPage static variable
+      LoginPage.isAdmin = adminDoc.exists;
+      notifyListeners();
+    } catch (e) {
+      print('Error checking admin status: $e');
+      LoginPage.isAdmin = false;
+    }
+  }
+
   final storageRef = FirebaseStorage.instance.ref();
 
   Future<Uint8List?> getImage(String s) async {
@@ -128,20 +149,6 @@ class ApplicationState extends ChangeNotifier {
     } finally {}
     return data;
   }
-
-  // Future<Uint8List> loadImage(String path) async {
-  //   try {
-  //     // Reference to the file in Firebase Storage
-  //     final ref = FirebaseStorage.instance.ref().child(path);
-
-  //     // Download data with max size of 5MB
-  //     final Uint8List? data = await ref.getData(5 * 1024 * 1024);
-  //     return data!;
-  //   } catch (e) {
-  //     print("Error loading image: $e");
-  //   }
-  //   throw {print("Data was null?")};
-  // }
 
   Future<List<Uint8List?>> getImageList(List<String> lst) async {
     List<Uint8List?> rList = [];

@@ -14,13 +14,19 @@ class LoginPage extends StatelessWidget {
 
   // This checks the 'admins' collection in firebase for authorized accounts
   // The result is stored in the user's app state for later use
-  Future<void> checkAndStoreAdminStatus(User user, BuildContext context) async {
-    final adminDoc = await FirebaseFirestore.instance
-        .collection('admins')
-        .doc(user.uid)
-        .get();
-    // Store the admin status in a static variable
-    isAdmin = adminDoc.exists;
+  Future<void> checkAndStoreAdminStatus(User user) async {
+    try {
+      final adminDoc = await FirebaseFirestore.instance
+          .collection('admins')
+          .doc(user.uid)
+          .get();
+
+      // Store the admin status in a static variable
+      isAdmin = adminDoc.exists;
+    } catch (e) {
+      print('Error checking admin status: $e');
+      isAdmin = false;
+    }
   }
 
   @override
@@ -90,10 +96,27 @@ class LoginPage extends StatelessWidget {
               // Customize the SignInScreen to match the app's theme
               return SignInScreen(
                 providers: [EmailAuthProvider()],
+                actions: [
+                  AuthStateChangeAction<SignedIn>((context, state) async {
+                    // Check if user is admin immediately after sign in
+                    if (state.user != null) {
+                      await checkAndStoreAdminStatus(state.user!);
+
+                      // Navigate to the list page for all users
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListPage(),
+                          ),
+                        );
+                      }
+                    }
+                  }),
+                ],
                 headerBuilder: (context, constraints, shrinkOffset) {
                   return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 30, bottom: 20),
+                    padding: const EdgeInsets.only(top: 30, bottom: 20),
                     child: Column(
                       children: [
                         // App title
@@ -123,8 +146,7 @@ class LoginPage extends StatelessWidget {
                 },
                 subtitleBuilder: (context, action) {
                   return Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 4.0),
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
                     child: Text(
                       action == AuthAction.signIn
                           ? 'Welcome back! Please sign in to continue.'
@@ -177,14 +199,32 @@ class LoginPage extends StatelessWidget {
               );
             }
 
-            // If we have a user, check their admin status and return to the appropriate page
-            checkAndStoreAdminStatus(snapshot.data!, context);
-            
-            // Return the appropriate page based on admin status
-            return isAdmin ? AdminListPage() : ListPage();
+            // If we already have a user when this widget is built, check admin status and navigate to List page
+            handleExistingUser(snapshot.data!, context);
+
+            // Return loading indicator while checking admin status
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color.fromARGB(255, 107, 79, 79),
+              ),
+            );
           },
         ),
       ),
     );
+  }
+
+  // Helper method to check admin status and navigate to the List page
+  Future<void> handleExistingUser(User user, BuildContext context) async {
+    await checkAndStoreAdminStatus(user);
+
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListPage(),
+        ),
+      );
+    }
   }
 }
