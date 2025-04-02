@@ -80,6 +80,8 @@ class LoginPage extends StatelessWidget {
     return Theme(
       data: customTheme,
       child: Scaffold(
+        resizeToAvoidBottomInset:
+            false, // Prevent resizing when keyboard appears
         backgroundColor: const Color.fromARGB(255, 238, 214, 196),
         body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -93,7 +95,7 @@ class LoginPage extends StatelessWidget {
             }
 
             if (!snapshot.hasData) {
-              // Customize the SignInScreen to match the app's theme
+              // Standard SignInScreen with custom theme
               return SignInScreen(
                 providers: [EmailAuthProvider()],
                 actions: [
@@ -114,10 +116,12 @@ class LoginPage extends StatelessWidget {
                     }
                   }),
                 ],
+                // Adjust the headerBuilder to have less vertical padding
                 headerBuilder: (context, constraints, shrinkOffset) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    padding: const EdgeInsets.only(top: 16, bottom: 8),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         // App title
                         Text(
@@ -129,7 +133,7 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         // Optional subtitle
                         Text(
                           'Explore Historical Sites',
@@ -144,9 +148,10 @@ class LoginPage extends StatelessWidget {
                     ),
                   );
                 },
+                // Make subtitle more compact
                 subtitleBuilder: (context, action) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
+                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                     child: Text(
                       action == AuthAction.signIn
                           ? 'Welcome back! Please sign in to continue.'
@@ -161,9 +166,10 @@ class LoginPage extends StatelessWidget {
                     ),
                   );
                 },
+                // Make footer more compact
                 footerBuilder: (context, action) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                     child: Text(
                       'Discover the rich history of Faulkner County',
                       style: GoogleFonts.rakkas(
@@ -176,6 +182,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   );
                 },
+                // Side builder for tablet/desktop
                 sideBuilder: (context, constraints) {
                   return Container(
                     color: const Color.fromARGB(255, 238, 214, 196),

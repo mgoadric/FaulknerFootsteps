@@ -95,28 +95,41 @@ class _StartPageState extends State<StartPage>
                       ),
                     ),
                     const SizedBox(height: 50),
-                    ElevatedButton(
-                        onPressed: _handleContinue,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 238, 214, 196),
-                            minimumSize: const Size(400, 100),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50))),
-                        child: Text(
-                          textScaler: TextScaler.linear(1.5),
-                          'Get To Steppin',
-                          style: GoogleFonts.ultra(
-                            textStyle: const TextStyle(color: Colors.black),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 255, 243, 228),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 176, 133, 133),
+                          width: 3.0,
+                        ),
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8.0,
+                            offset: Offset(3, 4), // Shadow offset
                           ),
-                        )),
-                    /*const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _handleContinue,
-                child: const Text('Login'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(200, 50),
-                ),
-              ),*/
+                        ],
+                      ),
+                      width: 350, // Rectangular width
+                      height: 120, // Rectangular height
+                      child: InkWell(
+                        onTap: _handleContinue,
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Center(
+                          child: Text(
+                            'Get To Steppin',
+                            style: GoogleFonts.ultra(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 107, 79, 79),
+                                fontSize: 24,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
