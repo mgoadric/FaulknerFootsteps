@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:faulkner_footsteps/app_state.dart';
+import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -95,6 +96,27 @@ class _AdminListPageState extends State<AdminListPage> {
     });
     return path; //path is what we will store in firebase
   }
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MapDisplay(
+            currentPosition: const LatLng(2, 2),
+            initialPosition: const LatLng(2, 2),
+            appState: widget.app_state,
+          ),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  List<siteFilter> chosenFilters = [];
 
   Future<void> _showAddSiteDialog() async {
     final nameController = TextEditingController();
@@ -203,6 +225,46 @@ class _AdminListPageState extends State<AdminListPage> {
                       },
                       child: const Text('Add Image'),
                     ),
+                    //NEW STUFF
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: siteFilter.values.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        siteFilter currentFilter = siteFilter.values[index];
+                        return Padding(
+                          padding: EdgeInsets.fromLTRB(8, 32, 8, 16),
+                          // padding: EdgeInsets.all(8),
+                          child: FilterChip(
+                            backgroundColor: Color.fromARGB(255, 255, 243, 228),
+                            disabledColor: Color.fromARGB(255, 255, 243, 228),
+                            selectedColor: Color.fromARGB(255, 107, 79, 79),
+                            checkmarkColor: Color.fromARGB(255, 255, 243, 228),
+                            label: Text(currentFilter.name,
+                                style: GoogleFonts.ultra(
+                                    textStyle: TextStyle(
+                                        color: chosenFilters
+                                                .contains(currentFilter)
+                                            ? Color.fromARGB(255, 255, 243, 228)
+                                            : Color.fromARGB(255, 107, 79, 79),
+                                        fontSize: 14))),
+                            selected: chosenFilters.contains(currentFilter),
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  chosenFilters.add(currentFilter);
+                                } else {
+                                  chosenFilters.remove(currentFilter);
+                                }
+                                // filterChangedCallback();
+                              });
+                            },
+                          ),
+                        );
+                      },
+                      // children: siteFilter.values.map((siteFilter filter) {
+                    ),
                     if (image != null) ...[
                       const SizedBox(height: 10),
                       const Text("Current Image: "),
@@ -228,8 +290,8 @@ class _AdminListPageState extends State<AdminListPage> {
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
                       String randomName = uuid.v4();
-                      String path = await uploadImage(nameController.text,
-                          randomName); //TODO: change "first" so that the file name makes sense and is unique
+                      String path =
+                          await uploadImage(nameController.text, randomName);
                       final newSite = HistSite(
                         name: nameController.text,
                         description: descriptionController.text,
@@ -237,7 +299,7 @@ class _AdminListPageState extends State<AdminListPage> {
                         imageUrls: [path],
                         avgRating: 0.0,
                         ratingAmount: 0,
-                        filters: [],
+                        filters: chosenFilters,
                         lat: double.tryParse(latController.text) ?? 0.0,
                         lng: double.tryParse(lngController.text) ?? 0.0,
                       );

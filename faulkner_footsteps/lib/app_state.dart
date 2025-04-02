@@ -159,7 +159,6 @@ class ApplicationState extends ChangeNotifier {
     return rList;
   }
 
-  //TODO: implement this!!!
   // load all the images to the hist site
   Future<void> loadImageToHistSite(
       QueryDocumentSnapshot<Map<String, dynamic>> document,
@@ -175,6 +174,20 @@ class ApplicationState extends ChangeNotifier {
     //   throw Exception("Must be logged in");
     // }
 
+    // we need to convert all the filters to strings so they are firestore friendly
+    List<String> firebaseFriendlyFilterList = [];
+
+    for (siteFilter filter in newSite.filters) {
+      if (filter == siteFilter.Hall) {
+        firebaseFriendlyFilterList.add("Hall");
+      } else if (filter == siteFilter.Monument) {
+        firebaseFriendlyFilterList.add("Monument");
+      } else if (filter == siteFilter.Park) {
+        firebaseFriendlyFilterList.add("Park");
+      }
+      //TODO: add all other filter types as they are added...
+    }
+
     var data = {
       "name": newSite.name,
       "description": newSite.description,
@@ -183,6 +196,7 @@ class ApplicationState extends ChangeNotifier {
       //added ratings here
       "avgRating": newSite.avgRating,
       "ratingAmount": newSite.ratingAmount,
+      "filters": firebaseFriendlyFilterList,
       "lat": 35.1,
       "lng": -92.1,
     };
