@@ -66,7 +66,9 @@ class _AdminListPageState extends State<AdminListPage> {
 
 // Change the filename to a string that has no spaces
     // folderName.replaceAll(' ', '_');
-    folderName.split(" ").join("_");
+    // folderName.split(" ").join("_");\
+    folderName = folderName.replaceAll(' ', '');
+    // print("${folderName.replaceAll(' ', '')}");
     print("FileName: $folderName");
 
 // Upload file and metadata. Metadata ensures it is saved in jpg format
