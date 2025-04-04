@@ -78,6 +78,8 @@ class ApplicationState extends ChangeNotifier {
                 filters.add(siteFilter.Park);
               } else if (filter.toLowerCase() == "hall") {
                 filters.add(siteFilter.Hall);
+              } else if (filter.toLowerCase() == "other") {
+                filters.add(siteFilter.Other);
               } else {
                 print(
                     "Filter not found in siteFilter enum list. Filter: $filter");
@@ -184,6 +186,8 @@ class ApplicationState extends ChangeNotifier {
         firebaseFriendlyFilterList.add("Monument");
       } else if (filter == siteFilter.Park) {
         firebaseFriendlyFilterList.add("Park");
+      } else if (filter == siteFilter.Other) {
+        firebaseFriendlyFilterList.add("Other");
       }
       //TODO: add all other filter types as they are added...
     }
@@ -195,7 +199,7 @@ class ApplicationState extends ChangeNotifier {
       "images": newSite.imageUrls,
       //added ratings here
       "avgRating": newSite.avgRating,
-      "ratingAmount": newSite.ratingAmount,
+      "ratingCount": newSite.ratingAmount,
       "filters": firebaseFriendlyFilterList,
       "lat": 35.1,
       "lng": -92.1,

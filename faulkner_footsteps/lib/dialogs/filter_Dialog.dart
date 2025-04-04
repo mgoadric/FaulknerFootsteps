@@ -4,17 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum siteFilter {
-  Monument,
-  Park,
-  Hall,
-  Test1,
-  Test2,
-  Test3,
-  Test4,
-  Test5,
-  Test6
-}
+enum siteFilter { Monument, Park, Hall, Other }
 
 class FilterDialog extends StatefulWidget {
   const FilterDialog(

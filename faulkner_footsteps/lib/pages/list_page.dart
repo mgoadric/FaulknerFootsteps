@@ -88,7 +88,12 @@ class _ListPageState extends State<ListPage> {
     updateTimer = Timer.periodic(const Duration(milliseconds: 1000), _update);
     displaySites = widget.app_state.historicalSites;
     fullSiteList = widget.app_state.historicalSites;
-    activeFilters = [];
+    activeFilters = [
+      siteFilter.Hall,
+      siteFilter.Monument,
+      siteFilter.Park,
+      siteFilter.Other
+    ];
     searchSites = fullSiteList;
     // print("INIT STATE");
 
@@ -270,16 +275,13 @@ class _ListPageState extends State<ListPage> {
     List<HistSite> lst = [];
     // print(fullSiteList);
     //TODO: set display items so that only items with the filter will appear in display items list
-    if (activeFilters.isEmpty) {
-      lst.addAll(fullSiteList);
-    } else {
-      for (HistSite site in displaySites) {
-        for (siteFilter filter in activeFilters) {
-          // print("Filter: $filter");
-          // print("Site: $site");
-          if (site.filters.contains(filter)) {
-            lst.add(site);
-          }
+
+    for (HistSite site in displaySites) {
+      for (siteFilter filter in activeFilters) {
+        // print("Filter: $filter");
+        // print("Site: $site");
+        if (site.filters.contains(filter)) {
+          lst.add(site);
         }
       }
     }
@@ -289,24 +291,22 @@ class _ListPageState extends State<ListPage> {
 
   void onDisplaySitesChanged() {
     List<HistSite> newDisplaySites = [];
-    if (activeFilters.isEmpty) {
-      newDisplaySites = searchSites;
-    } else {
-      for (HistSite site in searchSites) {
-        for (siteFilter filter in activeFilters) {
-          // print("Filter: $filter");
-          // print("Site: $site");
-          if (site.filters.contains(filter)) {
-            newDisplaySites.add(site);
-          }
+
+    for (HistSite site in searchSites) {
+      for (siteFilter filter in activeFilters) {
+        // print("Filter: $filter");
+        // print("Site: $site");
+        if (site.filters.contains(filter)) {
+          newDisplaySites.add(site);
         }
       }
-      // for (HistSite site in searchSites) {
-      //   if (filteredSites.contains(site)) {
-      //     newDisplaySites.add(site);
-      //   }
-      // }
     }
+    // for (HistSite site in searchSites) {
+    //   if (filteredSites.contains(site)) {
+    //     newDisplaySites.add(site);
+    //   }
+    // }
+
     setState(() {
       displaySites = newDisplaySites;
     });

@@ -5,6 +5,7 @@ import 'package:faulkner_footsteps/app_state.dart';
 import 'package:faulkner_footsteps/dialogs/filter_Dialog.dart';
 import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:faulkner_footsteps/objects/info_text.dart';
+import 'package:faulkner_footsteps/pages/map_display.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class AdminListPage extends StatefulWidget {
 
 class _AdminListPageState extends State<AdminListPage> {
   late Timer updateTimer;
+  int _selectedIndex = 0;
   File? image;
   final storage = FirebaseStorage.instance;
   final storageRef = FirebaseStorage.instance.ref();
@@ -226,45 +228,45 @@ class _AdminListPageState extends State<AdminListPage> {
                       child: const Text('Add Image'),
                     ),
                     //NEW STUFF
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: siteFilter.values.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        siteFilter currentFilter = siteFilter.values[index];
-                        return Padding(
-                          padding: EdgeInsets.fromLTRB(8, 32, 8, 16),
-                          // padding: EdgeInsets.all(8),
-                          child: FilterChip(
-                            backgroundColor: Color.fromARGB(255, 255, 243, 228),
-                            disabledColor: Color.fromARGB(255, 255, 243, 228),
-                            selectedColor: Color.fromARGB(255, 107, 79, 79),
-                            checkmarkColor: Color.fromARGB(255, 255, 243, 228),
-                            label: Text(currentFilter.name,
-                                style: GoogleFonts.ultra(
-                                    textStyle: TextStyle(
-                                        color: chosenFilters
-                                                .contains(currentFilter)
-                                            ? Color.fromARGB(255, 255, 243, 228)
-                                            : Color.fromARGB(255, 107, 79, 79),
-                                        fontSize: 14))),
-                            selected: chosenFilters.contains(currentFilter),
-                            onSelected: (bool selected) {
-                              setState(() {
-                                if (selected) {
-                                  chosenFilters.add(currentFilter);
-                                } else {
-                                  chosenFilters.remove(currentFilter);
-                                }
-                                // filterChangedCallback();
-                              });
-                            },
-                          ),
-                        );
-                      },
-                      // children: siteFilter.values.map((siteFilter filter) {
-                    ),
+                    // ListView.builder(
+                    //   physics: NeverScrollableScrollPhysics(),
+                    //   shrinkWrap: true,
+                    //   itemCount: siteFilter.values.length,
+                    //   scrollDirection: Axis.horizontal,
+                    //   itemBuilder: (context, index) {
+                    //     siteFilter currentFilter = siteFilter.values[index];
+                    //     return Padding(
+                    //       padding: EdgeInsets.fromLTRB(8, 32, 8, 16),
+                    //       // padding: EdgeInsets.all(8),
+                    //       child: FilterChip(
+                    //         backgroundColor: Color.fromARGB(255, 255, 243, 228),
+                    //         disabledColor: Color.fromARGB(255, 255, 243, 228),
+                    //         selectedColor: Color.fromARGB(255, 107, 79, 79),
+                    //         checkmarkColor: Color.fromARGB(255, 255, 243, 228),
+                    //         label: Text(currentFilter.name,
+                    //             style: GoogleFonts.ultra(
+                    //                 textStyle: TextStyle(
+                    //                     color: chosenFilters
+                    //                             .contains(currentFilter)
+                    //                         ? Color.fromARGB(255, 255, 243, 228)
+                    //                         : Color.fromARGB(255, 107, 79, 79),
+                    //                     fontSize: 14))),
+                    //         selected: chosenFilters.contains(currentFilter),
+                    //         onSelected: (bool selected) {
+                    //           setState(() {
+                    //             if (selected) {
+                    //               chosenFilters.add(currentFilter);
+                    //             } else {
+                    //               chosenFilters.remove(currentFilter);
+                    //             }
+                    //             // filterChangedCallback();
+                    //           });
+                    //         },
+                    //       ),
+                    //     );
+                    //   },
+                    //   // children: siteFilter.values.map((siteFilter filter) {
+                    // ),
                     if (image != null) ...[
                       const SizedBox(height: 10),
                       const Text("Current Image: "),
@@ -286,6 +288,9 @@ class _AdminListPageState extends State<AdminListPage> {
                     backgroundColor: const Color.fromARGB(255, 218, 186, 130),
                   ),
                   onPressed: () async {
+                    if (chosenFilters.isEmpty) {
+                      chosenFilters.add(siteFilter.Other);
+                    }
                     //I think putting an async here is fine.
                     if (nameController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
@@ -797,13 +802,36 @@ class _AdminListPageState extends State<AdminListPage> {
         elevation: 12.0,
         shadowColor: const Color.fromARGB(135, 255, 255, 255),
         title: Text(
-          "Admin Dashboard",
+          _selectedIndex == 0 ? "Admin Dashboard" : "Map Display",
           style: GoogleFonts.ultra(
             textStyle: const TextStyle(color: Color.fromARGB(255, 76, 32, 8)),
           ),
         ),
       ),
-      body: _buildAdminContent(),
+      body: _selectedIndex == 0
+          ? _buildAdminContent()
+          : MapDisplay(
+              currentPosition: const LatLng(2, 2),
+              initialPosition: const LatLng(2, 2),
+              appState: widget.app_state,
+            ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 218, 180, 130),
+        selectedItemColor: const Color.fromARGB(255, 124, 54, 16),
+        unselectedItemColor: const Color.fromARGB(255, 124, 54, 16),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.admin_panel_settings),
+            label: 'Admin',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 
