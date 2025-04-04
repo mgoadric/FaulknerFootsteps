@@ -15,11 +15,12 @@ import 'package:provider/provider.dart';
 class MapDisplay extends StatefulWidget {
   final LatLng currentPosition;
   final ApplicationState appState;
-  const MapDisplay(
-      {super.key,
-      required this.currentPosition,
-      required this.appState,
-      required LatLng initialPosition});
+  const MapDisplay({
+    super.key,
+    required this.currentPosition,
+    required this.appState,
+    required LatLng initialPosition,
+  });
 
   @override
   _MapDisplayState createState() => _MapDisplayState();
@@ -27,18 +28,18 @@ class MapDisplay extends StatefulWidget {
 
 class _MapDisplayState extends State<MapDisplay> {
   bool visited = false;
-  final Distance distance = new Distance();
+  final Distance distance = Distance();
   late Map<String, LatLng> siteLocations = widget.appState.getLocations();
   late Map<String, double> siteDistances = getDistances(siteLocations);
   late var sorted = Map.fromEntries(siteDistances.entries.toList()
     ..sort((e1, e2) => e1.value.compareTo(e2.value)));
   late var sortedlist = sorted.values.toList();
   int _selectedIndex = 0;
+  
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => locationDialog(context));
+    WidgetsBinding.instance.addPostFrameCallback((_) => locationDialog(context));
   }
 
   void _onItemTapped(int index) {
@@ -49,11 +50,27 @@ class _MapDisplayState extends State<MapDisplay> {
 
   void locationDialog(context) {
     final appState = Provider.of<ApplicationState>(context, listen: false);
+    
+    // First, check if there are any sites close enough
+    if (sorted.isEmpty || sorted.values.first >= 30000.0) {
+      // No sites nearby or sites too far away
+      return;
+    }
+    
+    // Get the closest site
+    String closestSiteName = sorted.keys.first;
+    
+    // Check if the user has already visited this site
+    if (widget.appState.hasVisited(closestSiteName)) {
+      // Already visited, don't show dialog
+      return;
+    }
+    
+    // Find the site information
     HistSite? selectedSite = widget.appState.historicalSites.firstWhere(
-      (site) => site.name == sorted.keys.first.toString(),
-      // if not found, it will say the following
+      (site) => site.name == closestSiteName,
       orElse: () => HistSite(
-        name: sorted.keys.first,
+        name: closestSiteName,
         description: "No description available",
         blurbs: [],
         imageUrls: [],
@@ -65,39 +82,78 @@ class _MapDisplayState extends State<MapDisplay> {
       ),
     );
 
-    if ((sorted.values.first < 30000.0) &
-        (!widget.appState.hasVisited(sorted.keys.first))) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Center(
-            child: AlertDialog(
-              backgroundColor: const Color.fromARGB(
-                  255, 238, 214, 196), // Cream color to match app theme
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                side: BorderSide(
-                  color: Color.fromARGB(255, 107, 79, 79),
-                  width: 2.0,
-                ),
+    // Show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          elevation: 8,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 238, 214, 196),
+              borderRadius: BorderRadius.circular(20.0),
+              border: Border.all(
+                color: const Color.fromARGB(255, 107, 79, 79),
+                width: 3.0,
               ),
-              title: Text(
-                sorted.keys.first,
-                style: GoogleFonts.ultra(
-                  textStyle: const TextStyle(
-                    color: Color.fromARGB(255, 72, 52, 52),
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Site image
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(17.0)),
+                  child: Container(
+                    height: 180,
+                    width: double.infinity,
+                    color: const Color.fromARGB(255, 250, 235, 215),
+                    child: selectedSite.images.isNotEmpty && selectedSite.images.first != null
+                        ? Image.memory(
+                            selectedSite.images.first!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/faulkner_thumbnail.png',
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "You are near this historical site!",
+                
+                // Site name
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                  child: Text(
+                    selectedSite.name,
+                    style: GoogleFonts.ultra(
+                      textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 72, 52, 52),
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                
+                // Discovery message
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Text(
+                    "You have discovered a historical site!",
                     style: GoogleFonts.rakkas(
                       textStyle: const TextStyle(
                         color: Color.fromARGB(255, 107, 79, 79),
@@ -106,25 +162,19 @@ class _MapDisplayState extends State<MapDisplay> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
-                  if (selectedSite.imageUrls.isNotEmpty)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image(
-                        image: MemoryImage(
-                            base64Decode(selectedSite.imageUrls.first)),
-                        height: 180,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  const SizedBox(height: 20),
-                  Row(
+                ),
+                
+                // Buttons
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      // Visit Site Button
                       _buildRoundedButton(
                         context: context,
-                        text: "Get Info",
+                        text: "Visit Site",
+                        icon: Icons.location_on,
                         onPressed: () {
                           Navigator.of(context).pop();
                           // Navigate User to the HistSitePage
@@ -140,35 +190,45 @@ class _MapDisplayState extends State<MapDisplay> {
                           );
                         },
                       ),
+                      
+                      // Discover Button
                       _buildRoundedButton(
                         context: context,
-                        text: "Mark as visited",
+                        text: "Discover",
+                        icon: Icons.emoji_events,
                         onPressed: () {
                           Navigator.of(context).pop();
-                          var AchievementState = AchievementsPageState();
-                          // Navigate User to the HistSitePage
-                          AchievementState.visitPlace(
-                              context, sorted.keys.first);
-                          visited = true;
+                          // Mark site as visited for achievements
+                          final achievementState = AchievementsPageState();
+                          achievementState.visitPlace(context, selectedSite.name);
+                          setState(() {
+                            visited = true;
+                          });
                         },
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildRoundedButton(
+                ),
+                
+                // Close button
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _buildRoundedButton(
                     context: context,
                     text: "Close",
+                    icon: Icons.close,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
+                    width: 120,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      );
-    }
+          ),
+        );
+      },
+    );
   }
 
   // Helper method to create consistent rounded buttons
@@ -176,26 +236,57 @@ class _MapDisplayState extends State<MapDisplay> {
     required BuildContext context,
     required String text,
     required VoidCallback onPressed,
+    IconData? icon,
+    double width = 140,
   }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Color.fromARGB(255, 107, 79, 79),
-        side: BorderSide(
-          color: Color.fromARGB(255, 107, 79, 79),
-          width: 1.5,
+    return Container(
+      width: width,
+      height: 44,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: const Color.fromARGB(255, 107, 79, 79),
+          width: 2.0,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: const Color.fromARGB(255, 255, 243, 228),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Text(
-        text,
-        style: GoogleFonts.rakkas(
-          textStyle: const TextStyle(
-            color: Color.fromARGB(255, 107, 79, 79),
-            fontSize: 16,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(22),
+          onTap: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (icon != null) ...[
+                  Icon(
+                    icon,
+                    color: const Color.fromARGB(255, 107, 79, 79),
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  text,
+                  style: GoogleFonts.rakkas(
+                    textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 107, 79, 79),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -229,12 +320,16 @@ class _MapDisplayState extends State<MapDisplay> {
             ),
           );
         }).toList();
+        
+        // Add marker for current user position
         markers.add(Marker(
-            point: widget.currentPosition,
-            child: Icon(
-              Icons.circle,
-              color: Colors.blue,
-            )));
+          point: widget.currentPosition,
+          child: const Icon(
+            Icons.circle,
+            color: Colors.blue,
+          ),
+        ));
+        
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 238, 214, 196),
           body: FlutterMap(
@@ -260,8 +355,11 @@ class _MapDisplayState extends State<MapDisplay> {
   Map<String, double> getDistances(Map<String, LatLng> locations) {
     Map<String, double> distances = {};
     for (int i = 0; i < locations.length; i++) {
-      distances[locations.keys.elementAt(i)] = distance.as(LengthUnit.Meter,
-          locations.values.elementAt(i), widget.currentPosition);
+      distances[locations.keys.elementAt(i)] = distance.as(
+        LengthUnit.Meter,
+        locations.values.elementAt(i), 
+        widget.currentPosition
+      );
     }
     return distances;
   }
