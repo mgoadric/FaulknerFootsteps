@@ -62,31 +62,56 @@ class ListItem extends StatelessWidget {
             children: [
               // Full-width thumbnail image at the top
               ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                child: siteInfo.images.length > 0 && siteInfo.images[0] != null
-                    ? Image.memory(
-                        // 'assets/images/faulkner_thumbnail.png',
-                        // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
-                        siteInfo.images.first!,
-                        height:
-                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
+                  child: FutureBuilder<Uint8List?>(
+                    future: app_state.getImage(siteInfo.imageUrls.first),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Image.asset(
+                            'assets/images/faulkner_thumbnail.png',
+                            height: 400,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            gaplessPlayback: true);
+                      } else if (snapshot.hasError || snapshot.data == null) {
+                        return Icon(Icons.error);
+                      } else {
+                        return Image.memory(
+                          snapshot.data!,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          gaplessPlayback: true,
+                        ); // Safe to use '!' because we checked for null
+                      }
+                    },
+                  )
 
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                              'assets/images/faulkner_thumbnail.png');
-                        },
-                      )
-                    : Image.asset(
-                        'assets/images/faulkner_thumbnail.png',
-                        height:
-                            400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-              ),
+                  // siteInfo.images.length > 0 && siteInfo.images[0] != null
+                  //     ? Image.memory(
+                  //         // 'assets/images/faulkner_thumbnail.png',
+                  //         // 'assets/images/faulkner_thumbnail.png', <- this is for the original thumbnail the classroom group was using
+                  //         siteInfo.images.first!,
+                  //         height:
+                  //             400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                  //         width: double.infinity,
+                  //         fit: BoxFit.cover,
+                  //         gaplessPlayback: true,
+
+                  //         errorBuilder: (context, error, stackTrace) {
+                  //           return Image.asset(
+                  //               'assets/images/faulkner_thumbnail.png');
+                  //         },
+                  //       )
+                  //     : Image.asset(
+                  //         'assets/images/faulkner_thumbnail.png',
+                  //         height:
+                  //             400, // Adjust height as needed. 400 seems to work best with the images. This was originally at 150
+                  //         width: double.infinity,
+                  //         fit: BoxFit.cover,
+                  //       ),
+                  ),
               // Row with text and icon inline
               Padding(
                 padding:
