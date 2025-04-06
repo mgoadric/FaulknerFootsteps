@@ -67,23 +67,30 @@ class ListItem extends StatelessWidget {
                   child: FutureBuilder<Uint8List?>(
                     future: app_state.getImage(siteInfo.imageUrls.first),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Image.asset(
-                            'assets/images/faulkner_thumbnail.png',
-                            height: 400,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            gaplessPlayback: true);
-                      } else if (snapshot.hasError || snapshot.data == null) {
-                        return Icon(Icons.error);
-                      } else {
+                      if (siteInfo.images.length > 0 &&
+                          siteInfo.images[0] != null) {
+                        return Image.memory(
+                          siteInfo.images.first!,
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      } else if (snapshot.connectionState ==
+                              ConnectionState.done &&
+                          snapshot.data != null) {
                         return Image.memory(
                           snapshot.data!,
                           height: 400,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                          gaplessPlayback: true,
-                        ); // Safe to use '!' because we checked for null
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/images/faulkner_thumbnail.png',
+                          height: 400,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
                       }
                     },
                   )
