@@ -130,8 +130,12 @@ class ApplicationState extends ChangeNotifier {
       LoginPage.isAdmin = adminDoc.exists;
       notifyListeners();
     } catch (e) {
+      // If permission denied error occurs, handle it gracefully
       print('Error checking admin status: $e');
+
+      // Set to false by default when permission error occurs
       LoginPage.isAdmin = false;
+      notifyListeners();
     }
   }
 
