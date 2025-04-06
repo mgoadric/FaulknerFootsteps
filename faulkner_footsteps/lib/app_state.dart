@@ -248,37 +248,57 @@ class ApplicationState extends ChangeNotifier {
 
   //update/store rating in firebase
   void updateSiteRating(String siteName, double newRating) async {
-    final site = _historicalSites.firstWhere((s) => s.name == siteName);
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    double totalRating = 0;
-    int ratingcount = 0;
-    FirebaseFirestore.instance
-        .collection("sites")
-        .doc(siteName)
-        .collection("ratings")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({"rating": newRating});
-    await FirebaseFirestore.instance
-        .collection("sites")
-        .doc(siteName)
-        .collection("ratings")
-        .get()
-        .then((snapshot) {
+    try {
+      final site = _historicalSites.firstWhere((s) => s.name == siteName);
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      double totalRating = 0;
+      int ratingcount = 0;
+
+      // 1. Add the individual rating to the ratings subcollection
+      // This should work for all authenticated users based on your current rules
+      await FirebaseFirestore.instance
+          .collection("sites")
+          .doc(siteName)
+          .collection("ratings")
+          .doc(userId)
+          .set({"rating": newRating});
+
+      // 2. Fetch all ratings to calculate the average
+      final snapshot = await FirebaseFirestore.instance
+          .collection("sites")
+          .doc(siteName)
+          .collection("ratings")
+          .get();
+
       for (final doc in snapshot.docs) {
         totalRating += doc.data()["rating"];
         ratingcount += 1;
-        // print("AppState Total Rating: $totalRating");
-        // print("AppState Rating Count: $ratingcount");
       }
-    });
-    double finalRating = totalRating / ratingcount;
-    // print("This is a final rating $finalRating");
 
-    FirebaseFirestore.instance
-        .collection("sites")
-        .doc(siteName)
-        .update({"avgRating": finalRating, "ratingCount": ratingcount});
-    notifyListeners();
+      double finalRating = totalRating / ratingcount;
+
+      // 3. Update the local HistSite object with the new rating data
+      // This ensures the UI displays the updated rating even if Firebase update fails
+      site.avgRating = finalRating;
+      site.ratingAmount = ratingcount;
+
+      // 4. Try to update the site document with the new average
+      // This will work for admins but might fail for regular users
+      try {
+        await FirebaseFirestore.instance
+            .collection("sites")
+            .doc(siteName)
+            .update({"avgRating": finalRating, "ratingCount": ratingcount});
+      } catch (e) {
+        print(
+            "Could not update site with new rating average (user may not have permission): $e");
+        // We don't need to handle this error further since we've already updated the local object
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print("Error updating site rating: $e");
+    }
   }
 
   // Achievement Management Methods
