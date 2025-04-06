@@ -163,7 +163,8 @@ class ListItem extends StatelessWidget {
                               AppRouter.navigateTo(context, "/hist",
                                   arguments: {
                                     "info": siteInfo,
-                                    "app_state": app_state
+                                    "app_state": app_state,
+                                    "currentPosition": currentPosition,
                                   });
                             },
                             icon: const Icon(
