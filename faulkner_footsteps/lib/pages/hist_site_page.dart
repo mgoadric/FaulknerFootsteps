@@ -142,13 +142,50 @@ class _HistSitePage extends State<HistSitePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MapDisplay(
-                                        currentPosition: widget.currentPosition,
-                                        initialPosition: LatLng(
-                                            widget.histSite.lat,
-                                            widget.histSite.lng),
-                                        appState: widget.app_state),
-                                  ),
+                                      //TODO: fix the scaffold disappearing. The best Idea that I have is to just
+                                      // return a scaffold with a MapDisplay as its body...
+                                      // Not a wonderful solution, but the first that comes to mind
+                                      //
+                                      builder: (context) => Scaffold(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 238, 214, 196),
+                                            appBar: AppBar(
+                                                leading: BackButton(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 243, 228),
+                                                ),
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 107, 79, 79),
+                                                elevation: 5.0,
+                                                title: Container(
+                                                  constraints: BoxConstraints(
+                                                      minWidth: 10),
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      "Map",
+                                                      style: GoogleFonts.ultra(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          243,
+                                                                          228)),
+                                                          fontSize: 26),
+                                                    ),
+                                                  ),
+                                                )),
+                                            body: MapDisplay(
+                                                currentPosition:
+                                                    widget.currentPosition,
+                                                initialPosition: LatLng(
+                                                    widget.histSite.lat,
+                                                    widget.histSite.lng),
+                                                appState: widget.app_state),
+                                          )),
                                 );
                                 ;
                               },

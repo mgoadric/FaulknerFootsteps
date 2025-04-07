@@ -159,7 +159,6 @@ class ListItem extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             onPressed: () {
-                              //TODO: This is broken
                               AppRouter.navigateTo(context, "/hist",
                                   arguments: {
                                     "info": siteInfo,
