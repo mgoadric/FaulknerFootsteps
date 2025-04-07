@@ -24,7 +24,10 @@ class LoginPage extends StatelessWidget {
       // Store the admin status in a static variable
       isAdmin = adminDoc.exists;
     } catch (e) {
+      // If permission denied error occurs, handle it gracefully
       print('Error checking admin status: $e');
+
+      // Set to false by default when permission error occurs
       isAdmin = false;
     }
   }
