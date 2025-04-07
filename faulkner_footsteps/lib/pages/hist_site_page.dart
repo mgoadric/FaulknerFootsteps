@@ -15,11 +15,12 @@ class HistSitePage extends StatefulWidget {
   final HistSite histSite;
   final LatLng currentPosition;
 
-  const HistSitePage(
-      {super.key,
-      required this.histSite,
-      required this.app_state,
-      required this.currentPosition});
+  const HistSitePage({
+    super.key,
+    required this.histSite,
+    required this.app_state,
+    required this.currentPosition,
+  });
 
   final ApplicationState app_state;
 
@@ -141,13 +142,50 @@ class _HistSitePage extends State<HistSitePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MapDisplay(
-                                        currentPosition: widget.currentPosition,
-                                        initialPosition: LatLng(
-                                            widget.histSite.lat,
-                                            widget.histSite.lng),
-                                        appState: widget.app_state),
-                                  ),
+                                      //TODO: fix the scaffold disappearing. The best Idea that I have is to just
+                                      // return a scaffold with a MapDisplay as its body...
+                                      // Not a wonderful solution, but the first that comes to mind
+                                      //
+                                      builder: (context) => Scaffold(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 238, 214, 196),
+                                            appBar: AppBar(
+                                                leading: BackButton(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 243, 228),
+                                                ),
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 107, 79, 79),
+                                                elevation: 5.0,
+                                                title: Container(
+                                                  constraints: BoxConstraints(
+                                                      minWidth: 10),
+                                                  child: FittedBox(
+                                                    child: Text(
+                                                      "Map",
+                                                      style: GoogleFonts.ultra(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          243,
+                                                                          228)),
+                                                          fontSize: 26),
+                                                    ),
+                                                  ),
+                                                )),
+                                            body: MapDisplay(
+                                                currentPosition:
+                                                    widget.currentPosition,
+                                                initialPosition: LatLng(
+                                                    widget.histSite.lat,
+                                                    widget.histSite.lng),
+                                                appState: widget.app_state),
+                                          )),
                                 );
                                 ;
                               },
@@ -184,14 +222,37 @@ class _HistSitePage extends State<HistSitePage> {
                         SwipeImageGallery(
                           context: context,
                           itemBuilder: (context, galleryIndex) {
-                            return widget.histSite.images[index] != null
-                                ? Image.memory(
-                                    widget.histSite.images[index]!,
-                                    fit: BoxFit.contain,
-                                  )
-                                : Image.asset(
-                                    "assets/images/faulkner_thumbnail.png",
-                                    fit: BoxFit.contain);
+                            return FutureBuilder<Uint8List?>(
+                              future: widget.app_state
+                                  .getImage(widget.histSite.imageUrls.first),
+                              builder: (context, snapshot) {
+                                if (widget.histSite.images.length > 0 &&
+                                    widget.histSite.images[0] != null) {
+                                  return Image.memory(
+                                    widget.histSite.images.first!,
+                                    height: 400,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  );
+                                } else if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.data != null) {
+                                  return Image.memory(
+                                    snapshot.data!,
+                                    height: 400,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  );
+                                } else {
+                                  return Image.asset(
+                                    'assets/images/faulkner_thumbnail.png',
+                                    height: 400,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  );
+                                }
+                              },
+                            );
                           },
                           itemCount: widget.histSite.images.length,
                         ).show();
