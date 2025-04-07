@@ -106,7 +106,6 @@ class _siteDialogueState extends State<SiteDialogue> {
                               newBlurbs.add(InfoText(
                                   title: blurbTitles[i], value: blurbVals[i]));
                             }
-                            List<String> newImages = [];
                             HistSite newSite = HistSite(
                                 name: nameText,
                                 blurbs: newBlurbs,

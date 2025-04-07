@@ -1,7 +1,4 @@
-import 'package:faulkner_footsteps/app_state.dart';
-import 'package:faulkner_footsteps/objects/hist_site.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 enum siteFilter { Monument, Park, Hall, Other }
